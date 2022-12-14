@@ -18,6 +18,9 @@ $(NAME) : $(OBJS)
 
 all : $(NAME)
 
+client : client.o
+	$(CXX) client.o $(LDFLAGS) -o $@
+
 clean :
 	rm -f $(OBJS)
 
