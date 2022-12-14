@@ -519,7 +519,9 @@ d'attente d'erreurs par socket. Pour plus de détails, voir IP_RECVERR dans ip(7
 Les opérations sur les sockets sont contrôlées par des options du niveau socket. 
 Ces options sont définies dans <sys/socket.h>. Les fonctions setsockopt(2) et 
 getsockopt(2) sont utilisées respectivement pour fixer ou lire les options.  
-VALEUR RENVOYÉE
+
+### VALEUR RENVOYÉE
+
 Cet appel système renvoie un descripteur référençant la socket créée s'il 
 réussit. S'il échoue, il renvoie -1 et errno contient le code d'erreur.  
 
