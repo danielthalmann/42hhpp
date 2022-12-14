@@ -60,9 +60,9 @@ int main(int argc, char** argv)
 		std::cout << "[+] client connected. " << std::endl;
    
 		bzero(buffer, 1024);
-		recv(client_sock, buffer, sizeof(buffer), 0);
-
+		n = recv(client_sock, buffer, sizeof(buffer), 0);
 		std::cout << "[+] client : " << buffer << std::endl;
+		std::cout << "[+] bytes recived : " << n << std::endl;
   
 		bzero(buffer, 1024);
 		strcpy(buffer, "HI, THIS IS SERVER. HAVE A NICE DAY!!!");

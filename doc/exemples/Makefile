@@ -1,9 +1,9 @@
 
 # https://www.gnu.org/software/make/manual/html_node/Implicit-Variables.html
 
-NAME=server
+NAME=client-server
 
-SRCS=server.cpp
+SRCS=server.cpp client.cpp
 
 OBJS=$(SRCS:cpp=o)
 
@@ -13,13 +13,15 @@ CXXFLAGS=-Wall -Wextra -Werror -std=c++98
 
 LDFLAGS=-lstdc++ -lm
 
-$(NAME) : $(OBJS)
-	$(CXX) $(OBJS) $(LDFLAGS) -o $@
+$(NAME) : client server
+
+client : $(OBJS)
+	$(CXX) client.o $(LDFLAGS) -o client
+
+server : $(OBJS)
+	$(CXX) server.o $(LDFLAGS) -o server
 
 all : $(NAME)
-
-client : client.o
-	$(CXX) client.o $(LDFLAGS) -o $@
 
 clean :
 	rm -f $(OBJS)
