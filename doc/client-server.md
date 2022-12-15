@@ -1,5 +1,5 @@
 
-´´´c
+```c
 
 #include <sys/types.h> /* Voir NOTES */
 #include <sys/socket.h>
@@ -15,5 +15,4 @@ int main(int argc, char ** argv)
 
 }
 
-
-´´´
+```
