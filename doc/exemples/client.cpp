@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0)
 	{
-		std::cerr << "[-] Socket error" << std::endl;	
+		std::cerr << "[-] Socket error" << std::endl;
 		return (errno);
 	}
 

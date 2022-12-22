@@ -12,12 +12,26 @@
 #include <fstream>
 
 //doc
+
+// https://fr.wikipedia.org/wiki/Mod%C3%A8le_OSI
+// https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+
 // https://www.geeksforgeeks.org/socket-programming-cc/
 // https://medium.com/from-the-scratch/http-server-what-do-you-need-to-know-to-build-a-simple-http-server-from-scratch-d1ef8945e4fa
 // https://web.maths.unsw.edu.au/~lafaye/CCM/sockets/sockfonc.htm
 
 // https://beej.us/guide/bgnet/html/#system-calls-or-bust
 // https://stackoverflow.com/questions/6729366/what-is-the-difference-between-af-inet-and-pf-inet-in-socket-programming#:~:text=Meaning%2C%20AF_INET%20refers%20to%20addresses,protocol%2C%20usually%20sockets%2Fports.
+
+void print_ip(unsigned int ip)
+{
+	unsigned char bytes[4];
+	bytes[0] = ip & 0xFF;
+	bytes[1] = (ip >> 8) & 0xFF;
+	bytes[2] = (ip >> 16) & 0xFF;
+	bytes[3] = (ip >> 24) & 0xFF;
+	printf("%d.%d.%d.%d\n", bytes[0], bytes[1], bytes[2], bytes[3]);
+}
 
 int main() {
 	std::cout << "Hello http" << std::endl << std::endl;
@@ -62,6 +76,9 @@ int main() {
 		exit(errno);
 	}
 
+	struct sockaddr_in new_addr;
+	int new_addrlen = sizeof(addr);
+
 	while (1)
 	{
 	//	int accept(int socket, struct sockaddr *restrict address, socklen_t *restrict address_len);
@@ -71,15 +88,18 @@ int main() {
 			std::cerr << "[-] In accept" << std::endl;
 			exit(errno);
 		}
+		std::cout << "client addr: " << std::endl;
+		print_ip(addr.sin_addr.s_addr);
+//		std::cout << inet_ntoa(addr.sin_addr) << std::endl;
 
 //		std::cout << std::endl << "send and receive" << std::endl;
 		char buffer[30000] = {0};
 		int valread = read(new_socket, buffer, 30000);
 //		printf("%s\n", buffer);
 		std::string s(buffer);
-//		std::cout << s << std::endl;
+		std::cout << s << std::endl;
 		if(valread < 0)
-			printf("No bytes are there to read");
+			std::cerr << "No bytes are there to read" << std::endl;
 
 //		char hello[] = "HTTP/1.1 200 OK\\nContent-Type: text/plain\\nContent-Length: 12\\n\\nHello world!\"";//IMPORTANT! WE WILL GET TO IT
 		if (s.find("42lwatch.html") != std::string::npos)
@@ -98,6 +118,8 @@ int main() {
 			{
 				file += line;
 			}
+
+			ifs.close();
 
 //			std::cout << file << std::endl;
 			std::string buffer = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: ";
