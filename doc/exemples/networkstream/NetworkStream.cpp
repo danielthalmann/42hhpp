@@ -33,11 +33,17 @@ bool NetworkStream::isConnected()
 
 void NetworkStream::listen(const char *ip_addr, int port)
 {
-	static_cast<NetworkBuffer *>(rdbuf())->listen(ip_addr, port);
+	static_cast<NetworkBuffer *>(rdbuf())->startListen(ip_addr, port);
 }
 
 void NetworkStream::connect(const char *ip_addr, int port)
 {
-	static_cast<NetworkBuffer *>(rdbuf())->connect(ip_addr, port);
+	static_cast<NetworkBuffer *>(rdbuf())->startConnection(ip_addr, port);
 }
+
+void NetworkStream::close()
+{
+	static_cast<NetworkBuffer *>(rdbuf())->closeConnection();
+}
+
 

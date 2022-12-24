@@ -33,17 +33,14 @@ class NetworkStream : public std::iostream {
 
 		void listen(const char *ip_addr, int port);
 		void connect(const char *ip_addr, int port);
+		void close();
+		
+		Socket getSocket();
 
 	protected:
-		// prevent copying
-		NetworkStream(const NetworkStream&);
-		void operator=(const NetworkStream&);
 
 		// internal functions to manipulate our socket.
 		void setSocket(Socket socket);
-
-		Socket getSocket();
-
 }; 
 
 

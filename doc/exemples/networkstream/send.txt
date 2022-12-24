@@ -1,0 +1,2 @@
+Un exemple de contenu envoyé par du stream
+de fichier

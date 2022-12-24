@@ -9,7 +9,7 @@ OBJS=$(SRCS:cpp=o)
 
 CXX=c++
 
-CXXFLAGS=-Wall -Wextra -Werror -std=c++98 -Wfatal-errors
+CXXFLAGS=-Wall -Wextra -Werror -std=c++98 -Wfatal-errors -g
 
 LDFLAGS=-lstdc++ -lm
 

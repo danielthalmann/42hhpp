@@ -9,6 +9,7 @@
 #include <cstring>
 #include <unistd.h>
 
+#define NETWORK_BUFFER_LENGTH 256
 #define LISTEN_CONNECTION_LENGTH 5
 
 /**
@@ -179,8 +180,8 @@ protected:
 
 private:
 	int			_socket;
-	std::string _inputbuffer;  // a buffer for the input data
-	std::string _outputbuffer; // a buffer for the output data
+	char* 		_inputbuffer;  // a buffer for the input data
+	char* 		_outputbuffer; // a buffer for the output data
 	bool 		_connected;
 	bool		_listened;
 	
