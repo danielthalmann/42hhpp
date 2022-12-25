@@ -156,3 +156,12 @@ std::streambuf::int_type NetworkBuffer::underflow()
 	return traits_type::to_int_type(*gptr());
 
 }
+
+int NetworkBuffer::acceptConnection()
+{
+	struct sockaddr_in address; 
+	int addrlen = sizeof(address);
+
+ 	return accept(_socket, 
+                    (struct sockaddr *)&address, (socklen_t*)&addrlen);
+}

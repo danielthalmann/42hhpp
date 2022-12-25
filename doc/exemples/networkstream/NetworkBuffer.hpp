@@ -102,6 +102,13 @@ public:
 	 */
 	void closeConnection();
 
+	
+	/**
+	 * @brief accept connection
+	 *
+	 */
+	int acceptConnection();
+
 protected:
 	
 	/**

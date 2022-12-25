@@ -20,10 +20,9 @@
 class NetworkStream : public std::iostream {
 	public: 
 	
-		typedef int Socket;
-
 		// constructors
 		NetworkStream();
+		NetworkStream(int socket);
 		virtual ~NetworkStream(); 
 
 		// other functions 
@@ -33,14 +32,16 @@ class NetworkStream : public std::iostream {
 
 		void listen(const char *ip_addr, int port);
 		void connect(const char *ip_addr, int port);
+		void accept(NetworkStream stream);
+
 		void close();
 		
-		Socket getSocket();
+		int getSocket();
 
 	protected:
 
 		// internal functions to manipulate our socket.
-		void setSocket(Socket socket);
+		void setSocket(int socket);
 }; 
 
 
