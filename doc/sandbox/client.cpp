@@ -45,7 +45,7 @@ int main(int argc, char const *argv[]) {
 	}
 	send(sock , argv[1] , strlen(argv[1]) , 0 );
 	std::cout << "Hello message sent" << std::endl;
-	valread = read( sock , buffer, 1024);
+	valread = read(sock , buffer, 1024);
 	std::cout << buffer << std::endl;
 	return 0;
 }

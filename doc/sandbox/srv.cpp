@@ -34,7 +34,7 @@ void print_ip(unsigned int ip)
 }
 
 int main() {
-	std::cout << "Hello http" << std::endl << std::endl;
+	std::cout << "Hello http" << std::endl;
 
 	std::cout << "Create a socket" << std::endl;
 //	int socket(int domain, int type, int protocol);
@@ -44,8 +44,10 @@ int main() {
 		std::cerr << "[-] socket error creation" << std::endl;
 		return (errno);
 	}
+//	not working
+//	fcntl(server_fd, F_SETFL, O_NONBLOCK);
 
-	std::cout << std::endl << "Indentify(name/naming/binding) a socket" << std::endl;
+	std::cout << "Indentify(name/naming/binding) a socket" << std::endl;
 	struct sockaddr_in addr;
 	int addrlen = sizeof(addr);
 	const int PORT = 8080; //Where the clients can reach at
@@ -68,9 +70,9 @@ int main() {
 		return (errno);
 	}
 
-	std::cout << std::endl << "listen and accept" << std::endl;
+	std::cout << "listen and accept" << std::endl;
 //	int listen(int socket, int backlog);
-	if (listen(server_fd, 3) < 0)
+	if (listen(server_fd, 10) != 0)
 	{
 		std::cerr << "[-] In listen" << std::endl;
 		exit(errno);
@@ -83,28 +85,29 @@ int main() {
 	{
 	//	int accept(int socket, struct sockaddr *restrict address, socklen_t *restrict address_len);
 		int new_socket = accept(server_fd, (struct sockaddr *)&addr, (socklen_t*)&addrlen);
+//		not working
+//		fcntl(new_socket, F_SETFL, O_NONBLOCK);
+
 		if (new_socket < 0)
 		{
 			std::cerr << "[-] In accept" << std::endl;
 			exit(errno);
 		}
-		std::cout << "client addr: " << std::endl;
+		std::cout << "client addr: ";
 		print_ip(addr.sin_addr.s_addr);
-//		std::cout << inet_ntoa(addr.sin_addr) << std::endl;
 
 //		std::cout << std::endl << "send and receive" << std::endl;
 		char buffer[30000] = {0};
 		int valread = read(new_socket, buffer, 30000);
-//		printf("%s\n", buffer);
 		std::string s(buffer);
+		std::cout << "request: " << std::endl;
 		std::cout << s << std::endl;
 		if(valread < 0)
 			std::cerr << "No bytes are there to read" << std::endl;
-
 //		char hello[] = "HTTP/1.1 200 OK\\nContent-Type: text/plain\\nContent-Length: 12\\n\\nHello world!\"";//IMPORTANT! WE WILL GET TO IT
+
 		if (s.find("42lwatch.html") != std::string::npos)
 		{
-//			std::cout << "info.html" << std::endl;
 			std::string file = "";
 			std::string line;
 			std::ifstream ifs("42lwatch.html");
@@ -121,23 +124,20 @@ int main() {
 
 			ifs.close();
 
-//			std::cout << file << std::endl;
 			std::string buffer = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: ";
 			buffer.append(std::to_string(file.size()));
 			buffer.append("\n\n");
 			buffer.append(file);
 
-//			std::cout << buffer << std::endl;
 			write(new_socket, buffer.c_str(), strlen(buffer.c_str()));
 		}
 		else
 		{
-			std::cout << "other page" << std::endl;
 			char hello[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 11\n\nHello alex!";
 			write(new_socket, hello, strlen(hello));
 		}
 
-		std::cout << std::endl << "close" << std::endl;
+//		std::cout << std::endl;
 		close(new_socket);
 	}
 }
