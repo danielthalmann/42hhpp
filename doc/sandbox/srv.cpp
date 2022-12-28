@@ -11,6 +11,10 @@
 
 #include <fstream>
 
+#include <string>
+#include <iostream>
+#include <sstream>
+
 //doc
 
 // https://fr.wikipedia.org/wiki/Mod%C3%A8le_OSI
@@ -33,9 +37,7 @@ void print_ip(unsigned int ip)
 	printf("%d.%d.%d.%d\n", bytes[0], bytes[1], bytes[2], bytes[3]);
 }
 
-int main() {
-	std::cout << "Hello http" << std::endl;
-
+int basicHttp() {
 	std::cout << "Create a socket" << std::endl;
 //	int socket(int domain, int type, int protocol);
 	int server_fd = socket(PF_INET, SOCK_STREAM, 0);
@@ -50,7 +52,7 @@ int main() {
 	std::cout << "Indentify(name/naming/binding) a socket" << std::endl;
 	struct sockaddr_in addr;
 	int addrlen = sizeof(addr);
-	const int PORT = 8080; //Where the clients can reach at
+	const int PORT = 8080; //Where the clients can reach at //1024 jusqu'à 65535
 	const char *ADDRESS = "127.0.0.1"; //Where the clients can reach at
 
 	/* htonl converts a long integer (e.g. address) to a network representation */
@@ -60,7 +62,7 @@ int main() {
 
 //	https://stackoverflow.com/questions/57779761/why-does-the-sin-family-member-exist
 	addr.sin_family = AF_INET; // UDP,TCP, ...
-	addr.sin_addr.s_addr = INADDR_ANY;
+	addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	addr.sin_port = htons(PORT);
 
 	//	int bind(int socket, const struct sockaddr *address, socklen_t address_len);
@@ -83,7 +85,7 @@ int main() {
 
 	while (1)
 	{
-	//	int accept(int socket, struct sockaddr *restrict address, socklen_t *restrict address_len);
+		//	int accept(int socket, struct sockaddr *restrict address, socklen_t *restrict address_len);
 		int new_socket = accept(server_fd, (struct sockaddr *)&addr, (socklen_t*)&addrlen);
 //		not working
 //		fcntl(new_socket, F_SETFL, O_NONBLOCK);
@@ -138,6 +140,102 @@ int main() {
 		}
 
 //		std::cout << std::endl;
+		close(new_socket);
+	}
+}
+
+void check(int err, std::string str) {
+	if (err < 0)
+	{
+		std::cerr << str << std::endl;
+		exit (errno);
+	}
+}
+
+int main() {
+	std::cout << "Hello http" << std::endl;
+
+	int server_fd = socket(PF_INET, SOCK_STREAM, 0);
+	check(server_fd, "[-] socket error creation");
+
+//	not working
+//	fcntl(server_fd, F_SETFL, O_NONBLOCK);
+
+	struct sockaddr_in addr;
+	int addrlen = sizeof(addr);
+	const int PORT = 8080;
+	const char *ADDRESS = INADDR_ANY;
+
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = htonl(INADDR_ANY);
+	addr.sin_port = htons(PORT);
+
+	check(bind(server_fd, (struct sockaddr *)&addr, addrlen), "[-] bind failed");
+	check(listen(server_fd, 10), "[-] In listen");
+
+	struct sockaddr_in new_addr;
+	int new_addrlen = sizeof(addr);
+
+	while (1)
+	{
+		int new_socket = accept(server_fd, (struct sockaddr *)&new_addr, (socklen_t*)&addrlen);
+//		not working
+//		fcntl(new_socket, F_SETFL, O_NONBLOCK);
+
+		check(new_socket, "[-] In accept");
+
+		std::cout << "client addr: ";
+		print_ip(new_addr.sin_addr.s_addr);
+
+		char buffer[30000] = {0};
+		int valread = read(new_socket, buffer, 30000);
+
+		std::string s(buffer);
+		std::cout << "request: " << std::endl;
+//		std::cout << s << std::endl;
+		std::string line;
+		std::istringstream input;
+		input.str(s);
+		std::getline(input, line);
+		std::cout << line << std::endl;
+
+		if(valread < 0)
+		{
+			std::cerr << "No bytes are there to read" << std::endl;
+			continue;
+		}
+
+		if (s.find("42lwatch.html") != std::string::npos)
+		{
+			std::string file = "";
+			std::string line;
+			std::ifstream ifs("42lwatch.html");
+			if (ifs.fail())
+			{
+				std::cout << "file error" << std::endl;
+				continue;
+			}
+
+			while (std::getline(ifs, line))
+			{
+				file += line;
+			}
+
+			ifs.close();
+
+			std::string buffer = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: ";
+			buffer.append(std::to_string(file.size()));
+			buffer.append("\n\n");
+			buffer.append(file);
+
+			write(new_socket, buffer.c_str(), strlen(buffer.c_str()));
+		}
+		else
+		{
+			char hello[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 11\n\nHello alex!";
+			write(new_socket, hello, strlen(hello));
+		}
+
 		close(new_socket);
 	}
 }
