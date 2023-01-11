@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string>
 
-int main()
+int main(int argc, char **argv)
 {
 
     NetworkStream stream;
@@ -19,12 +19,32 @@ int main()
 
     try {
     
-        stream.connect("127.0.0.1", 8080);
+        if (argc > 1 && std::string(argv[1]).compare("server") == 0)
+        {
+            stream.listen("127.0.0.1", 8080);
+            NetworkStream streamClient;
+            stream.accept(streamClient);
 
-        std::getline(myfile, buffer);
-        stream << buffer;
+            while (!streamClient.eof())
+            {
+                streamClient >> buffer;
+                std::cout << buffer;
+            }
+            
+            streamClient << "ok";
 
-        stream.close();
+            stream.close();
+
+        } else {
+
+            stream.connect("127.0.0.1", 8080);
+
+            std::getline(myfile, buffer);
+            stream << buffer;
+
+            stream.close();
+        }
+
     
     } catch (NetworkException::ConnectionFailed &e) {
 

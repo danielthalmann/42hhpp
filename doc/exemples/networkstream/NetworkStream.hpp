@@ -32,7 +32,7 @@ class NetworkStream : public std::iostream {
 
 		void listen(const char *ip_addr, int port);
 		void connect(const char *ip_addr, int port);
-		void accept(NetworkStream stream);
+		void accept(NetworkStream &stream);
 
 		void close();
 		

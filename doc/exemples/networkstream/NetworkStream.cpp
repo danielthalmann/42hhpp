@@ -50,7 +50,7 @@ void NetworkStream::close()
 	static_cast<NetworkBuffer *>(rdbuf())->closeConnection();
 }
 
-void NetworkStream::accept(NetworkStream stream)
+void NetworkStream::accept(NetworkStream &stream)
 {
 	int socket = static_cast<NetworkBuffer *>(rdbuf())->acceptConnection();
 
