@@ -33,3 +33,6 @@
 
 # visual studio code
 .vscode
+
+#nodejs
+node_modules
