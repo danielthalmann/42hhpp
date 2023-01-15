@@ -1,6 +1,9 @@
 #ifndef JSONARRAY_HPP
 #define JSONARRAY_HPP
 
+#include <string>
+#include <vector>
+
 namespace json
 {
 
@@ -12,11 +15,11 @@ namespace json
 		int getLenght();
 		float getFloat(int);
 		int getInt(int);
-		String getString(int);
+		std::string getString(int);
 		JsonValue getValue(int);
 		JsonArray getArray(int);
 		JsonObject getObject(int);
-		void pushString(string&);
+		void pushString(std::string&);
 		void pushArray(JsonArray&);
 		void pushObject(JsonObject&);
 		void pushInt(int);

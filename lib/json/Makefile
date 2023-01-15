@@ -3,7 +3,7 @@
 
 NAME=json.a
 
-SRCFILES=json.cpp
+SRCFILES=Json.cpp
 
 SRCS=$(addprefix src/, ${SRCFILES})
 
@@ -17,6 +17,7 @@ LDFLAGS=-lstdc++ -lm
 
 #$(NAME) : $(OBJS)
 #	$(CXX) $(OBJS) $(LDFLAGS) -o $@
+
 
 ${NAME}: ${OBJS}
 	ar rsv $@ ${OBJS} 	
