@@ -17,6 +17,13 @@
                 }
             ],
 
+            "error_pages" : {
+
+                "404" : "pages/error-404.html",
+                "501" : "pages/error-501.html"
+        
+            },
+
             "location" : [
                 {
                     "path" : "script",
@@ -25,6 +32,8 @@
             ]
         }
     ],
+
+    "auto_index" : true,
 
     "index" : ["index.html", "index.php"],
 
