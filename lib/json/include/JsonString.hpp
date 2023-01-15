@@ -1,6 +1,8 @@
 #ifndef JSONSTRING_HPP
 #define JSONSTRING_HPP
 
+#include <JsonValue.hpp>
+#include <string>
 namespace json
 {
 		
@@ -9,13 +11,13 @@ namespace json
 
 	public:
 
-		string get();
-		void set(string);
+		std::string get();
+		void set(std::string);
 
 
 	private:
 
-		string _value;
+		std::string _value;
 
 
 	};

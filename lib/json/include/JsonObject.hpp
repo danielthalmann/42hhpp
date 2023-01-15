@@ -1,6 +1,8 @@
 #ifndef JSONOBJECT_HPP
 #define JSONOBJECT_HPP
 
+#include <JsonValue.hpp>
+#include <JsonArray.hpp>
 #include <string>
 #include <map>
 

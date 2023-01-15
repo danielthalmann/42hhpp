@@ -1,11 +1,14 @@
 #ifndef JSONARRAY_HPP
 #define JSONARRAY_HPP
 
+#include <JsonObject.hpp>
+#include <JsonValue.hpp>
 #include <string>
 #include <vector>
 
 namespace json
 {
+	class JsonObject;
 
 	class JsonArray
 	{
@@ -28,8 +31,7 @@ namespace json
 
 	private:
 
-		vector<JsonValue> _value;
-
+		std::vector<JsonValue> _value;
 
 	};
 

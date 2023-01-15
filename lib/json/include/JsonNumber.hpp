@@ -1,6 +1,8 @@
 #ifndef JSONNUMBER_HPP
 #define JSONNUMBER_HPP
 
+#include <JsonValue.hpp>
+
 namespace json
 {
 
@@ -17,9 +19,7 @@ namespace json
 
 	private:
 
-		void* _value;
-		JsonType _valueType;
-
+		int _value;
 
 	};
 	

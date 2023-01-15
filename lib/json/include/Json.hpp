@@ -2,6 +2,7 @@
 #define JSON_HPP
 
 #include <JsonObject.hpp>
+
 #include <string>
 
 namespace json
@@ -12,7 +13,7 @@ namespace json
 
 	public:
 
-		JsonObject static parseToObject(std::string);
+		static JsonObject parseToObject(std::string);
 
 
 	private:
