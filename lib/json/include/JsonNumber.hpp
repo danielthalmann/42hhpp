@@ -10,6 +10,8 @@ namespace json
 	{
 
 	public:
+		JsonNumber() {};
+		virtual ~JsonNumber() {};
 
 		void setInt(int);
 		void setFloat(float);

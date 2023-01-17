@@ -14,6 +14,8 @@ namespace json
 	{
 
 	public:
+		JsonArray() {};
+		virtual ~JsonArray() {};
 
 		int getLenght();
 		float getFloat(int);

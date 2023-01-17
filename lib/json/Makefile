@@ -3,7 +3,7 @@
 
 NAME=json.a
 
-SRCFILES=Json.cpp JsonObject.cpp
+SRCFILES=Json.cpp JsonObject.cpp JsonString.cpp
 
 SRCS=$(addprefix src/, ${SRCFILES})
 
