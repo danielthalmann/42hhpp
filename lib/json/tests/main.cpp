@@ -8,4 +8,6 @@ int main()
 
     delete json;
 
+    return 1;
+
 }
