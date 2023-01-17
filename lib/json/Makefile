@@ -3,7 +3,7 @@
 
 NAME=json.a
 
-SRCFILES=Json.cpp
+SRCFILES=Json.cpp JsonObject.cpp
 
 SRCS=$(addprefix src/, ${SRCFILES})
 
@@ -32,5 +32,7 @@ fclean : clean
 
 re : fclean all
 
-run : $(NAME)
-	./$(NAME)
+test : $(NAME)
+	$(CXX) tests/main.cpp $(NAME) $(CXXFLAGS) $(LDFLAGS) -o test
+
+

@@ -1,7 +1,9 @@
 #include <Json.hpp>
 
-
-JsonObject Json::parseToObject(string)
+namespace json
 {
-    return 0;
+
+
 }
+
+

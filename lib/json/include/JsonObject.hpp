@@ -9,10 +9,14 @@
 namespace json
 {
 	
-	class JsonObject
+	class JsonObject : public JsonValue
 	{
 
 	public:
+
+		JsonObject() {};
+		virtual ~JsonObject() {};
+
 
 		float getFloat(std::string);
 		void setFloat(std::string, float);

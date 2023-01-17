@@ -6,7 +6,7 @@
 namespace json
 {
 		
-	class JsonString
+	class JsonString : public JsonObject
 	{
 
 	public:

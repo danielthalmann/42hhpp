@@ -21,6 +21,9 @@ namespace json
 
 	public:
 
+		JsonValue() {};
+		virtual ~JsonValue() {};
+
 		JsonType getValueType();
 
 

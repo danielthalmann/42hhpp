@@ -10,7 +10,7 @@ namespace json
 {
 	class JsonObject;
 
-	class JsonArray
+	class JsonArray : public JsonValue
 	{
 
 	public:

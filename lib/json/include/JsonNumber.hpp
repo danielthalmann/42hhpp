@@ -6,7 +6,7 @@
 namespace json
 {
 
-	class JsonNumber
+	class JsonNumber : public JsonValue
 	{
 
 	public:
