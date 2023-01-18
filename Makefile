@@ -13,7 +13,20 @@ CFLAGS += -g3 -fsanitize=address
 
 SRC_DIR = src/
 _SRC =	main.cpp\
-		ErrorPage.cpp
+		AResponse.cpp\
+		Binding.cpp\
+		CGI.cpp\
+		ErrorPage.cpp\
+		Header.cpp\
+		HHPP.cpp\
+		Location.cpp\
+		MimeType.cpp\
+		Redirect.cpp\
+		Request.cpp\
+		Response.cpp\
+		ResponseFile.cpp\
+		ResponseRedirect.cpp\
+		Server.cpp
 
 SRC = $(addprefix $(SRC_DIR), $(_SRC))
 
@@ -37,7 +50,7 @@ HEADER=	AResponse.hpp\
 
 INC = $(addprefix $(INC_DIR), $(HEADER))
 
-NAME = srv.out
+NAME = hhpp
 
 OBJ_DIR = obj/
 _OBJ = $(_SRC:.cpp=.o)

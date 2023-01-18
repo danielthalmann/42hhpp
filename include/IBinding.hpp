@@ -10,7 +10,7 @@ class IBinding
 
 public:
 
-	virtual ~IBinding() = 0;
+	virtual ~IBinding() {};
 
 	virtual void setSocket(int socket) = 0;
 	virtual void setIP(std::string ip) = 0;

@@ -14,10 +14,9 @@ public:
 	CGI();
 	~CGI();
 
-	bool isForMe(Request req);
-	std::string execute(Request req);
-	void addExtension(std::string ext);
-	std::string execute(Request res);
+	bool isForMe(Request request);
+	std::string execute(Request request);
+	void addExtension(std::string extension);
 
 private:
 

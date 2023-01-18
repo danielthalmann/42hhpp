@@ -9,12 +9,15 @@ class AResponse
 
 public:
 
+	AResponse();
+	virtual ~AResponse();
+
 	void setStatus(int status);
 	std::string getBlob();
 	Header& headers();
 
 
-private:
+protected:
 
 	int _status;
 	Header _header;

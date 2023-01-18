@@ -10,7 +10,7 @@ class IServer
 
 public:
 
-	virtual ~IServer() = 0;
+	virtual ~IServer() {};
 
 	virtual bool isForMe(Request request) = 0;
 	virtual void bind(Binding binding) = 0;

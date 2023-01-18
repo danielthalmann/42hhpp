@@ -13,7 +13,7 @@ public:
 	~Header();
 
 	std::string get(std::string key);
-	void delete(std::string key);
+	void remove(std::string key);
 	void append(std::string key, std::string value);
 
 private:

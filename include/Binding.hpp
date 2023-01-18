@@ -2,6 +2,7 @@
 #define BINDING_HPP
 
 #include "IBinding.hpp"
+#include "Request.hpp"
 
 class Binding : public IBinding
 {
@@ -15,7 +16,7 @@ public:
 	virtual void setIP(std::string ip);
 	virtual void setPort(int port);
 	virtual void send(std::string str);
-	virtual void send(Response res);
+	virtual void send(Response response);
 	virtual Request readHeader(std::string header);
 
 private:

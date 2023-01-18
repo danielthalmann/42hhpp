@@ -14,8 +14,9 @@ public:
 	HHPP();
 	~HHPP();
 
-	vector<IServer> _servers;
-	vector<IBinding> _bindings;
+	std::vector<Server> _servers;
+	std::vector<Binding> _bindings;
+
 	void loadConfig(std::string config);
 	void run();
 

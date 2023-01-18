@@ -19,7 +19,7 @@ public:
 	~Server();
 
 	std::string host;
-	void setBinding(IBinding* bind);
+	void setBinding(Binding* bind);
 
 	virtual bool isForMe(Request request);
 	virtual void bind(Binding binding);
@@ -27,7 +27,7 @@ public:
 
 private:
 
-	IBinding* _binding;
+	Binding* _binding;
 	std::string _root;
 	std::vector<CGI> _cgi;
 	std::map<std::string, std::string> _mimetypes;

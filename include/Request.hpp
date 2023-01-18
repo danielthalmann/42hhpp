@@ -9,6 +9,9 @@ class Request
 
 public:
 
+	Request();
+	~Request();
+
 	std::string _method;
 	std::string _query;
 	std::string _host;
