@@ -23,7 +23,7 @@ namespace json
 
 			JsonValue *j = new JsonObject();
 			JsonObject *jobject = dynamic_cast<JsonObject*>(j);
-			jobject->setInt("essai", 5);
+			jobject->putInt("essai", 5);
 
 			return j;
 		};

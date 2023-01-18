@@ -6,27 +6,35 @@ INCLUDE_FOLDER=../include/
 
 build_code () {
     
-    printf "[\u1b[32m+\033[0m] compile file "
-    gcc ${TEST_FOLDER}main.cpp ${BIN_FOLDER}json.a -Wall -Wextra -Werror -std=c++98 -I${INCLUDE_FOLDER} -lstdc++ -lm -o ${BIN_FOLDER}test 2> /dev/null
+    printf "[\x1b[32m+\x1b[0m] compile file ${CLASS_NAME} "
+    
+    CMD="gcc ${TEST_FOLDER}test${CLASS_NAME}.cpp ${BIN_FOLDER}json.a -Wall -Wextra -Werror -std=c++98 -I${INCLUDE_FOLDER} -lstdc++ -lm -o ${BIN_FOLDER}test 2> /dev/null"
+    
+    eval $CMD
 
     if [ $? -ne 0 ] 
     then
-        printf "[\u1b[31mKO\033[0m] file cannot be compiled\n" ;
+        printf "[\x1b[31mKO\x1b[0m] file cannot be compiled\n" ;
+        echo $CMD
         return
     fi
 
-    printf "[\u1b[32m+\033[0m] execute test "
+    printf "[\x1b[32m+\x1b[0m] execute test "
     ${BIN_FOLDER}test
 
     if [ $? -ne 0 ] 
     then
-        printf "[\u1b[31mKO\033[0m] error in execution\n" ;
+        printf "[\x1b[31mKO\x1b[0m] error in execution\n" ;
         return
     fi
 
-    printf "[\u1b[32mOK\033[0m]\n" ;
+    printf "[\x1b[32mOK\x1b[0m]\n" ;
 }
 
-build_code
+CLASS_NAMES=('JsonString' 'JsonArray')
 
+for CLASS_NAME in "${CLASS_NAMES[@]}"
+do
+   build_code
+done
 

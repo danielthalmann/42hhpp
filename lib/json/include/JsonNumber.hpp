@@ -10,18 +10,23 @@ namespace json
 	{
 
 	public:
-		JsonNumber() {};
-		virtual ~JsonNumber() {};
+		JsonNumber();
+		JsonNumber(const JsonNumber &other);
+		virtual ~JsonNumber();
+		JsonNumber &operator=(const JsonNumber &other);
 
-		void setInt(int);
-		void setFloat(float);
+		virtual void set(const float &f);
+		virtual float get();
+
 		int getInt();
 		float getFloat();
 
+		JsonNumber &operator=(const int &i);
+		JsonNumber &operator=(const float &i);
 
 	private:
 
-		int _value;
+		float _value;
 
 	};
 	

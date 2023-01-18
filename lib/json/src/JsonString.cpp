@@ -2,9 +2,15 @@
 
 namespace json
 {
-	JsonString::JsonString() : Json_Value::_valueType(json_type_string)
+    
+	JsonString::JsonString()
     {
+        _valueType = json_type_string;
+    }
 
+	JsonString::JsonString(const JsonString& other)
+    {
+        *this = other;
     }
 
 	JsonString::~JsonString()
@@ -12,12 +18,18 @@ namespace json
 
     }
 
-    std::string JsonString::get()
+    JsonString &JsonString::operator=(const JsonString& other)
+    {
+        _value = other._value;
+        return *this;
+    }
+
+    std::string JsonString::getString()
     {
         return _value;
     }
 
-    void JsonString::set(const std::string &s)
+    void JsonString::setString(const std::string &s)
     {
         _value = s;
     }
