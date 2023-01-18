@@ -3,11 +3,17 @@
 
 NAME=json.a
 
+SRC_FOLDER=src/
+BIN_FOLDER=bin/
+OBJ_FOLDER=obj/
+TEST_FOLDER=tests/
+
 SRCFILES=Json.cpp JsonObject.cpp JsonString.cpp
 
-SRCS=$(addprefix src/, ${SRCFILES})
+SRCS=$(addprefix ${SRC_FOLDER}, ${SRCFILES})
 
-OBJS=${SRCS:cpp=o}
+#OBJS=${SRCS:cpp=o}
+OBJS=$(patsubst %.cpp, ${BUILD}%.o, ${SRCS})
 
 CXX=gcc
 
@@ -15,14 +21,15 @@ CXXFLAGS=-Wall -Wextra -Werror -std=c++98 -Iinclude
 
 LDFLAGS=-lstdc++ -lm
 
-BIN_FOLDER=bin/
 
 #$(NAME) : $(OBJS)
 #	$(CXX) $(OBJS) $(LDFLAGS) -o $@
 
+#$(BUILD)%.o : %.cpp
+#	$(CXX) $(CXXFLAGS) $< -o $@
 
 ${NAME}: ${OBJS}
-	ar rsv ${BIN_FOLDER}$@ ${OBJS} 	
+	@ar rsv ${BIN_FOLDER}$@ ${OBJS} 	
 
 all : $(NAME)
 
@@ -35,6 +42,6 @@ fclean : clean
 re : fclean all
 
 test : $(NAME)
-	$(CXX) tests/main.cpp ${BIN_FOLDER}$(NAME) $(CXXFLAGS) $(LDFLAGS) -o bin/test
+	@cd ${TEST_FOLDER} ;	./test.sh
 
 

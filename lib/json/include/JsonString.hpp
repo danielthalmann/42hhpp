@@ -3,6 +3,7 @@
 
 #include <JsonValue.hpp>
 #include <string>
+
 namespace json
 {
 		
@@ -10,13 +11,13 @@ namespace json
 	{
 
 	public:
-		JsonString() {};
-		virtual ~JsonString() {};
+		JsonString();
+		virtual ~JsonString();
 
 		std::string get();
-		void set(std::string);
+		void set(const std::string& s);
 
-		JsonString &operator=(std::string);
+		JsonString &operator=(const std::string& s);
 
 
 	private:
