@@ -15,7 +15,8 @@ namespace json
 		virtual ~JsonNumber();
 		JsonNumber &operator=(const JsonNumber &other);
 
-		virtual void set(const float &f);
+		virtual void set(const int i);
+		virtual void set(const float f);
 		virtual float get();
 
 		int getInt();

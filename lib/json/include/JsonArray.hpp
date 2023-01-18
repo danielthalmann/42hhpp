@@ -31,13 +31,12 @@ namespace json
 		void push(const JsonArray& value);
 		void push(const JsonObject& value);
 
-
-		void putInt(const int key, const int i);
-		void putFloat(const int key, const float f);
-		void putString(const int key, const std::string& s);
-		void putValue(const int key, const JsonValue& v);
-		void putArray(const int key, const JsonArray& a);
-		void putObject(const int key, const JsonObject& o);
+		void put(const int key, const int i);
+		void put(const int key, const float f);
+		void put(const int key, const std::string& s);
+		void put(const int key, const JsonValue& v);
+		void put(const int key, const JsonArray& a);
+		void put(const int key, const JsonObject& o);
 
 	private:
 

@@ -7,7 +7,7 @@ namespace json
         _valueType = json_type_object;
     }
 
-	JsonObject::JsonObject(const JsonObject& other)
+	JsonObject::JsonObject(const JsonObject& other) : JsonValue()
     {
         *this = other;
     }
@@ -29,37 +29,37 @@ namespace json
         return NULL;
     }
 
-	void JsonObject::putInt(const std::string key, const int i)
+	void JsonObject::put(const std::string key, const int i)
     {
         (void) key;
         (void) i;
     }
 
-	void JsonObject::putFloat(const std::string key, const float f)
+	void JsonObject::put(const std::string key, const float f)
     {
         (void) key;
         (void) f;
     }
 
-	void JsonObject::putString(const std::string key, const std::string& s)
+	void JsonObject::put(const std::string key, const std::string& s)
     {
         (void) key;
         (void) s;
     }
 
-	void JsonObject::putValue(const std::string key, const JsonValue* v)
+	void JsonObject::put(const std::string key, const JsonValue* v)
     {
         (void) key;
         (void) v;
     }
 
-	void JsonObject::putArray(const std::string key, const JsonArray* a)
+	void JsonObject::put(const std::string key, const JsonArray* a)
     {
         (void) key;
         (void) a;
     }
 
-	void JsonObject::putObject(const std::string key, const JsonObject* o)
+	void JsonObject::put(const std::string key, const JsonObject* o)
     {
         (void) key;
         (void) o;

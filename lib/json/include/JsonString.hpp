@@ -17,7 +17,7 @@ namespace json
 		JsonString &operator=(const JsonString& other);
 
 		virtual std::string getString();
-		virtual void setString(const std::string &s);
+		virtual void set(const std::string &s);
 
 		JsonString &operator=(const std::string &s);
 

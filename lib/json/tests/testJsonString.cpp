@@ -7,7 +7,7 @@ int main()
 
     json::JsonString *json = new json::JsonString();
 
-    json->setString("exemple");
+    json->set("exemple");
     std::string s = json->getString();
 
     json::JsonString jsString(*json);

@@ -9,7 +9,7 @@ int main()
 
     json->push("exemple");
 
-    json->putString(0, "autre");
+    json->put(0, "autre");
 
     std::string s = json->at(0)->getString();
     

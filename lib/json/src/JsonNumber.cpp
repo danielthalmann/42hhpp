@@ -7,7 +7,7 @@ namespace json
         _valueType = json_type_number;
     }
 
-	JsonNumber::JsonNumber(const JsonNumber& other)
+	JsonNumber::JsonNumber(const JsonNumber& other) : JsonValue()
     {
         *this = other;
     }
@@ -38,7 +38,12 @@ namespace json
         return _value;
     }
 
-    void JsonNumber::set(const float &f)
+    void JsonNumber::set(const int f)
+    {
+        _value = f;
+    }
+
+    void JsonNumber::set(const float f)
     {
         _value = f;
     }

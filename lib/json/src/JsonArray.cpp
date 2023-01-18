@@ -8,7 +8,7 @@ namespace json
         _valueType = json_type_array;
     }
 
-	JsonArray::JsonArray(const JsonArray& other)
+	JsonArray::JsonArray(const JsonArray& other) : JsonValue()
     {
         *this = other;
     }
@@ -40,21 +40,21 @@ namespace json
     void JsonArray::push(const int value)
     {
         JsonNumber *j = new JsonNumber();
-        j->setInt(value);
+        j->set(value);
         _value.push_back(j);
     }
 
     void JsonArray::push(const float value)
     {
         JsonNumber *j = new JsonNumber();
-        j->setFloat(value);
+        j->set(value);
         _value.push_back(j);
     }
 
     void JsonArray::push(const std::string& value)
     {
         JsonString *j = new JsonString();
-        j->setString(value);
+        j->set(value);
         _value.push_back(j);
     }
 
@@ -72,34 +72,34 @@ namespace json
         _value.push_back(j);
     }
 
-    void JsonArray::putInt(const int key, const int i)
+    void JsonArray::put(const int key, const int i)
     {
         JsonValue *j = at(key);
         delete j;
         j = new JsonNumber();
-        j->setInt(i);
+        j->set(i);
         _value[key] = j;
     }
 
-    void JsonArray::putFloat(const int key, const float f)
+    void JsonArray::put(const int key, const float f)
     {
         JsonValue *j = at(key);
         delete j;
         j = new JsonNumber();
-        j->setFloat(f);
+        j->set(f);
         _value[key] = j;
     }
 
-    void JsonArray::putString(const int key, const std::string& s)
+    void JsonArray::put(const int key, const std::string& s)
     {
         JsonValue *j = at(key);
         delete j;
         j = new JsonString();
-        j->setString(s);
+        j->set(s);
         _value[key] = j;
     }
 
-    void JsonArray::putValue(const int key, const JsonValue& v)
+    void JsonArray::put(const int key, const JsonValue& v)
     {
         JsonValue *j = at(key);
         delete j;
@@ -108,7 +108,7 @@ namespace json
         _value[key] = j;
     }
 
-    void JsonArray::putArray(const int key, const JsonArray& a)
+    void JsonArray::put(const int key, const JsonArray& a)
     {
         JsonValue *j = at(key);
         delete j;
@@ -117,7 +117,7 @@ namespace json
         _value[key] = j;
     }
 
-    void JsonArray::putObject(const int key, const JsonObject& o)
+    void JsonArray::put(const int key, const JsonObject& o)
     {
         JsonValue *j = at(key);
         delete j;

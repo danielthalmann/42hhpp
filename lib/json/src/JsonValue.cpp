@@ -18,37 +18,37 @@ namespace json
 
     }
 
-	void JsonValue::setInt(const int i)
+	void JsonValue::set(const int i)
     {
         (void) i;
         throw std::domain_error("Cannot set int");
     }
 
-	void JsonValue::setFloat(const float f)
+	void JsonValue::set(const float f)
     {
         (void) f;
         throw std::domain_error("Cannot set float");
     }
 
-	void JsonValue::setString(const std::string& s)
+	void JsonValue::set(const std::string& s)
     {
         (void) s;
         throw std::domain_error("Cannot set string");
     }
 
-	void JsonValue::setValue(const JsonValue& v)
+	void JsonValue::set(const JsonValue& v)
     {
         (void) v;
         throw std::domain_error("Cannot set value");
     }
 
-	void JsonValue::setArray(const JsonArray& a)
+	void JsonValue::set(const JsonArray& a)
     {
         (void) a;
         throw std::domain_error("Cannot set array");
     }
 
-	void JsonValue::setObject(const JsonObject& o)
+	void JsonValue::set(const JsonObject& o)
     {
         (void) o;
         throw std::domain_error("Cannot set object");
@@ -126,73 +126,73 @@ namespace json
         return _valueType;
     }
 
-	void JsonValue::putInt(const std::string key, const int i)
+	void JsonValue::put(const std::string key, const int i)
     {
         (void) key;
         (void) i;
     }
 
-	void JsonValue::putFloat(const std::string key, const float f)
+	void JsonValue::put(const std::string key, const float f)
     {
         (void) key;
         (void) f;
     }
 
-	void JsonValue::putString(const std::string key, const std::string& s)
+	void JsonValue::put(const std::string key, const std::string& s)
     {
         (void) key;
         (void) s;
     }
 
-	void JsonValue::putValue(const std::string key, const JsonValue* v)
+	void JsonValue::put(const std::string key, const JsonValue* v)
     {
         (void) key;
         (void) v;
     }
 
-	void JsonValue::putArray(const std::string key, const JsonArray* a)
+	void JsonValue::put(const std::string key, const JsonArray* a)
     {
         (void) key;
         (void) a;
     }
 
-	void JsonValue::putObject(const std::string key, const JsonObject* o)
+	void JsonValue::put(const std::string key, const JsonObject* o)
     {
         (void) key;
         (void) o;
     }
 
-	void JsonValue::putInt(const int key, const int i)
+	void JsonValue::put(const int key, const int i)
     {
         (void) key;
         (void) i;
     }
 
-	void JsonValue::putFloat(const int key, const float f)
+	void JsonValue::put(const int key, const float f)
     {
         (void) key;
         (void) f;
     }
 
-	void JsonValue::putString(const int key, const std::string& s)
+	void JsonValue::put(const int key, const std::string& s)
     {
         (void) key;
         (void) s;
     }
 
-	void JsonValue::putValue(const int key, const JsonValue& v)
+	void JsonValue::put(const int key, const JsonValue& v)
     {
         (void) key;
         (void) v;
     }
 
-	void JsonValue::putArray(const int key, const JsonArray& a)
+	void JsonValue::put(const int key, const JsonArray& a)
     {
         (void) key;
         (void) a;
     }
 
-	void JsonValue::putObject(const int key, const JsonObject& o)
+	void JsonValue::put(const int key, const JsonObject& o)
     {
         (void) key;
         (void) o;

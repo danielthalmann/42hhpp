@@ -8,7 +8,7 @@ namespace json
         _valueType = json_type_string;
     }
 
-	JsonString::JsonString(const JsonString& other)
+	JsonString::JsonString(const JsonString& other) : JsonValue()
     {
         *this = other;
     }
@@ -29,7 +29,7 @@ namespace json
         return _value;
     }
 
-    void JsonString::setString(const std::string &s)
+    void JsonString::set(const std::string &s)
     {
         _value = s;
     }
