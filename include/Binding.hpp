@@ -3,6 +3,8 @@
 
 #include "IBinding.hpp"
 #include "Request.hpp"
+#include <sys/socket.h>
+#include <iostream>
 
 class Binding : public IBinding
 {

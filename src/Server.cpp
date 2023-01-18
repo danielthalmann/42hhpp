@@ -4,7 +4,7 @@ Server::Server() {}
 Server::~Server() {}
 
 void Server::setBinding(Binding *bind) {
-	(void)bind;
+	_binding = bind;
 }
 
 bool Server::isForMe(Request request) {

@@ -56,9 +56,13 @@ OBJ_DIR = obj/
 _OBJ = $(_SRC:.cpp=.o)
 OBJ = $(addprefix $(OBJ_DIR), $(_OBJ))
 
-.PHONY: all clean fclean re run leak
+.PHONY: all clean fclean re run leak json
 
 all: $(NAME)
+
+#TODO a corriger et ajouter la dependance
+json:
+	$(MAKE) -C lib/json/
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)

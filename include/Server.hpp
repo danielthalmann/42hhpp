@@ -27,7 +27,7 @@ public:
 
 private:
 
-	Binding* _binding;
+	IBinding* _binding;
 	std::string _root;
 	std::vector<CGI> _cgi;
 	std::map<std::string, std::string> _mimetypes;

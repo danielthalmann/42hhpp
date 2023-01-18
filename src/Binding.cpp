@@ -5,15 +5,21 @@ Binding::Binding() {}
 Binding::~Binding() {}
 
 void Binding::setSocket(int socket) {
-	(void)socket;
+	_socked = socket;
+//	_socked = socket(PF_INET, SOCK_STREAM, 0);
+//	if (_socked < 0)
+//	{
+//		std::cerr << "[-] socket error creation" << std::endl;
+//		exit(errno);
+//	}
 }
 
 void Binding::setIP(std::string ip) {
-	(void)ip;
+	_ip = ip;
 }
 
 void Binding::setPort(int port) {
-	(void)port;
+	_port = port;
 }
 
 void Binding::send(std::string str) {
