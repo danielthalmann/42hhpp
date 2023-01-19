@@ -13,60 +13,31 @@ namespace json
 
 	class Json
 	{
+		
+	private:
+		Json(const std::string &s);
 
+		
 	public:
+		~Json();
 
-		//static JsonValue *parse(const std::string &s, size_t i = 0);
-
-		static JsonValue *parse(const std::string &s, size_t i = 0)
+		static JsonValue *parse(const std::string &s)
 		{
-			JsonValue *j = NULL;
-
-			while (i < s.length())
-			{
-				switch (s[i])
-				{
-					case '{':
-						j = parseObject(s, i);
-					break;
-					case '[':
-						j = parseArray(s, i);
-					break;
-					case '"':
-						j = parseString(s, i);
-
-				}
-			}
-
-			return j;
+			Json j(s);
+			return j.parseValue();
 		};
-
-		JsonValue *parseObject(const std::string &s, size_t i = 0)
-		{
-			(void) s;
-			(void) i;
-
-			JsonValue *j = new JsonObject();
-			return j;
-
-		};
-
-		JsonValue *parseArray(const std::string &s, size_t i = 0)
-		{
-			(void) s;
-			(void) i;
-			return NULL;
-		}
-
-		JsonValue *parseString(const std::string &s, size_t i = 0)
-		{
-			(void) s;
-			(void) i;
-			return NULL;
-		}
 
 	private:
+		JsonValue *parseValue();
 
+		JsonValue *parseObject();
+		JsonValue *parseArray();
+		JsonValue *parseString();
+		JsonValue *parseNumber();
+
+	private:
+		std::string _s;
+		size_t _pos;
 
 	};
 
