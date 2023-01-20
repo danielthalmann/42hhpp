@@ -21,7 +21,7 @@ namespace json
 		virtual ~JsonArray();
 		JsonArray &operator=(const JsonArray &other);
 
-		std::size_t length();
+		std::size_t length() const;
 
 		virtual JsonValue *at(const std::size_t i);
 

@@ -24,7 +24,7 @@ namespace json
         return *this;
     }
 
-    std::size_t JsonArray::length()
+    std::size_t JsonArray::length() const
     {
         return _value.size();
     }

@@ -3,7 +3,7 @@
 BIN_FOLDER=../bin/
 TEST_FOLDER=./
 INCLUDE_FOLDER=../include/
-CLASS_NAMES=('JsonString' 'JsonArray' 'JsonObject')
+CLASS_NAMES=('JsonString' 'JsonNumber' 'JsonArray' 'JsonObject')
 
 
 build_code () {

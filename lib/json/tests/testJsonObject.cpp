@@ -6,12 +6,12 @@ int main()
 {
     int ret = 0;
 
-    std::cout << "json::JsonObject *json = new json::JsonObject()" << std::endl;
+    //std::cout << "json::JsonObject *json = new json::JsonObject()" << std::endl;
     json::JsonObject *json = new json::JsonObject();
 
-    std::cout << "json->put(\"test\", 1);" << std::endl;
+    //std::cout << "json->put(\"test\", 1);" << std::endl;
     json->put("test", 1);
-    std::cout << "json->put(\"test\", 2);" << std::endl;
+    //std::cout << "json->put(\"test\", 2);" << std::endl;
     json->put("test", 2);
 
     // std::string s = json->at("test")->getString();

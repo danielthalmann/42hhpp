@@ -69,6 +69,10 @@ namespace json
 
 		JsonType getValueType();
 
+	    virtual std::size_t length() const;
+
+		//JsonValue &operator[]()
+    
 	protected:
 		JsonType _valueType;
 

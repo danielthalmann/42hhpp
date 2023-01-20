@@ -198,5 +198,9 @@ namespace json
         (void) o;
     }
 
+    std::size_t JsonValue::length() const
+    {
+        return 1;
+    }
 
 }
