@@ -38,9 +38,9 @@ namespace json
         return _value;
     }
 
-    void JsonNumber::set(const int f)
+    void JsonNumber::set(const int i)
     {
-        _value = f;
+        _value = i;
     }
 
     void JsonNumber::set(const float f)
@@ -53,6 +53,7 @@ namespace json
         _value = f;
         return *this;
     }
+    
     JsonNumber &JsonNumber::operator=(const float &f)
     {
         _value = f;

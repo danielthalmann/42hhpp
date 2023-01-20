@@ -41,7 +41,8 @@ fclean : clean
 
 re : fclean all
 
-test : $(NAME)
+test : CXXFLAGS+= -g 
+test : re
 	@cd ${TEST_FOLDER} ;	./test.sh
 
 

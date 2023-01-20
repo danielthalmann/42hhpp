@@ -40,9 +40,9 @@ namespace json
 		virtual void put(const std::string key, const int i);
 		virtual void put(const std::string key, const float f);
 		virtual void put(const std::string key, const std::string& s);
-		virtual void put(const std::string key, const JsonValue* v);
-		virtual void put(const std::string key, const JsonArray* a);
-		virtual void put(const std::string key, const JsonObject* o);
+		virtual void put(const std::string key, JsonValue* v);
+		virtual void put(const std::string key, JsonArray* a);
+		virtual void put(const std::string key, JsonObject* o);
 		
 		virtual void put(const int key, const int i);
 		virtual void put(const int key, const float f);

@@ -25,44 +25,82 @@ namespace json
 
 	JsonValue *JsonObject::at(const std::string& s)
     {
-        (void) s;
-        return NULL;
+        return _value.at(s);
     }
 
 	void JsonObject::put(const std::string key, const int i)
     {
-        (void) key;
-        (void) i;
+        JsonValue *j;
+        try {
+            j = at(key);
+            delete j;
+        } catch(std::exception &e) {
+            // on ne fait rien
+        }
+        j = new JsonNumber();
+        j->set(i);
+        _value[key] = j;
     }
 
 	void JsonObject::put(const std::string key, const float f)
     {
-        (void) key;
-        (void) f;
+        JsonValue *j;
+        try {
+            j = at(key);
+            delete j;
+        } catch(std::exception &e) {
+            // on ne fait rien
+        }
+        j = new JsonNumber();
+        j->set(f);
+        _value[key] = j;
     }
 
 	void JsonObject::put(const std::string key, const std::string& s)
     {
-        (void) key;
-        (void) s;
+        JsonValue *j;
+        try {
+            j = at(key);
+            delete j;
+        } catch(std::exception &e) {
+            // on ne fait rien
+        }
+        j = new JsonString();
+        j->set(s);
+        _value[key] = j;
     }
 
-	void JsonObject::put(const std::string key, const JsonValue* v)
+	void JsonObject::put(const std::string key, JsonValue* v)
     {
-        (void) key;
-        (void) v;
+        try {
+            JsonValue *j = at(key);
+            delete j;
+        } catch(std::exception &e) {
+            // on ne fait rien
+        }
+        _value[key] = v;
     }
 
-	void JsonObject::put(const std::string key, const JsonArray* a)
+	void JsonObject::put(const std::string key, JsonArray* a)
     {
-        (void) key;
-        (void) a;
+        try {
+            JsonValue *j = at(key);
+            delete j;
+        } catch(std::exception &e) {
+            // on ne fait rien
+        }
+        _value[key] = a;
     }
 
-	void JsonObject::put(const std::string key, const JsonObject* o)
+	void JsonObject::put(const std::string key, JsonObject* o)
     {
-        (void) key;
-        (void) o;
+        try {
+            JsonValue *j = at(key);
+            delete j;
+        } catch(std::exception &e) {
+            // on ne fait rien
+        }
+        _value[key] = o;
     }
 }
 

@@ -144,19 +144,19 @@ namespace json
         (void) s;
     }
 
-	void JsonValue::put(const std::string key, const JsonValue* v)
+	void JsonValue::put(const std::string key, JsonValue* v)
     {
         (void) key;
         (void) v;
     }
 
-	void JsonValue::put(const std::string key, const JsonArray* a)
+	void JsonValue::put(const std::string key, JsonArray* a)
     {
         (void) key;
         (void) a;
     }
 
-	void JsonValue::put(const std::string key, const JsonObject* o)
+	void JsonValue::put(const std::string key, JsonObject* o)
     {
         (void) key;
         (void) o;
