@@ -54,7 +54,32 @@ namespace json
 
     JsonValue *Json::parseString()
     {
-        return NULL;
+        JsonValue *j = new JsonString();
+        _pos++;
+        std::string buf(255, 0);
+        size_t i = 0;
+
+        while (_pos < _s.length())
+        {
+            if (_s[_pos] == '"'){
+                break;
+            }
+            if (_s[_pos] == '\\')
+            {
+                _pos++;
+                if (_pos < _s.length())
+                {
+
+                }
+            }
+
+            buf[i] = _s[_pos];
+            i++;
+            _pos++;
+        }
+
+        j->set(buf);
+        return j;
     }
 
     JsonValue *Json::parseNumber()
