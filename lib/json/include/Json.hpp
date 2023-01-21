@@ -5,6 +5,7 @@
 #include <JsonArray.hpp>
 #include <JsonNumber.hpp>
 #include <JsonString.hpp>
+#include <JsonBoolean.hpp>
 
 #include <string>
 
@@ -34,6 +35,14 @@ namespace json
 		JsonValue *parseArray();
 		JsonValue *parseString();
 		JsonValue *parseNumber();
+		JsonValue *parseBoolean();
+		JsonValue *parseNull();
+
+		bool isWhitespace();
+		bool isNumber();
+		bool isDigit();
+		bool isBoolean();
+		bool isNull();
 
 	private:
 		std::string _s;

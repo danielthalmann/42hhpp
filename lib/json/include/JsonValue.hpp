@@ -30,6 +30,7 @@ namespace json
 		JsonValue(const JsonValue& other);
 		virtual ~JsonValue();
 
+		virtual void set(const bool b);
 		virtual void set(const int i);
 		virtual void set(const float f);
 		virtual void set(const std::string& s);
@@ -51,6 +52,7 @@ namespace json
 		virtual void put(const int key, const JsonArray& a);
 		virtual void put(const int key, const JsonObject& o);
 
+		virtual bool 		getBool();
 		virtual int 		getInt();
 		virtual float 		getFloat();
 		virtual std::string getString();

@@ -8,7 +8,7 @@ BIN_FOLDER=bin/
 OBJ_FOLDER=obj/
 TEST_FOLDER=tests/
 
-SRCFILES=Json.cpp JsonValue.cpp JsonObject.cpp JsonArray.cpp JsonString.cpp JsonNumber.cpp
+SRCFILES=Json.cpp JsonValue.cpp JsonObject.cpp JsonArray.cpp JsonString.cpp JsonNumber.cpp JsonBoolean.cpp
 
 SRCS=$(addprefix ${SRC_FOLDER}, ${SRCFILES})
 

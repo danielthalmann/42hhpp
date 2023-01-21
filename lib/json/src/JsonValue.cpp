@@ -17,41 +17,52 @@ namespace json
     {
 
     }
+	
+    void JsonValue::set(const bool b)
+    {
+        (void) b;
+        throw std::logic_error("Cannot set bool");
+    }
 
 	void JsonValue::set(const int i)
     {
         (void) i;
-        throw std::domain_error("Cannot set int");
+        throw std::logic_error("Cannot set int");
     }
 
 	void JsonValue::set(const float f)
     {
         (void) f;
-        throw std::domain_error("Cannot set float");
+        throw std::logic_error("Cannot set float");
     }
 
 	void JsonValue::set(const std::string& s)
     {
         (void) s;
-        throw std::domain_error("Cannot set string");
+        throw std::logic_error("Cannot set string");
     }
 
 	void JsonValue::set(const JsonValue& v)
     {
         (void) v;
-        throw std::domain_error("Cannot set value");
+        throw std::logic_error("Cannot set value");
     }
 
 	void JsonValue::set(const JsonArray& a)
     {
         (void) a;
-        throw std::domain_error("Cannot set array");
+        throw std::logic_error("Cannot set array");
     }
 
 	void JsonValue::set(const JsonObject& o)
     {
         (void) o;
-        throw std::domain_error("Cannot set object");
+        throw std::logic_error("Cannot set object");
+    }
+
+    bool 		JsonValue::getBool()
+    {
+        return false;
     }
 
     int 		JsonValue::getInt()
@@ -61,7 +72,7 @@ namespace json
 
     float 		JsonValue::getFloat()
     {
-        return 0;
+        return 0.0f;
     }
 
     std::string JsonValue::getString()
