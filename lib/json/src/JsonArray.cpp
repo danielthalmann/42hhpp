@@ -15,7 +15,9 @@ namespace json
 
 	JsonArray::~JsonArray()
     {
-
+        // for (std::vector<JsonValue*>::iterator it = _value.begin(); it != _value.end() ; ++it) {
+        //     delete *it;
+        // }
     }
 
     JsonArray &JsonArray::operator=(const JsonArray& other)
@@ -35,6 +37,13 @@ namespace json
             throw std::out_of_range("Array out of range");
 
         return _value[idx];
+    }
+
+    void JsonArray::push(const bool value)
+    {
+        JsonBoolean *j = new JsonBoolean();
+        j->set(value);
+        _value.push_back(j);
     }
 
     void JsonArray::push(const int value)
@@ -70,6 +79,20 @@ namespace json
         JsonObject *j = new JsonObject();
         *j = value;
         _value.push_back(j);
+    }
+
+    void JsonArray::push(JsonValue* v)
+    {
+        _value.push_back(v);
+    }
+
+    void JsonArray::put(const int key, const bool b)
+    {
+        JsonValue *j = at(key);
+        delete j;
+        j = new JsonBoolean();
+        j->set(b);
+        _value[key] = j;
     }
 
     void JsonArray::put(const int key, const int i)

@@ -1,5 +1,5 @@
-#ifndef JSONSTRING_HPP
-#define JSONSTRING_HPP
+#ifndef JSONBOOLEAN_HPP
+#define JSONBOOLEAN_HPP
 
 #include <JsonValue.hpp>
 #include <string>
@@ -16,7 +16,6 @@ namespace json
 		virtual ~JsonBoolean();
 		JsonBoolean &operator=(const JsonBoolean& other);
 
-		virtual std::string getString();
 		virtual bool getBool();
 		virtual void set(const bool s);
 

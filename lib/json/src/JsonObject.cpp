@@ -14,7 +14,9 @@ namespace json
 
 	JsonObject::~JsonObject()
     {
-
+        // for (std::map<std::string, JsonValue*>::iterator it = _value.begin(); it != _value.end() ; ++it) {
+        //     delete (*it).second;
+        // }
     }
 
     JsonObject &JsonObject::operator=(const JsonObject& other)

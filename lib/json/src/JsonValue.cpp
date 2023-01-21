@@ -122,12 +122,22 @@ namespace json
         (void) value;
     }
 
+    void JsonValue::push(JsonValue* value)
+    {
+        (void) value;
+    }
+
     void JsonValue::push(const JsonArray& value)
     {
         (void) value;
     }
 
     void JsonValue::push(const JsonObject& value)
+    {
+        (void) value;
+    }
+
+    void JsonValue::push(const bool value)
     {
         (void) value;
     }

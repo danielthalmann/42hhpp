@@ -43,7 +43,10 @@ namespace json
 		bool isDigit();
 		bool isBoolean();
 		bool isNull();
+		bool isEndOfString();
 
+		void invalidCharacter();
+		
 	private:
 		std::string _s;
 		size_t _pos;

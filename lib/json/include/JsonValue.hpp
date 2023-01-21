@@ -63,9 +63,11 @@ namespace json
 		virtual JsonValue *at(const std::string& s);
 		virtual JsonValue *at(const std::size_t i);
 	
+		virtual void push(const bool value);
 		virtual void push(const int value);
 		virtual void push(const float value);
 		virtual void push(const std::string& value);
+		virtual void push(JsonValue* v);
 		virtual void push(const JsonArray& value);
 		virtual void push(const JsonObject& value);
 

@@ -14,6 +14,15 @@ namespace json
 
     }
 
+    void Json::invalidCharacter()
+    {
+        std::string m;
+        std::stringstream ms;
+        ms << "invalid caracter at " << _pos;
+        ms >> m;
+        throw std::logic_error(m.c_str());        
+    }
+
 	bool Json::isWhitespace()
     {
         if (_pos < _s.length())
@@ -36,6 +45,14 @@ namespace json
                 isDigit())
                 return true;
         }
+        return false;
+    }
+
+    bool Json::isEndOfString()
+    {
+        if (_pos >= _s.length()) {
+            return true;
+        } 
         return false;
     }
     
@@ -168,11 +185,7 @@ namespace json
                     }
 
                 } else {
-                    std::string m;
-                    std::stringstream ms;
-                    ms << "invalid caracter at " << _pos;
-                    ms >> m;
-                    throw std::logic_error(m.c_str());
+                   invalidCharacter();
                 }
             }
             else
@@ -184,13 +197,65 @@ namespace json
         if (_s[_pos] == '"')
             _pos++;
 
+        if (!(isEndOfString() || isWhitespace()))
+            invalidCharacter();
+
         j->set(buf);
         return j;
     }
 
     JsonValue *Json::parseNumber()
     {
-        return NULL;
+        JsonValue *j = new JsonNumber();
+
+        bool negative = false;
+        int divFraction = 0;
+        float fraction = 0;
+        float value = 0;
+
+        if (_s[_pos] == '+')
+            _pos++;
+
+        if (_s[_pos] == '-') {
+           _pos++;
+            negative = true;
+        }
+
+        if (!isDigit()) {
+            invalidCharacter();
+        }
+
+        while (isDigit()) {
+            value = (value * 10) + ('0' + _s[_pos]);
+            _pos++;
+        }
+        
+        if(_s[_pos] == '.') {
+
+            if (!isDigit()) {
+                invalidCharacter();
+            }
+
+            while (isDigit()) {
+                if (divFraction)
+                    divFraction *= 10;
+                else
+                    divFraction = 10;
+
+                fraction = (fraction * 10) + ('0' + _s[_pos]);
+            }
+            fraction = fraction / divFraction;
+        }
+
+        if (!(isEndOfString() || isWhitespace()))
+            invalidCharacter();
+
+        // TODO Exponent
+
+        if (negative)
+                value *= -1;
+        j->set(value + fraction);
+        return j;
     }
 
     JsonValue *Json::parseBoolean()

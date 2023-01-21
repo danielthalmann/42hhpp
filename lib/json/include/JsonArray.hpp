@@ -5,6 +5,7 @@
 #include <JsonValue.hpp>
 #include <JsonNumber.hpp>
 #include <JsonString.hpp>
+#include <JsonBoolean.hpp>
 #include <string>
 #include <vector>
 
@@ -25,12 +26,15 @@ namespace json
 
 		virtual JsonValue *at(const std::size_t i);
 
+		void push(const bool value);
 		void push(const int value);
 		void push(const float value);
 		void push(const std::string& value);
+		void push(JsonValue* v);
 		void push(const JsonArray& value);
 		void push(const JsonObject& value);
 
+		void put(const int key, const bool b);
 		void put(const int key, const int i);
 		void put(const int key, const float f);
 		void put(const int key, const std::string& s);
