@@ -30,7 +30,7 @@ namespace json
         return _value.at(s);
     }
 
-	void JsonObject::put(const std::string key, const int i)
+	void JsonObject::put(const std::string& key, const int i)
     {
         JsonValue *j;
         try {
@@ -44,7 +44,7 @@ namespace json
         _value[key] = j;
     }
 
-	void JsonObject::put(const std::string key, const float f)
+	void JsonObject::put(const std::string& key, const float f)
     {
         JsonValue *j;
         try {
@@ -58,7 +58,7 @@ namespace json
         _value[key] = j;
     }
 
-	void JsonObject::put(const std::string key, const std::string& s)
+	void JsonObject::put(const std::string& key, const std::string& s)
     {
         JsonValue *j;
         try {
@@ -72,7 +72,7 @@ namespace json
         _value[key] = j;
     }
 
-	void JsonObject::put(const std::string key, JsonValue* v)
+	void JsonObject::put(const std::string& key, JsonValue* v)
     {
         try {
             JsonValue *j = at(key);
@@ -83,7 +83,7 @@ namespace json
         _value[key] = v;
     }
 
-	void JsonObject::put(const std::string key, JsonArray* a)
+	void JsonObject::put(const std::string& key, JsonArray* a)
     {
         try {
             JsonValue *j = at(key);
@@ -94,7 +94,7 @@ namespace json
         _value[key] = a;
     }
 
-	void JsonObject::put(const std::string key, JsonObject* o)
+	void JsonObject::put(const std::string& key, JsonObject* o)
     {
         try {
             JsonValue *j = at(key);

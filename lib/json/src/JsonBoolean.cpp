@@ -5,7 +5,7 @@ namespace json
     
 	JsonBoolean::JsonBoolean()
     {
-        _valueType = json_type_string;
+        _valueType = json_type_boolean;
     }
 
 	JsonBoolean::JsonBoolean(const JsonBoolean& other) : JsonValue()

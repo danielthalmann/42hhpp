@@ -3,16 +3,18 @@
 BIN_FOLDER=../bin/
 TEST_FOLDER=./
 INCLUDE_FOLDER=../include/
-CLASS_NAMES=('JsonString' 'JsonNumber' 'JsonArray' 'JsonObject')
+CLASS_NAMES=('JsonString' 'JsonNumber' 'JsonArray' 'JsonObject' 'testJsonParsing')
 
 
 build_code () {
     
     printf "[\x1b[32m+\x1b[0m] compile file ${CLASS_NAME} "
     
-    CMD="gcc ${TEST_FOLDER}test${CLASS_NAME}.cpp ${BIN_FOLDER}json.a -Wall -Wextra -Werror -std=c++98 -I${INCLUDE_FOLDER} -lstdc++ -g -lm -o ${BIN_FOLDER}test 2> /dev/null"
+    CMD="gcc ${TEST_FOLDER}test${CLASS_NAME}.cpp ${BIN_FOLDER}json.a -Wall -Wextra -Werror -std=c++98 -I${INCLUDE_FOLDER} -lstdc++ -g -lm -o ${BIN_FOLDER}test"
+    # 2> /dev/null"
     
     eval $CMD
+    echo $CMD
 
     if [ $? -ne 0 ] 
     then

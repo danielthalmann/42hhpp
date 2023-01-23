@@ -20,8 +20,7 @@ namespace json
 			json_type_number,
 			json_type_object,
 			json_type_array,
-			json_type_true,
-			json_type_false
+			json_type_boolean
 
 		} JsonType;
 
@@ -38,13 +37,15 @@ namespace json
 		virtual void set(const JsonArray& a);
 		virtual void set(const JsonObject& o);
 
-		virtual void put(const std::string key, const int i);
-		virtual void put(const std::string key, const float f);
-		virtual void put(const std::string key, const std::string& s);
-		virtual void put(const std::string key, JsonValue* v);
-		virtual void put(const std::string key, JsonArray* a);
-		virtual void put(const std::string key, JsonObject* o);
+		virtual void put(const std::string& key, const bool b);
+		virtual void put(const std::string& key, const int i);
+		virtual void put(const std::string& key, const float f);
+		virtual void put(const std::string& key, const std::string& s);
+		virtual void put(const std::string& key, JsonValue* v);
+		virtual void put(const std::string& key, JsonArray* a);
+		virtual void put(const std::string& key, JsonObject* o);
 		
+		virtual void put(const int key, const bool b);
 		virtual void put(const int key, const int i);
 		virtual void put(const int key, const float f);
 		virtual void put(const int key, const std::string& s);

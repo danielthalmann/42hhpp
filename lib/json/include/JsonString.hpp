@@ -25,7 +25,6 @@ namespace json
 
 		std::string _value;
 
-
 	};
 
 };

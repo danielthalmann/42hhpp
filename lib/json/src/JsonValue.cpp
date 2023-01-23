@@ -107,6 +107,12 @@ namespace json
         return NULL;
     }
 
+    void JsonValue::push(const bool value)
+    {
+        (void) value;
+    }
+
+
     void JsonValue::push(const int value)
     {
         (void) value;
@@ -137,50 +143,57 @@ namespace json
         (void) value;
     }
 
-    void JsonValue::push(const bool value)
-    {
-        (void) value;
-    }
-
     JsonValue::JsonType JsonValue::getValueType()
     {
         return _valueType;
     }
 
-	void JsonValue::put(const std::string key, const int i)
+	void JsonValue::put(const std::string& key, const bool i)
     {
         (void) key;
         (void) i;
     }
 
-	void JsonValue::put(const std::string key, const float f)
+	void JsonValue::put(const std::string& key, const int i)
+    {
+        (void) key;
+        (void) i;
+    }
+
+	void JsonValue::put(const std::string& key, const float f)
     {
         (void) key;
         (void) f;
     }
 
-	void JsonValue::put(const std::string key, const std::string& s)
+	void JsonValue::put(const std::string& key, const std::string& s)
     {
         (void) key;
         (void) s;
     }
 
-	void JsonValue::put(const std::string key, JsonValue* v)
+	void JsonValue::put(const std::string& key, JsonValue* v)
     {
         (void) key;
         (void) v;
     }
 
-	void JsonValue::put(const std::string key, JsonArray* a)
+	void JsonValue::put(const std::string& key, JsonArray* a)
     {
         (void) key;
         (void) a;
     }
 
-	void JsonValue::put(const std::string key, JsonObject* o)
+	void JsonValue::put(const std::string& key, JsonObject* o)
     {
         (void) key;
         (void) o;
+    }
+	
+    void JsonValue::put(const int key, const bool b)
+    {
+        (void) key;
+        (void) b;
     }
 
 	void JsonValue::put(const int key, const int i)

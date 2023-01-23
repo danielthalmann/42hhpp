@@ -21,12 +21,12 @@ namespace json
 
 		JsonValue *at(const std::string& s);
 		
-		void put(const std::string key, const int i);
-		void put(const std::string key, const float f);
-		void put(const std::string key, const std::string& s);
-		void put(const std::string key, JsonValue* v);
-		void put(const std::string key, JsonArray* a);
-		void put(const std::string key, JsonObject* o);
+		void put(const std::string& key, const int i);
+		void put(const std::string& key, const float f);
+		void put(const std::string& key, const std::string& s);
+		void put(const std::string& key, JsonValue* v);
+		void put(const std::string& key, JsonArray* a);
+		void put(const std::string& key, JsonObject* o);
 
 	private:
 

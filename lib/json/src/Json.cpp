@@ -112,7 +112,7 @@ namespace json
             else if (isNull())
                 j = parseNull();
             else
-                throw std::exception();
+                invalidCharacter();
 
         }
 
@@ -122,20 +122,95 @@ namespace json
 
     JsonValue *Json::parseObject()
     {
-
         JsonValue *j = new JsonObject();
+        JsonValue *value = NULL;
+        
+        std::string key(255, 0);
+        size_t i = 0;
+
+        if (_s[_pos] == '{')
+            _pos++;
+
+        while (isWhitespace()) {
+            _pos++;
+        }
+
+        if (_s[_pos] == '"')
+            _pos++;
+        else
+            invalidCharacter();
+        
+        while (_pos < _s.length())
+        {
+            if (_s[_pos] == '"'){
+                _pos++;
+                break;
+            }
+
+            key[i] = _s[_pos];
+            i++;
+            _pos++;
+        }
+
+        while (isWhitespace()) {
+            _pos++;
+        }
+
+        if (_s[_pos] == ':')
+            _pos++;
+        else
+            invalidCharacter();
+        
+        value = parseValue();
+        
+        j->put(key, value);
+
         return j;
 
     };
 
     JsonValue *Json::parseArray()
     {
-        return NULL;
+        JsonValue *j = new JsonArray();
+
+        if (_s[_pos] == '[')
+            _pos++;
+
+        while (isWhitespace()) {
+            _pos++;
+        }
+        
+        if (isEndOfString())
+            invalidCharacter();
+
+        if (_s[_pos] != ']') {
+
+            while (_pos < _s.length())
+            {
+
+                JsonValue *jval = parseValue();
+                j->push(jval);
+
+                while (isWhitespace()) {
+                    _pos++;
+                }
+                if (_s[_pos] == ']'){
+                    break;
+                }else if (_s[_pos] == ',')
+                    _pos++;
+                else
+                    invalidCharacter();
+            }
+        } else {
+            _pos++;
+        }
+
+        return j;
     }
 
     JsonValue *Json::parseString()
     {
-        JsonValue *j = new JsonString();
+        JsonValue *j = new JsonString();    
         std::string buf(255, 0);
         size_t i = 0;
 
