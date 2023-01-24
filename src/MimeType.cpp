@@ -1,8 +1,8 @@
 #include "MimeType.hpp"
 
-MimeType::MimeType() {}
+hhpp::MimeType::MimeType() {}
 
-MimeType::MimeType(std::string mimeType, std::string extension) :
+hhpp::MimeType::MimeType(std::string mimeType, std::string extension) :
 				   _mimeType(mimeType), _extension(extension) {}
 
-MimeType::~MimeType() {}
+hhpp::MimeType::~MimeType() {}

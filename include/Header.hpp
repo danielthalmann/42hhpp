@@ -1,25 +1,30 @@
 #ifndef HEADER_HPP
 #define HEADER_HPP
 
+#include "iostream"
 #include <string>
 #include <map>
 
-class Header
-{
+namespace hhpp {
+	class Header
+	{
+	public:
+		Header();
+		~Header();
 
-public:
+		std::string get(std::string key);
+		void remove(std::string key);
+		void removeAll();
+		void append(std::string key, std::string value);
+		void showParams();
 
-	Header();
-	~Header();
+		typedef std::map<std::string, std::string> mapStringString;
+		typedef std::map<std::string, std::string>::iterator mapStringStringIt;
 
-	std::string get(std::string key);
-	void remove(std::string key);
-	void append(std::string key, std::string value);
+	private:
+		mapStringString _params;
 
-private:
-
-	std::map<std::string, std::string> _params;
-
-};
+	};
+}
 
 #endif

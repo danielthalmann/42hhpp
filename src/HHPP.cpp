@@ -1,24 +1,24 @@
 #include "HHPP.hpp"
 
-HHPP::HHPP() {}
+hhpp::HHPP::HHPP() {}
 
-HHPP::~HHPP() {
-	for (std::vector<IServer*>::iterator it = _servers.begin(); it != _servers.end() ; ++it) {
+hhpp::HHPP::~HHPP() {
+	for (std::vector<hhpp::IServer*>::iterator it = _servers.begin(); it != _servers.end() ; ++it) {
 		delete *it;
 	}
 
-	for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
+	for (std::vector<hhpp::IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
 		delete *it;
 	}
 }
 
-void HHPP::loadConfig(std::string pathConfig) {
+void hhpp::HHPP::loadConfig(std::string pathConfig) {
 	readFileConfig(pathConfig);
 }
 
-void HHPP::run() {}
+void hhpp::HHPP::run() {}
 
-std::string HHPP::readFileConfig(std::string pathConfig) {
+std::string hhpp::HHPP::readFileConfig(std::string pathConfig) {
 	std::string file;
 	char c;
 	struct stat fileInfo;
@@ -54,6 +54,6 @@ std::string HHPP::readFileConfig(std::string pathConfig) {
 	return (file);
 }
 
-void HHPP::dispatchRequest(Request request) {
+void hhpp::HHPP::dispatchRequest(hhpp::Request request) {
 	(void)request;
 }

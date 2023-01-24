@@ -4,25 +4,27 @@
 #include <string>
 #include "Header.hpp"
 
-class AResponse
-{
+namespace hhpp {
+	class AResponse
+	{
 
-public:
+	public:
 
-	AResponse();
-	virtual ~AResponse();
+		AResponse();
+		virtual ~AResponse();
 
-	void setStatus(int status);
-	std::string getBlob();
-	Header& headers();
-
-
-protected:
-
-	int _status;
-	Header _header;
+		void setStatus(int status);
+		std::string getBlob();
+		hhpp::Header& headers();
 
 
-};
+	protected:
+
+		int _status;
+		hhpp::Header _header;
+
+
+	};
+}
 
 #endif

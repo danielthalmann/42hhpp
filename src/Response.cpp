@@ -1,5 +1,5 @@
 #include "Response.hpp"
 
-Response::Response() {}
+hhpp::Response::Response() {}
 
-Response::~Response() {}
+hhpp::Response::~Response() {}

@@ -5,20 +5,23 @@
 #include "Request.hpp"
 #include "Response.hpp"
 
-class IBinding
-{
+namespace hhpp {
+	class IBinding
+	{
 
-public:
+	public:
 
-	virtual ~IBinding() {};
+		virtual ~IBinding() {};
 
-	virtual void setSocket(int socket) = 0;
-	virtual void setIP(std::string ip) = 0;
-	virtual void setPort(int port) = 0;
-	virtual void send(std::string str) = 0;
-	virtual void send(Response res) = 0;
-	virtual Request readHeader(std::string header) = 0;
+		virtual void setSocket(int socket) = 0;
+		virtual void setIP(std::string ip) = 0;
+		virtual void setPort(int port) = 0;
+		virtual void send(std::string str) = 0;
+		virtual void send(Response res) = 0;
+		virtual Request readHeader(std::string header) = 0;
 
-};
+	};
+}
+
 
 #endif

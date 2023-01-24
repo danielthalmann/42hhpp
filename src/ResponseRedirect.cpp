@@ -1,9 +1,9 @@
 #include "ResponseRedirect.hpp"
 
-ResponseRedirect::ResponseRedirect() {}
+hhpp::ResponseRedirect::ResponseRedirect() {}
 
-ResponseRedirect::~ResponseRedirect() {}
+hhpp::ResponseRedirect::~ResponseRedirect() {}
 
-void ResponseRedirect::redirect(std::string redirect) {
+void hhpp::ResponseRedirect::redirect(std::string redirect) {
 	(void)redirect;
 }

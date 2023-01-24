@@ -1,18 +1,18 @@
 #include "CGI.hpp"
 
-CGI::CGI() {}
-CGI::~CGI() {}
+hhpp::CGI::CGI() {}
+hhpp::CGI::~CGI() {}
 
-bool CGI::isForMe(Request request) {
+bool hhpp::CGI::isForMe(Request request) {
 	(void)request;
 	return (true);
 }
 
-std::string CGI::execute(Request request) {
+std::string hhpp::CGI::execute(Request request) {
 	(void)request;
 	return (NULL);
 }
 
-void CGI::addExtension(std::string extension) {
+void hhpp::CGI::addExtension(std::string extension) {
 	(void)extension;
 }

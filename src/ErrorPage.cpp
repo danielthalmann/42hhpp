@@ -1,9 +1,9 @@
 #include "ErrorPage.hpp"
 
-ErrorPage::ErrorPage() {}
+hhpp::ErrorPage::ErrorPage() {}
 
-ErrorPage::~ErrorPage() {}
+hhpp::ErrorPage::~ErrorPage() {}
 
-std::string ErrorPage::getPage() {
+std::string hhpp::ErrorPage::getPage() {
 	return (NULL);
 }

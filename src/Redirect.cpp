@@ -1,5 +1,5 @@
 #include "Redirect.hpp"
 
-Redirect::Redirect() {}
+hhpp::Redirect::Redirect() {}
 
-Redirect::~Redirect() {}
+hhpp::Redirect::~Redirect() {}

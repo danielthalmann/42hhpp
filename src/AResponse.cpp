@@ -1,17 +1,17 @@
 #include "AResponse.hpp"
 
-AResponse::AResponse() {}
+hhpp::AResponse::AResponse() {}
 
-AResponse::~AResponse() {}
+hhpp::AResponse::~AResponse() {}
 
-void AResponse::setStatus(int status) {
+void hhpp::AResponse::setStatus(int status) {
 	(void)status;
 }
 
-std::string AResponse::getBlob() {
+std::string hhpp::AResponse::getBlob() {
 	return(NULL);
 }
 
-Header& AResponse::headers() {
+hhpp::Header& hhpp::AResponse::headers() {
 	return(_header);
 }
