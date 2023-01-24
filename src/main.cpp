@@ -55,6 +55,7 @@ int main(int ac, char** av) {
 					"Sec-Fetch-Mode: navigate\n"
 					"Sec-Fetch-Site: cross-site\n"
 					"TE: trailers");
+//	srv._bindings.read
 	resquest.parseRequest(str);
 	resquest.showRequest();
 	std::cout << resquest.getHttpVersion() << std::endl;

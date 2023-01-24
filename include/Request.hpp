@@ -27,7 +27,7 @@ namespace hhpp {
 		void setBody(std::string body);
 		void setHttpVersion(std::string httpVersion);
 
-		void parseRequest(const std::string& rawRequest);
+		void setRequest(const std::string& rawRequest);
 		void showRequest();
 		Header& getHeaders();
 
