@@ -29,7 +29,8 @@
                     "path" : "script",
                     "root" : "/var/www/cgi"
                 }
-            ]
+            ],
+            "allowed_methods" : ["GET", "POST", "DELETE", "OPTIONS"]
         }
     ],
 

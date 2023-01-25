@@ -19,7 +19,7 @@ namespace hhpp {
 		virtual void setIP(std::string ip);
 		virtual void setPort(int port);
 		virtual void send(std::string str);
-		virtual void send(Response response);
+//		virtual void send(AResponse response);
 		virtual Request readHeader(std::string header);
 
 	private:

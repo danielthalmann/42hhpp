@@ -11,6 +11,9 @@
 #include "ErrorPage.hpp"
 
 namespace hhpp {
+
+//	TODO check la request, cree la reponse puis envoie au bon srv
+
 	class Server : public IServer
 	{
 
@@ -23,8 +26,8 @@ namespace hhpp {
 		void setBinding(Binding* bind);
 
 		virtual bool isForMe(Request request);
-		virtual void bind(Binding binding);
-		virtual Response treatRequest(Request request);
+//		virtual void bind(Binding binding);
+//		virtual Response treatRequest(Request request);
 
 	private:
 

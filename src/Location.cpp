@@ -1,7 +1,9 @@
 #include "Location.hpp"
 
-hhpp::Location::Location() {}
+namespace hhpp {
+	Location::Location() {}
 
-hhpp::Location::~Location() {}
+	Location::~Location() {}
 
-hhpp::Location::Location(std::string path, std::string root) : _path(path), _root(root) {}
+	Location::Location(std::string path, std::string root) : _path(path), _root(root) {}
+}

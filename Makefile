@@ -1,7 +1,7 @@
 ifeq ($(shell uname), Linux)
 	CC = g++
 else ifeq ($(shell c++-12 -dumpversion), 12)
-	CC = c++-12
+	CC = c++
 else
 	CC = c++
 endif

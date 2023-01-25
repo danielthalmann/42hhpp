@@ -10,11 +10,8 @@ namespace hhpp {
 		Response();
 		~Response();
 
-		void setStatus(int status);
-		std::string getBlob();
-		hhpp::Header& getHeaders();
-
-		void setResponse(Request& request);
+		void setResponse(Request& request, int status);
+		void showResponse();
 
 	};
 }

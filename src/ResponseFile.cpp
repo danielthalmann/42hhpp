@@ -1,9 +1,11 @@
 #include "ResponseFile.hpp"
 
-hhpp::ResponseFile::ResponseFile() {}
+namespace hhpp {
+	ResponseFile::ResponseFile() {}
 
-hhpp::ResponseFile::~ResponseFile() {}
+	ResponseFile::~ResponseFile() {}
 
-void hhpp::ResponseFile::filename(std::string filename) {
-	(void)filename;
+	void ResponseFile::filename(std::string filename) {
+		(void)filename;
+	}
 }
