@@ -237,9 +237,9 @@ namespace json
                 else
                     invalidCharacter();
             }
-        } else {
-            _pos++;
-        }
+
+        } 
+        _pos++;
 
         return j;
     }

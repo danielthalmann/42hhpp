@@ -97,6 +97,12 @@ int main()
 
         delete json;
 
+
+        json = json::Json::parse(std::string(" {\"redirect\" : [ {\"path\" : \"no_more_here\",\"destination\" : \"/new_location.html\",\"status\" : 302} ]}"));
+        std::cout << "value '" << json->at("redirect")->at(0)->at("path")->getString() << "'" << std::endl;
+
+        delete json;
+
         return ret;
 
 
