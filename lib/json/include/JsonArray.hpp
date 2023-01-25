@@ -17,6 +17,9 @@ namespace json
 	{
 
 	public:
+
+		typedef std::vector<JsonValue*> list;
+
 		JsonArray();
 		JsonArray(const JsonArray &other);
 		virtual ~JsonArray();
@@ -29,6 +32,7 @@ namespace json
 		void push(const bool value);
 		void push(const int value);
 		void push(const float value);
+		void push(const char* value);
 		void push(const std::string& value);
 		void push(JsonValue* v);
 		void push(const JsonArray& value);
@@ -37,6 +41,7 @@ namespace json
 		void put(const int key, const bool b);
 		void put(const int key, const int i);
 		void put(const int key, const float f);
+		void put(const int key, const char* c);
 		void put(const int key, const std::string& s);
 		void put(const int key, const JsonValue& v);
 		void put(const int key, const JsonArray& a);
@@ -44,8 +49,7 @@ namespace json
 
 	private:
 
-		void checkRange();
-		std::vector<JsonValue*> _value;
+		list _value;
 
 	};
 

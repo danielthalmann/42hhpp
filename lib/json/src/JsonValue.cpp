@@ -36,6 +36,11 @@ namespace json
         throw std::logic_error("Cannot set float");
     }
 
+	void JsonValue::set(const char* c)
+    {
+        set(std::string(c));
+    }
+
 	void JsonValue::set(const std::string& s)
     {
         (void) s;
@@ -123,6 +128,11 @@ namespace json
         (void) value;
     }
 
+    void JsonValue::push(const char* value)
+    {
+        push(std::string(value));
+    }
+
     void JsonValue::push(const std::string& value)
     {
         (void) value;
@@ -166,6 +176,11 @@ namespace json
         (void) f;
     }
 
+	void JsonValue::put(const std::string& key, const char* c)
+    {
+        put(key, std::string(c));
+    }
+
 	void JsonValue::put(const std::string& key, const std::string& s)
     {
         (void) key;
@@ -206,6 +221,11 @@ namespace json
     {
         (void) key;
         (void) f;
+    }
+
+	void JsonValue::put(const int key, const char* c)
+    {
+        put(key, std::string(c));
     }
 
 	void JsonValue::put(const int key, const std::string& s)

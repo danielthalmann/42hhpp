@@ -32,6 +32,7 @@ namespace json
 		virtual void set(const bool b);
 		virtual void set(const int i);
 		virtual void set(const float f);
+		virtual void set(const char* c);
 		virtual void set(const std::string& s);
 		virtual void set(const JsonValue& v);
 		virtual void set(const JsonArray& a);
@@ -40,6 +41,7 @@ namespace json
 		virtual void put(const std::string& key, const bool b);
 		virtual void put(const std::string& key, const int i);
 		virtual void put(const std::string& key, const float f);
+		virtual void put(const std::string& key, const char* c);
 		virtual void put(const std::string& key, const std::string& s);
 		virtual void put(const std::string& key, JsonValue* v);
 		virtual void put(const std::string& key, JsonArray* a);
@@ -48,6 +50,7 @@ namespace json
 		virtual void put(const int key, const bool b);
 		virtual void put(const int key, const int i);
 		virtual void put(const int key, const float f);
+		virtual void put(const int key, const char* c);
 		virtual void put(const int key, const std::string& s);
 		virtual void put(const int key, const JsonValue& v);
 		virtual void put(const int key, const JsonArray& a);
@@ -67,6 +70,7 @@ namespace json
 		virtual void push(const bool value);
 		virtual void push(const int value);
 		virtual void push(const float value);
+		virtual void push(const char* value);
 		virtual void push(const std::string& value);
 		virtual void push(JsonValue* v);
 		virtual void push(const JsonArray& value);

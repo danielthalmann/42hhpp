@@ -3,7 +3,7 @@
 BIN_FOLDER=../bin/
 TEST_FOLDER=./
 INCLUDE_FOLDER=../include/
-CLASS_NAMES=('JsonString' 'JsonNumber' 'JsonArray' 'JsonObject' 'testJsonParsing')
+CLASS_NAMES=('JsonString' 'JsonNumber' 'JsonObject' 'JsonArray' 'JsonParsing')
 
 
 build_code () {
@@ -14,7 +14,7 @@ build_code () {
     # 2> /dev/null"
     
     eval $CMD
-    echo $CMD
+    # echo $CMD
 
     if [ $? -ne 0 ] 
     then

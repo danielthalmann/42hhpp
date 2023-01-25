@@ -42,7 +42,7 @@ fclean : clean
 re : fclean all
 
 test : CXXFLAGS+= -g 
-test : re
+test : all
 	@cd ${TEST_FOLDER} ;	./test.sh
 
 

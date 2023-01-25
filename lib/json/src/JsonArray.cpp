@@ -1,5 +1,6 @@
 #include <JsonArray.hpp>
 #include <stdexcept>
+#include <iostream>
 
 namespace json
 {
@@ -15,9 +16,10 @@ namespace json
 
 	JsonArray::~JsonArray()
     {
-        // for (std::vector<JsonValue*>::iterator it = _value.begin(); it != _value.end() ; ++it) {
-        //     delete *it;
-        // }
+        for (list::iterator it = _value.begin(); it != _value.end() ; ++it) {
+            //std::cout << (*it)->getValueType() << std::endl;
+            //delete *it;
+        }
     }
 
     JsonArray &JsonArray::operator=(const JsonArray& other)
@@ -58,6 +60,11 @@ namespace json
         JsonNumber *j = new JsonNumber();
         j->set(value);
         _value.push_back(j);
+    }
+
+    void JsonArray::push(const char* value)
+    {
+        push(std::string(value));
     }
 
     void JsonArray::push(const std::string& value)
@@ -111,6 +118,11 @@ namespace json
         j = new JsonNumber();
         j->set(f);
         _value[key] = j;
+    }
+
+	void JsonArray::put(const int key, const char* c)
+    {
+        put(key, std::string(c));
     }
 
     void JsonArray::put(const int key, const std::string& s)

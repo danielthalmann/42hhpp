@@ -122,7 +122,7 @@ namespace json
 
     JsonValue *Json::parseObject()
     {
-        JsonValue *j = new JsonObject();
+        JsonObject *j = new JsonObject();
         JsonValue *value = NULL;
         
         std::string key(255, 0);
@@ -210,7 +210,7 @@ namespace json
 
     JsonValue *Json::parseString()
     {
-        JsonValue *j = new JsonString();    
+        JsonString *j = new JsonString();    
         std::string buf(255, 0);
         size_t i = 0;
 
@@ -267,7 +267,13 @@ namespace json
                 buf[i] = _s[_pos];
             i++;
             _pos++;
+
+            if ( i == buf.capacity()) {
+                buf.resize(buf.capacity() * 2, 0);
+            }
         }
+
+        buf[i] = '\0';
 
         if (_s[_pos] == '"')
             _pos++;
@@ -281,7 +287,7 @@ namespace json
 
     JsonValue *Json::parseNumber()
     {
-        JsonValue *j = new JsonNumber();
+        JsonNumber *j = new JsonNumber();
 
         bool negative = false;
         int divFraction = 0;
@@ -301,7 +307,7 @@ namespace json
         }
 
         while (isDigit()) {
-            value = (value * 10) + ('0' + _s[_pos]);
+            value = (value * 10) + (_s[_pos] - '0');
             _pos++;
         }
         
