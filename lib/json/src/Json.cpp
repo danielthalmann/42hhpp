@@ -67,9 +67,22 @@ namespace json
         return false;
     }
 
-    bool Json::isBoolean()
+    bool Json::isEndOfAccolade()
     {
         if (_pos < _s.length())
+        {
+            if (_s[_pos] == ',' ||
+                _s[_pos] <= ']' ||
+                _s[_pos] <= '}')
+                return true;
+        }
+        return false;    
+    }
+    
+
+    bool Json::isBoolean()
+    {
+        if (!isEndOfString())
         {
             
             if (_s.compare(_pos, 4, "true") == 0 ||
@@ -82,8 +95,7 @@ namespace json
     bool Json::isNull()
     {
         if (_pos < _s.length())
-        {
-            
+        {            
             if (_s.compare(_pos, 4, "null") == 0)
                 return true;
         }
@@ -95,7 +107,7 @@ namespace json
 
         JsonValue *j = NULL;
 
-        while (_pos < _s.length())
+        while (!isEndOfString())
         {
             if(isWhitespace())
                 _pos++;
@@ -113,7 +125,8 @@ namespace json
                 j = parseNull();
             else
                 invalidCharacter();
-
+            if (j != NULL)
+                break;
         }
 
         return j;
@@ -125,48 +138,71 @@ namespace json
         JsonObject *j = new JsonObject();
         JsonValue *value = NULL;
         
-        std::string key(255, 0);
-        size_t i = 0;
+        std::string key;
+        size_t i;
 
         if (_s[_pos] == '{')
             _pos++;
 
-        while (isWhitespace()) {
-            _pos++;
-        }
-
-        if (_s[_pos] == '"')
-            _pos++;
-        else
-            invalidCharacter();
-        
-        while (_pos < _s.length())
+        while (!isEndOfString())
         {
-            if (_s[_pos] == '"'){
+            while (isWhitespace()) {
                 _pos++;
-                break;
             }
 
-            key[i] = _s[_pos];
-            i++;
-            _pos++;
-        }
+            if (_s[_pos] == '}')
+                break;           
 
-        while (isWhitespace()) {
-            _pos++;
-        }
+            if (_s[_pos] == '"')
+                _pos++;
+            else
+                invalidCharacter();
+            
+            key.resize(255, 0);
+            i = 0;
+            while (_pos < _s.length())
+            {
+                if (_s[_pos] == '"'){
+                    _pos++;
+                    break;
+                }
 
-        if (_s[_pos] == ':')
+                key[i] = _s[_pos];
+                i++;
+                _pos++;
+            }
+            key.resize(i, '\0');
+
+            while (isWhitespace()) {
+                _pos++;
+            }
+
+            if (_s[_pos] == ':')
+                _pos++;
+            else
+                invalidCharacter();
+            
+            value = parseValue();
+
+            j->put(key, value);
+
+            while (isWhitespace()) {
+                _pos++;
+            }
+
+            if (_s[_pos] == ',')
+                _pos++;
+            else if (_s[_pos] == '}')
+                break;
+            else
+                invalidCharacter();
+
+
+        }
+        if (!isEndOfString() && _s[_pos] == '}')
             _pos++;
-        else
-            invalidCharacter();
-        
-        value = parseValue();
-        
-        j->put(key, value);
 
         return j;
-
     };
 
     JsonValue *Json::parseArray()
@@ -273,12 +309,12 @@ namespace json
             }
         }
 
-        buf[i] = '\0';
+        buf.resize(i, '\0');
 
         if (_s[_pos] == '"')
             _pos++;
 
-        if (!(isEndOfString() || isWhitespace()))
+        if (!(isEndOfString() || isWhitespace() || isEndOfAccolade()))
             invalidCharacter();
 
         j->set(buf);
@@ -290,7 +326,7 @@ namespace json
         JsonNumber *j = new JsonNumber();
 
         bool negative = false;
-        int divFraction = 0;
+        float divFraction = 1;
         float fraction = 0;
         float value = 0;
 
@@ -313,22 +349,21 @@ namespace json
         
         if(_s[_pos] == '.') {
 
+            _pos++;
+
             if (!isDigit()) {
                 invalidCharacter();
             }
 
             while (isDigit()) {
-                if (divFraction)
-                    divFraction *= 10;
-                else
-                    divFraction = 10;
-
-                fraction = (fraction * 10) + ('0' + _s[_pos]);
+                divFraction /= 10;
+                fraction = (fraction * 10) + (_s[_pos] - '0');
+                _pos++;
             }
-            fraction = fraction / divFraction;
+            fraction = fraction * divFraction;
         }
 
-        if (!(isEndOfString() || isWhitespace()))
+        if (!(isEndOfString() || isWhitespace() || isEndOfAccolade()))
             invalidCharacter();
 
         // TODO Exponent
@@ -341,12 +376,29 @@ namespace json
 
     JsonValue *Json::parseBoolean()
     {
-        return NULL;
+        JsonBoolean *j = new JsonBoolean();
+
+        if (_s.compare(_pos, 4, "true") == 0)
+            j->set(true);
+        else if (_s.compare(_pos, 4, "false") == 0)
+            j->set(false);
+        _pos += 4;
+
+        if (!(isEndOfString() || isWhitespace() || isEndOfAccolade()))
+            invalidCharacter();
+
+        return j;
     }
 
     JsonValue *Json::parseNull()
     {
-        return NULL;
+        JsonValue *j = new JsonValue();
+        _pos += 4;
+
+        if (!(isEndOfString() || isWhitespace() || isEndOfAccolade()))
+            invalidCharacter();
+
+        return j;
     }
 }
 

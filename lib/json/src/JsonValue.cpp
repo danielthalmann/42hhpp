@@ -257,4 +257,11 @@ namespace json
         return 1;
     }
 
+    bool JsonValue::isNull() const
+    {
+        if (_valueType == json_type_null)
+            return true;
+        else
+            return false;
+    }
 }

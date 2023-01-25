@@ -80,6 +80,8 @@ namespace json
 
 	    virtual std::size_t length() const;
 
+		bool isNull() const;
+
 		//JsonValue &operator[]()
     
 	protected:

@@ -44,6 +44,7 @@ namespace json
 		bool isBoolean();
 		bool isNull();
 		bool isEndOfString();
+		bool isEndOfAccolade();
 
 		void invalidCharacter();
 		
