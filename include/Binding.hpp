@@ -6,27 +6,29 @@
 #include <sys/socket.h>
 #include <iostream>
 
-class Binding : public IBinding
-{
+namespace hhpp {
+	class Binding : public IBinding
+	{
 
-public:
+	public:
 
-	Binding();
-	~Binding();
+		Binding();
+		~Binding();
 
-	virtual void setSocket(int socket);
-	virtual void setIP(std::string ip);
-	virtual void setPort(int port);
-	virtual void send(std::string str);
-	virtual void send(Response response);
-	virtual Request readHeader(std::string header);
+		virtual void setSocket(int socket);
+		virtual void setIP(std::string ip);
+		virtual void setPort(int port);
+		virtual void send(std::string str);
+//		virtual void send(AResponse response);
+		virtual Request readHeader(std::string header);
 
-private:
+	private:
 
-	int _socked;
-	std::string _ip;
-	int _port;
+		int _socked;
+		std::string _ip;
+		int _port;
 
-};
+	};
+}
 
 #endif

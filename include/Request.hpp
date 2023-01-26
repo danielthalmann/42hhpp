@@ -4,30 +4,44 @@
 #include <string>
 #include "Header.hpp"
 
-class Request
-{
+namespace hhpp {
+	class Request
+	{
+	public:
+		Request();
+		~Request();
 
-public:
+		std::string getMethod();
+		std::string getQuery();
+		std::string getHost();
+		int getPort();
+		std::string getUrl();
+		std::string getBody();
+		std::string getHttpVersion();
 
-	Request();
-	~Request();
+		void setMethod(std::string method);
+		void setQuery(std::string query);
+		void setHost(std::string host);
+		void setPort(int port);
+		void setUrl(std::string url);
+		void setBody(std::string body);
+		void setHttpVersion(std::string httpVersion);
 
-	std::string _method;
-	std::string _query;
-	std::string _host;
-	int _port;
-	std::string _url;
-	std::string _body;
-	std::string _httpVersion;
+		void setRequest(const std::string& rawRequest);
+		void showRequest();
+		Header& getHeaders();
 
-	void getPort(int port);
-	void setBlob(const std::string& str);
-	Header& getHeaders();
+	private:
+		std::string _method;
+		std::string _url;
+		std::string _httpVersion;
+		Header _headers;
+		std::string _query;
+		std::string _host;
+		int _port;
+		std::string _body;
 
-private:
-
-	Header _headers;
-
-};
+	};
+}
 
 #endif

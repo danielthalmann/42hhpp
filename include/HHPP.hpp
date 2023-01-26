@@ -13,25 +13,26 @@
 
 namespace json { class JsonValue; } // TODO a supprimer
 
-class HHPP
-{
+namespace hhpp {
+	class HHPP
+	{
+	public:
 
-public:
+		HHPP();
+		~HHPP();
 
-	HHPP();
-	~HHPP();
+		void loadConfig(std::string pathConfig);
+		void run();
 
-	void loadConfig(std::string pathConfig);
-	void run();
+	private:
 
-private:
+		std::vector<IServer*> _servers;
+		std::vector<IBinding*> _bindings;
 
-	std::vector<IServer*> _servers;
-	std::vector<IBinding*> _bindings;
+		std::string readFileConfig(std::string pathConfig);
+		void dispatchRequest(Request request);
 
-	std::string readFileConfig(std::string pathConfig);
-	void dispatchRequest(Request request);
-
-};
+	};
+}
 
 #endif

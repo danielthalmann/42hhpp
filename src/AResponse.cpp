@@ -1,17 +1,49 @@
 #include "AResponse.hpp"
 
-AResponse::AResponse() {}
+namespace hhpp {
 
-AResponse::~AResponse() {}
+	AResponse::mapIntString AResponse::_totalStatus = init_map();
 
-void AResponse::setStatus(int status) {
-	(void)status;
-}
+	AResponse::AResponse() {}
 
-std::string AResponse::getBlob() {
-	return(NULL);
-}
+	AResponse::~AResponse() {}
 
-Header& AResponse::headers() {
-	return(_header);
+	std::string& AResponse::getVersion() {
+		return (_version);
+	}
+
+	int& AResponse::getStatus() {
+		return (_status);
+	}
+
+	std::string& AResponse::getStatusMessage() {
+		return (_statusMessage);
+	}
+
+	Header& AResponse::getHeaders() {
+		return (_header);
+	}
+
+	std::string& AResponse::getBody() {
+		return (_body);
+	}
+
+	void AResponse::setStatus(int status) {
+		_status = status;
+	}
+
+	void AResponse::setStatusMessage(std::string statusMessage) {
+		_statusMessage = statusMessage;
+	}
+
+	void AResponse::setTotalStatus(int i, std::string str) {
+		_totalStatus[i] = str;
+	}
+
+	void AResponse::setBody(std::string str) {
+		_body = str;
+//		str.size();
+		_header.append("Content-Length", std::to_string(_body.size()));
+	}
+
 }

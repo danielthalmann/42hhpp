@@ -3,18 +3,18 @@
 
 #include <string>
 
-class ResponseRedirect
-{
+namespace hhpp {
+	class ResponseRedirect
+	{
+	public:
+		ResponseRedirect();
+		~ResponseRedirect();
 
-public:
+		void redirect(std::string redirect);
 
-	ResponseRedirect();
-	~ResponseRedirect();
+	private:
 
-	void redirect(std::string redirect);
-
-private:
-
-};
+	};
+}
 
 #endif

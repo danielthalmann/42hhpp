@@ -3,21 +3,18 @@
 
 #include <string>
 
-class ResponseFile
-{
+namespace hhpp {
+	class ResponseFile
+	{
+	public:
+		ResponseFile();
+		~ResponseFile();
 
-public:
+		void filename(std::string filename);
 
-	ResponseFile();
-	~ResponseFile();
+	private:
 
-	void filename(std::string filename);
-
-
-private:
-
-
-
-};
+	};
+}
 
 #endif

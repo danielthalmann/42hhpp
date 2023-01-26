@@ -5,17 +5,19 @@
 #include "Binding.hpp"
 #include "Response.hpp"
 
-class IServer
-{
+namespace hhpp {
+	class IServer
+	{
 
-public:
+	public:
 
-	virtual ~IServer() {};
+		virtual ~IServer() {};
 
-	virtual bool isForMe(Request request) = 0;
-	virtual void bind(Binding binding) = 0;
-	virtual Response treatRequest(Request request) = 0;
+		virtual bool isForMe(Request request) = 0;
+		virtual void bind(Binding binding) = 0;
+		virtual Response treatRequest(Request request) = 0;
 
-};
+	};
+}
 
 #endif

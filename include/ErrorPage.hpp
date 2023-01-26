@@ -3,19 +3,18 @@
 
 #include <string>
 
-class ErrorPage
-{
+namespace hhpp {
+	class ErrorPage
+	{
+	public:
+		ErrorPage();
+		~ErrorPage();
 
-public:
+		std::string getPage(void);
 
-	ErrorPage();
-	~ErrorPage();
-
-	std::string getPage(void);
-
-	int status;
-	std::string location;
-
-};
+		int status;
+		std::string location;
+	};
+}
 
 #endif

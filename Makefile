@@ -1,15 +1,15 @@
 ifeq ($(shell uname), Linux)
 	CC = g++
 else ifeq ($(shell c++-12 -dumpversion), 12)
-	CC = g++-12
+	CC = c++
 else
 	CC = c++
 endif
 
 RM = rm -rf
-CFLAGS = -Werror -Wall -Wextra -Wfatal-errors
-CFLAGS += -std=c++98 -pedantic
-CFLAGS += -g3 -fsanitize=address
+CPPFLAGS = -Werror -Wall -Wextra -Wfatal-errors
+CPPFLAGS += -std=c++98 -pedantic
+CPPFLAGS += -g3 -fsanitize=address
 
 SRC_DIR = src/
 _SRC =	main.cpp\
@@ -26,7 +26,8 @@ _SRC =	main.cpp\
 		Response.cpp\
 		ResponseFile.cpp\
 		ResponseRedirect.cpp\
-		Server.cpp
+		Server.cpp\
+		utility.cpp
 
 SRC = $(addprefix $(SRC_DIR), $(_SRC))
 
@@ -46,7 +47,8 @@ HEADER=	AResponse.hpp\
 		Response.hpp\
 		ResponseFile.hpp\
 		ResponseRedirect.hpp\
-		Server.hpp
+		Server.hpp\
+		utility.hpp
 
 INC = $(addprefix $(INC_DIR), $(HEADER))
 
@@ -68,15 +70,15 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 $(OBJ): $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp $(INC) ./Makefile | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I $(INC_DIR) -o $@ -c $<
+	$(CC) $(CPPFLAGS) -I $(INC_DIR) -o $@ -c $<
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CPPFLAGS) $(OBJ) -o $(NAME)
 
 run:
 	./$(NAME)
 
-leak: CFLAGS = -Werror -Wall -Wextra -std=c++98 -pedantic -g3
+leak: CPPFLAGS = -Werror -Wall -Wextra -std=c++98 -pedantic -g3
 leak: re
 	leaks -atExit -- ./$(NAME)
 
