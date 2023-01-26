@@ -40,8 +40,10 @@ namespace hhpp {
 		_totalStatus[i] = str;
 	}
 
-//	Header& hhpp::AResponse::headers() {
-//		return(_header);
-//	}
+	void AResponse::setBody(std::string str) {
+		_body = str;
+//		str.size();
+		_header.append("Content-Length", std::to_string(_body.size()));
+	}
 
 }

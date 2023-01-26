@@ -60,15 +60,18 @@ int main(int ac, char** av) {
 	resquest.setRequest(str);
 //	resquest.showRequest();
 
-	hhpp::Response Response1;
-	Response1.setResponse(resquest, 200);
-	Response1.showResponse();
+	hhpp::Response response1;
+	response1.setResponse(resquest, 200);
+	response1.showResponse();
 
-	Response1.setTotalStatus(200, "Hello test");
+	std::cout << std::endl;
 
-	hhpp::Response Response2;
-	Response2.setResponse(resquest, 200);
-	Response2.showResponse();
+	response1.setTotalStatus(200, "Hello test");
+
+	hhpp::Response response2;
+	response2.setResponse(resquest, 200);
+	response2.setBody("hello body");
+	response2.showResponse();
 
 	return (0);
 }

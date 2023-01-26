@@ -50,7 +50,6 @@ namespace hhpp {
 		_version = request.getHttpVersion();
 		_status = status;
 		_statusMessage = _totalStatus[_status];
-		_header.append("Content-Length", "100");
 	}
 
 	void Response::showResponse() {
@@ -58,6 +57,8 @@ namespace hhpp {
 					<< _status << " "
 					<< _statusMessage << std::endl;
 		_header.showParams();
+		if (!_body.empty())
+			std::cout << _body << std::endl;
 	}
 
 }
