@@ -5,7 +5,7 @@ const logfile = "out/extract.log";
 
 var umlClasses = [];
 
-fs.readFile( '../architecture.drawio', function(err, data) {
+fs.readFile( '../architecture_tpm.drawio', function(err, data) {
     var json = JSON.parse(parser.toJson(data));
     var cell = json.mxfile.diagram.mxGraphModel.root.mxCell;
 

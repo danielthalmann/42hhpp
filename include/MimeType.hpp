@@ -3,23 +3,22 @@
 
 #include <string>
 
-class MimeType
-{
+namespace hhpp {
+	class MimeType
+	{
+	public:
+		MimeType();
+		MimeType(std::string mimeType, std::string extension);
+		~MimeType();
 
-public:
+	//TODO (add)?
+	//	void (add)MimeType(std::string mimeType, std::string extension);
 
-	MimeType();
-	MimeType(std::string mimeType, std::string extension);
-	~MimeType();
+	private:
+		std::string _mimeType;
+		std::string _extension;
 
-//TODO (add)?
-//	void (add)MimeType(std::string mimeType, std::string extension);
-
-private:
-
-	std::string _mimeType;
-	std::string _extension;
-
-};
+	};
+}
 
 #endif

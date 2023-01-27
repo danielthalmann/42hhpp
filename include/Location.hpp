@@ -3,20 +3,19 @@
 
 #include <string>
 
-class Location
-{
+namespace hhpp {
+	class Location
+	{
+	public:
+		Location();
+		Location(std::string path, std::string root);
+		~Location();
 
-public:
+	private:
+		std::string _path;
+		std::string _root;
 
-	Location();
-	Location(std::string path, std::string root);
-	~Location();
-
-private:
-
-	std::string _path;
-	std::string _root;
-
-};
+	};
+}
 
 #endif

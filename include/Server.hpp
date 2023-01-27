@@ -10,36 +10,42 @@
 #include "Redirect.hpp"
 #include "ErrorPage.hpp"
 
-class Server : public IServer
-{
+namespace hhpp {
 
-public:
+//	TODO check la request, cree la reponse puis envoie au bon srv
 
-	Server();
-	~Server();
+	class Server : public IServer
+	{
 
-	std::string host;
-	void setBinding(Binding* bind);
+	public:
 
-	virtual bool isForMe(Request request);
-	virtual void bind(Binding binding);
-	virtual Response treatRequest(Request request);
+		Server();
+		~Server();
 
-private:
+		std::string host;
+		void setBinding(Binding* bind);
 
-	IBinding* _binding;
-	std::string _root;
-	std::vector<CGI> _cgi;
-	std::map<std::string, std::string> _mimetypes;
-	std::vector<std::string> _domains;
-	std::vector<std::string> _indexes;
-	std::vector<Location> _locations;
-	std::vector<Redirect> _redirect;
-	std::string _accessLog;
-	std::vector<ErrorPage> _errorPages;
-	std::vector<std::string> _allowedMethods;
-	bool _autoIndex;
+		virtual bool isForMe(Request request);
+//		virtual void bind(Binding binding);
+//		virtual Response treatRequest(Request request);
 
-};
+	private:
+
+		IBinding* _binding;
+		std::string _root;
+		std::vector<CGI> _cgi;
+		std::map<std::string, std::string> _mimetypes;
+		std::vector<std::string> _domains;
+		std::vector<std::string> _indexes;
+		std::vector<Location> _locations;
+		std::vector<Redirect> _redirect;
+		std::string _accessLog;
+		std::vector<ErrorPage> _errorPages;
+		std::vector<std::string> _allowedMethods;
+//		bool _autoIndex;
+
+	};
+}
+
 
 #endif

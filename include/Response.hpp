@@ -1,17 +1,19 @@
 #ifndef RESPONSE_HPP
 #define RESPONSE_HPP
 
+#include "AResponse.hpp"
 
-class Response
-{
+namespace hhpp {
+	class Response : public AResponse
+	{
+	public:
+		Response();
+		~Response();
 
-public:
+		void setResponse(Request& request, int status);
+		void showResponse();
 
-	Response();
-	~Response();
-
-private:
-
-};
+	};
+}
 
 #endif

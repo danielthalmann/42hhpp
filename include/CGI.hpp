@@ -6,23 +6,25 @@
 #include "Request.hpp"
 #include "Request.hpp"
 
-class CGI
-{
+namespace hhpp {
+	class CGI
+	{
 
-public:
+	public:
 
-	CGI();
-	~CGI();
+		CGI();
+		~CGI();
 
-	bool isForMe(Request request);
-	std::string execute(Request request);
-	void addExtension(std::string extension);
+		bool isForMe(Request request);
+		std::string execute(Request request);
+		void addExtension(std::string extension);
 
-private:
+	private:
 
-	std::vector<std::string> _extension;
-	std::string _location;
+		std::vector<std::string> _extension;
+		std::string _location;
 
-};
+	};
+}
 
 #endif
