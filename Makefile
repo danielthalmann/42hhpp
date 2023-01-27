@@ -56,22 +56,25 @@ OBJ_DIR = obj/
 _OBJ = $(_SRC:.cpp=.o)
 OBJ = $(addprefix $(OBJ_DIR), $(_OBJ))
 
+LIB_JSON=lib/json/bin/json.a
+INCLUDE_JSON=lib/json/include
+
 .PHONY: all clean fclean re run leak json
 
 all: $(NAME)
 
 #TODO a corriger et ajouter la dependance
-json:
+$(LIB_JSON):
 	$(MAKE) -C lib/json/
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 $(OBJ): $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp $(INC) ./Makefile | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I $(INC_DIR) -o $@ -c $<
+	$(CC) $(CFLAGS) -I $(INC_DIR) -I$(INCLUDE_JSON) -o $@ -c $<
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+$(NAME): $(OBJ) $(LIB_JSON)
+	$(CC) $(CFLAGS) $(OBJ) $(LIB_JSON) -o $(NAME)
 
 run:
 	./$(NAME)

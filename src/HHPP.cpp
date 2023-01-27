@@ -1,4 +1,5 @@
 #include "HHPP.hpp"
+#include <json.hpp>
 
 HHPP::HHPP() {}
 
@@ -13,7 +14,21 @@ HHPP::~HHPP() {
 }
 
 void HHPP::loadConfig(std::string pathConfig) {
-	readFileConfig(pathConfig);
+	std::string jsonString;
+
+	jsonString = readFileConfig(pathConfig);
+
+	json::JsonValue *json = json::Json::parse(jsonString);
+
+	for (size_t i = 0; i < json->at("servers")->length(); i++)
+	{
+		if (json->at("servers")->at(i)->exists("root2")){
+			std::cout << json->at("servers")->at(i)->at("root")->getString() << std::endl;
+		}
+	}
+	
+
+	delete json;
 }
 
 void HHPP::run() {}
