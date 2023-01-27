@@ -1,7 +1,7 @@
 ifeq ($(shell uname), Linux)
 	CC = g++
 else ifeq ($(shell c++-12 -dumpversion), 12)
-	CC = c++
+	CC = c++-12
 else
 	CC = c++
 endif
@@ -94,4 +94,4 @@ fclean: clean
 	make -C lib/json/ fclean
 
 re: fclean all
-	make -C lib/json/
+	make -C lib/json/ re

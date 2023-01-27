@@ -15,7 +15,14 @@ SRCS=$(addprefix ${SRC_FOLDER}, ${SRCFILES})
 #OBJS=${SRCS:cpp=o}
 OBJS=$(patsubst %.cpp, ${BUILD}%.o, ${SRCS})
 
-CXX=gcc
+#CXX=gcc
+ifeq ($(shell uname), Linux)
+	CXX = g++
+else ifeq ($(shell c++-12 -dumpversion), 12)
+	CXX = c++-12
+else
+	CXX = c++
+endif
 
 CXXFLAGS=-Wall -Wextra -Werror -std=c++98 -Iinclude 
 
