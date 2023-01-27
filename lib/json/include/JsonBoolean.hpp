@@ -28,6 +28,6 @@ namespace json
 
 	};
 
-};
+}
 
 #endif

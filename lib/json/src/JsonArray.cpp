@@ -16,16 +16,68 @@ namespace json
 
 	JsonArray::~JsonArray()
     {
-        for (list::iterator it = _value.begin(); it != _value.end() ; ++it) {
-            //std::cout << (*it)->getValueType() << std::endl;
-            //delete *it;
-        }
+        clear();
     }
 
     JsonArray &JsonArray::operator=(const JsonArray& other)
     {
-        _value = other._value;
+        clear();
+        JsonValue *j;
+        JsonBoolean *b;
+        JsonNumber *n;
+        JsonString *s;
+        JsonObject *o;
+        JsonArray *a;
+
+        for (std::vector<JsonValue*>::const_iterator it = other._value.begin(); it != other._value.end() ; ++it) {
+            
+            j = NULL;
+
+            switch((*it)->getValueType())
+            {
+                case json_type_boolean :
+                    b = dynamic_cast<JsonBoolean *>(*it);
+                    j = new JsonBoolean(*b);
+                break;
+                
+                case json_type_number :
+                    n = dynamic_cast<JsonNumber *>(*it);
+                    j = new JsonNumber(*n);
+                break;
+
+                case json_type_string :
+                    s = dynamic_cast<JsonString *>(*it);
+                    j = new JsonString(*s);
+                break;
+
+                case json_type_object :
+                    o = dynamic_cast<JsonObject *>(*it);
+                    j = new JsonObject(*o);
+                break;
+
+                case json_type_array :
+                    a = dynamic_cast<JsonArray *>(*it);
+                    j = new JsonArray(*a);
+                break;
+
+                case json_type_null :
+                default :
+                    j = new JsonValue();
+                break;
+            }
+            _value.push_back(j);
+        }
+
         return *this;
+    }
+
+    void JsonArray::clear()
+    {
+        for (std::vector<JsonValue*>::iterator it = this->_value.begin(); it != this->_value.end() ; ++it) {
+             delete (*it);
+             *it = 0;
+        }
+        _value.clear();
     }
 
     std::size_t JsonArray::length() const

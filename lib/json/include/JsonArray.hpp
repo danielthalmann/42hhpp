@@ -49,10 +49,12 @@ namespace json
 
 	private:
 
-		list _value;
+		void clear();
+
+		std::vector<JsonValue*> _value;
 
 	};
 
-};
+}
 
 #endif

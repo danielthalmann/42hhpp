@@ -14,20 +14,84 @@ namespace json
 
 	JsonObject::~JsonObject()
     {
-        // for (std::map<std::string, JsonValue*>::iterator it = _value.begin(); it != _value.end() ; ++it) {
-        //     delete (*it).second;
-        // }
+        clear();
     }
 
     JsonObject &JsonObject::operator=(const JsonObject& other)
     {
-        _value = other._value;
+        clear();
+        JsonValue *j;
+        JsonBoolean *b;
+        JsonNumber *n;
+        JsonString *s;
+        JsonObject *o;
+        JsonArray *a;
+        for (std::map<std::string, JsonValue*>::const_iterator it = other._value.begin(); it != other._value.end() ; ++it) {
+            
+            j = NULL;
+
+            switch((*it).second->getValueType())
+            {
+                case json_type_boolean :
+                    b = dynamic_cast<JsonBoolean *>((*it).second);
+                    j = new JsonBoolean(*b);
+                break;
+                
+                case json_type_number :
+                    n = dynamic_cast<JsonNumber *>((*it).second);
+                    j = new JsonNumber(*n);
+                break;
+
+                case json_type_string :
+                    s = dynamic_cast<JsonString *>((*it).second);
+                    j = new JsonString(*s);
+                break;
+
+                case json_type_object :
+                    o = dynamic_cast<JsonObject *>((*it).second);
+                    j = new JsonObject(*o);
+                break;
+
+                case json_type_array :
+                    a = dynamic_cast<JsonArray *>((*it).second);
+                    j = new JsonArray(*a);
+                break;
+
+                case json_type_null :
+                default :
+                    j = new JsonValue();
+                break;
+            }
+            _value[(*it).first] = j;
+        }
+
         return *this;
+    }
+
+    void JsonObject::clear()
+    {
+        for (std::map<std::string, JsonValue*>::iterator it = _value.begin(); it != _value.end() ; ++it) {
+            if((*it).second)
+                delete (*it).second;
+        }
+        _value.clear();
     }
 
 	JsonValue *JsonObject::at(const std::string& s)
     {
         return _value.at(s);
+    }
+
+    bool JsonObject::exists(const std::string& s)
+    {
+        try {
+            _value.at(s);
+        } catch (std::exception &e)
+        {
+            (void) e;
+            return false;
+        }
+        return true;
     }
 
 	void JsonObject::put(const std::string& key, const int i)

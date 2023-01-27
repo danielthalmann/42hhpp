@@ -27,6 +27,6 @@ namespace json
 
 	};
 
-};
+}
 
 #endif

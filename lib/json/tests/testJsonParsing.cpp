@@ -99,7 +99,11 @@ int main()
 
 
         json = json::Json::parse(std::string(" {\"redirect\" : [ {\"path\" : \"no_more_here\",\"destination\" : \"/new_location.html\",\"status\" : 302} ]}"));
-        std::cout << "value '" << json->at("redirect")->at(0)->at("path")->getString() << "'" << std::endl;
+        std::cout << "value '" << json->at("redirect")->at(0)->at("path")->getString() << "'";
+
+        if (json->at("redirect")->at(0)->exists("truc") ) {
+            return 1;
+        }
 
         delete json;
 

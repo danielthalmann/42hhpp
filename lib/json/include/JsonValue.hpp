@@ -66,6 +66,8 @@ namespace json
 
 		virtual JsonValue *at(const std::string& s);
 		virtual JsonValue *at(const std::size_t i);
+		
+		virtual bool exists(const std::string& s);
 	
 		virtual void push(const bool value);
 		virtual void push(const int value);
@@ -89,6 +91,6 @@ namespace json
 
 	};
 
-};
+}
 
 #endif

@@ -20,6 +20,8 @@ namespace json
 		JsonObject &operator=(const JsonObject &other);
 
 		JsonValue *at(const std::string& s);
+
+		virtual bool exists(const std::string& s);
 		
 		void put(const std::string& key, const int i);
 		void put(const std::string& key, const float f);
@@ -30,10 +32,12 @@ namespace json
 
 	private:
 
+		void clear();
+
 		std::map<std::string, JsonValue*> _value;
 
 	};
 
-};
+}
 
 #endif

@@ -31,6 +31,6 @@ namespace json
 
 	};
 	
-};
+}
 
 #endif

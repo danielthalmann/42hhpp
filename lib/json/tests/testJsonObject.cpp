@@ -26,7 +26,6 @@ int main()
     }
 
     json::JsonObject jsObject(*json);
-
     jsObject = *json;
 
     delete json;

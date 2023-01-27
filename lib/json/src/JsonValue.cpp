@@ -112,6 +112,12 @@ namespace json
         return NULL;
     }
 
+    bool JsonValue::exists(const std::string& s)
+    {
+        (void) s;
+        return false;
+    }
+
     void JsonValue::push(const bool value)
     {
         (void) value;

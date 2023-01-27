@@ -17,10 +17,11 @@ OBJS=$(patsubst %.cpp, ${BUILD}%.o, ${SRCS})
 
 CXX=gcc
 
-CXXFLAGS=-Wall -Wextra -Werror -std=c++98 -Iinclude
+CXXFLAGS=-Wall -Wextra -Werror -std=c++98 -Iinclude 
 
 LDFLAGS=-lstdc++ -lm
 
+all: ${BIN_FOLDER}${NAME}
 
 #$(NAME) : $(OBJS)
 #	$(CXX) $(OBJS) $(LDFLAGS) -o $@
@@ -28,10 +29,8 @@ LDFLAGS=-lstdc++ -lm
 #$(BUILD)%.o : %.cpp
 #	$(CXX) $(CXXFLAGS) $< -o $@
 
-${NAME}: ${OBJS}
-	@ar rsv ${BIN_FOLDER}$@ ${OBJS} 	
-
-all : $(NAME)
+${BIN_FOLDER}${NAME}: ${OBJS}
+	@ar rsv $@ ${OBJS} 	
 
 clean :
 	rm -f $(OBJS)
@@ -41,7 +40,7 @@ fclean : clean
 
 re : fclean all
 
-test : CXXFLAGS+= -g 
+test : CXXFLAGS+= -g3 -fsanitize=address
 test : all
 	@cd ${TEST_FOLDER} ;	./test.sh
 

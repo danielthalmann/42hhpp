@@ -20,7 +20,7 @@ namespace json
 
 		
 	public:
-		~Json();
+		virtual ~Json();
 
 		static JsonValue *parse(const std::string &s)
 		{
@@ -54,6 +54,6 @@ namespace json
 
 	};
 
-};
+}
 
 #endif
