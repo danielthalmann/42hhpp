@@ -1,4 +1,5 @@
 #include "AResponse.hpp"
+#include "utility.hpp"
 
 namespace hhpp {
 
@@ -43,7 +44,7 @@ namespace hhpp {
 	void AResponse::setBody(std::string str) {
 		_body = str;
 //		str.size();
-		_header.append("Content-Length", std::to_string(_body.size()));
+		_header.append("Content-Length", utils::numberToString(_body.size()));
 	}
 
 }

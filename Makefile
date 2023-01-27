@@ -73,10 +73,10 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 $(OBJ): $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp $(INC) ./Makefile | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I $(INC_DIR) -I$(INCLUDE_JSON) -o $@ -c $<
+	$(CC) $(CPPFLAGS) -I $(INC_DIR) -I$(INCLUDE_JSON) -o $@ -c $<
 
 $(NAME): $(OBJ) $(LIB_JSON)
-	$(CC) $(CFLAGS) $(OBJ) $(LIB_JSON) -o $(NAME)
+	$(CC) $(CPPFLAGS) $(OBJ) $(LIB_JSON) -o $(NAME)
 
 run:
 	./$(NAME)
@@ -91,5 +91,7 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 	$(RM) $(NAME).dSYM
+	make -C lib/json/ fclean
 
 re: fclean all
+	make -C lib/json/
