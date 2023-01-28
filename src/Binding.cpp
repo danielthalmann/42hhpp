@@ -5,7 +5,7 @@ namespace hhpp {
 
 	Binding::~Binding() {}
 
-	void Binding::setSocket(int socket) {
+	void Binding::setSocket(const int socket) {
 		_socked = socket;
 	//	_socked = socket(PF_INET, SOCK_STREAM, 0);
 	//	if (_socked < 0)
@@ -15,11 +15,11 @@ namespace hhpp {
 	//	}
 	}
 
-	void Binding::setIP(std::string ip) {
+	void Binding::setIP(const std::string& ip) {
 		_ip = ip;
 	}
 
-	void Binding::setPort(int port) {
+	void Binding::setPort(const int port) {
 		_port = port;
 	}
 

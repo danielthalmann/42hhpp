@@ -14,7 +14,7 @@ namespace hhpp {
 		return (NULL);
 	}
 
-	void CGI::addExtension(std::string extension) {
+	void CGI::addExtension(const std::string& extension) {
 		(void)extension;
 	}
 }

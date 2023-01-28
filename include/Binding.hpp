@@ -15,9 +15,9 @@ namespace hhpp {
 		Binding();
 		~Binding();
 
-		virtual void setSocket(int socket);
-		virtual void setIP(std::string ip);
-		virtual void setPort(int port);
+		virtual void setSocket(const int socket);
+		virtual void setIP(const std::string& ip);
+		virtual void setPort(const int port);
 		virtual void send(std::string str);
 //		virtual void send(AResponse response);
 		virtual Request readHeader(std::string header);

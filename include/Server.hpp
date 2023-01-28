@@ -22,8 +22,19 @@ namespace hhpp {
 		Server();
 		~Server();
 
-		std::string host;
-		void setBinding(Binding* bind);
+		virtual void setBinding(IBinding* binding);
+		virtual void setRoot(const std::string& root);
+		virtual void addDomain(const std::string& domain);
+		virtual void addIndex(const std::string& index);
+		virtual void addRedirect(Redirect* redirect);
+		virtual void addErrorPage(ErrorPage* errorpage);
+		virtual void addLocation(Location* location);
+		virtual void setAutoIndex(const bool autoindex);
+		virtual void setAccessLog(const std::string& log);
+		virtual void setClientMaxBodySize(const int max);
+		virtual void addAllowedMethod(const std::string& method);
+		virtual void addCGI(CGI* cgi);
+		virtual void addMimeType(MimeType* mimetype);
 
 		virtual bool isForMe(Request request);
 //		virtual void bind(Binding binding);
@@ -31,6 +42,7 @@ namespace hhpp {
 
 	private:
 
+		std::string host;
 		IBinding* _binding;
 		std::string _root;
 		std::vector<CGI> _cgi;

@@ -17,7 +17,8 @@ namespace hhpp {
 
 		bool isForMe(Request request);
 		std::string execute(Request request);
-		void addExtension(std::string extension);
+		void setLocation(const std::string& location);
+		void addExtension(const std::string& extension);
 
 	private:
 
