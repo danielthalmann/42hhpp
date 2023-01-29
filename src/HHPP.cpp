@@ -226,27 +226,28 @@ namespace hhpp {
 					newServer->addCGI(cgi);
 				}
 			}
-/*
+
 			//
 			// mimetype
 			//
 			jsonEl = NULL;
-			if (json->at("servers")->at(i)->exists("error_pages"))
-				jsonEl = json->at("servers")->at(i)->at("error_pages");
-			else if (json->exists("error_pages"))
-				jsonEl = json->at("error_pages");
+			if (json->at("servers")->at(i)->exists("mime_types"))
+				jsonEl = json->at("servers")->at(i)->at("mime_types");
+			else
+				jsonEl = json->at("mime_types");
 
 			std::vector<std::string> mimes = jsonEl->keys();
 
 			for (size_t j = 0; j < mimes.size(); j++) {
 
-				ep->setLocation(jsonEl->at(mimes[j])->getString());
-				ep->setStatus(atoi(mimes[j].c_str()));
-
-				newServer->addErrorPage(ep);
+				for (size_t k = 0; k < json->at("mime_types")->at(mimes[j])->length(); k++)
+				{
+					newServer->addMimeType(mimes[j], json->at("mime_types")->at(mimes[j])->at(k)->getString() );
+				}
+				
 			}
 			
-*/
+
 		}
 		
 
