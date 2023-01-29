@@ -6,7 +6,24 @@ namespace hhpp {
 	{}
 
 	Server::~Server() 
-	{}
+	{
+		for (std::vector<CGI*>::iterator it = _cgi.begin(); it != _cgi.end() ; ++it) {
+			delete (*it);
+		}
+
+		for (std::vector<Location*>::iterator it = _locations.begin(); it != _locations.end() ; ++it) {
+			delete (*it);
+		}
+
+		for (std::vector<Redirect*>::iterator it = _redirect.begin(); it != _redirect.end() ; ++it) {
+			delete (*it);
+		}
+
+		for (std::vector<ErrorPage*>::iterator it = _errorPages.begin(); it != _errorPages.end() ; ++it) {
+			delete (*it);
+		}
+
+	}
 
 	void Server::setSocket(const int socket) {
 		(void) socket;
@@ -19,67 +36,67 @@ namespace hhpp {
 	
 	void Server::setBinding(IBinding* binding)
 	{
-		(void) binding;
+		_binding = binding;
 	}
 	
 	void Server::setRoot(const std::string& root)
 	{
-		(void) root;
+		_root = root;
 	}
 	
 	void Server::addDomain(const std::string& domain)
 	{
-		(void) domain;
+		_domains.push_back(domain);
 	}
 	
 	void Server::addIndex(const std::string& index)
 	{
-		(void) index;
+		_indexes.push_back(index);
 	}
 	
 	void Server::addRedirect(Redirect* redirect)
 	{
-		(void) redirect;
+		_redirect.push_back(redirect);
 	}
 	
 	void Server::addErrorPage(ErrorPage* errorpage)
 	{
-		(void) errorpage;
+		_errorPages.push_back(errorpage);
 	}
 	
 	void Server::addLocation(Location* location)
 	{
-		(void) location;
+		_locations.push_back(location);
 	}
 	
 	void Server::setAutoIndex(const bool autoindex)
 	{
-		(void) autoindex;
+		_autoIndex = autoindex;
 	}
 	
 	void Server::setAccessLog(const std::string& log)
 	{
-		(void) log;
+		_accessLog = log;
 	}
 	
 	void Server::setClientMaxBodySize(const int max)
 	{
-		(void) max;
+		_maxBodySize = max;
 	}
 	
 	void Server::addAllowedMethod(const std::string& method)
 	{
-		(void) method;
+		_allowedMethods.push_back(method);
 	}
 	
 	void Server::addCGI(CGI* cgi)
 	{
-		(void) cgi;
+		_cgi.push_back(cgi);
 	}
 	
-	void Server::addMimeType(MimeType* mimetype)
+	void Server::addMimeType(const std::string& mimeType, const std::string& extension)
 	{
-		(void) mimetype;
+		_mimetypes[extension] = mimeType;
 	}
 
 	Response Server::treatRequest(Request request)

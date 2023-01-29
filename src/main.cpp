@@ -44,6 +44,8 @@ int main(int ac, char** av) {
 //	const char* method[] = {"GET", "POST", "DELETE", NULL};
 //	std::cout << method[2] << std::endl;
 
+	if (0)
+	{
 	hhpp::Request resquest;
 	std::string str("GET / HTTP/1.1\n"
 					"Host: www.quicksite.ch\n"
@@ -72,6 +74,6 @@ int main(int ac, char** av) {
 	response2.setResponse(resquest, 200);
 	response2.setBody("hello body");
 	response2.showResponse();
-
+	}
 	return (0);
 }

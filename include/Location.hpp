@@ -8,8 +8,9 @@ namespace hhpp {
 	{
 	public:
 		Location();
-		Location(const std::string& path, const std::string& root);
 		~Location();
+		void setPath(const std::string& path);
+		void setRoot(const std::string& root);
 
 	private:
 		std::string _path;

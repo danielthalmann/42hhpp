@@ -6,8 +6,12 @@ namespace hhpp {
 	class Redirect
 	{
 	public:
-		Redirect(std::string& path, std::string& destination, int status);
+		Redirect();
 		~Redirect();
+
+		void setPath(const std::string& path);
+		void setDestination(const std::string& destination);
+		void setStatus(int status);
 
 	private:
 		std::string _path;

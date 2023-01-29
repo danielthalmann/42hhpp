@@ -8,11 +8,10 @@ namespace hhpp {
 	{
 	public:
 		MimeType();
-		MimeType(std::string mimeType, std::string extension);
 		~MimeType();
 
-	//TODO (add)?
-	//	void (add)MimeType(std::string mimeType, std::string extension);
+		void setMimeType(const std::string& mimeType);
+		void setExtension(const std::string& extension);
 
 	private:
 		std::string _mimeType;

@@ -17,4 +17,10 @@ namespace hhpp {
 	void CGI::addExtension(const std::string& extension) {
 		(void)extension;
 	}
+
+	void CGI::setLocation(const std::string& location)
+	{
+		_location = location;
+	}
+
 }

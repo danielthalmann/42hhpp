@@ -2,10 +2,21 @@
 
 namespace hhpp {
 
-	MimeType::MimeType() {}
+	MimeType::MimeType() 
+	: _mimeType(""), _extension("") 
+	{
 
-	MimeType::MimeType(std::string mimeType, std::string extension) :
-					   _mimeType(mimeType), _extension(extension) {}
+	}
+
+	void MimeType::setMimeType(const std::string& mimeType)
+	{
+		_mimeType = mimeType;
+	}
+
+	void MimeType::setExtension(const std::string& extension)
+	{
+		_extension = extension;
+	}
 
 	MimeType::~MimeType() {}
 }

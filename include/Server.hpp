@@ -35,26 +35,27 @@ namespace hhpp {
 		virtual void setClientMaxBodySize(const int max);
 		virtual void addAllowedMethod(const std::string& method);
 		virtual void addCGI(CGI* cgi);
-		virtual void addMimeType(MimeType* mimetype);
+		virtual void addMimeType(const std::string& mimeType, const std::string& extension);
 
 		virtual bool isForMe(Request request);
 		virtual Response treatRequest(Request request);
 
 	private:
 
-		std::string host;
+		std::string _host;
 		IBinding* _binding;
 		std::string _root;
-		std::vector<CGI> _cgi;
+		std::vector<CGI*> _cgi;
 		std::map<std::string, std::string> _mimetypes;
 		std::vector<std::string> _domains;
 		std::vector<std::string> _indexes;
-		std::vector<Location> _locations;
-		std::vector<Redirect> _redirect;
+		std::vector<Location*> _locations;
+		std::vector<Redirect*> _redirect;
 		std::string _accessLog;
-		std::vector<ErrorPage> _errorPages;
+		std::vector<ErrorPage*> _errorPages;
 		std::vector<std::string> _allowedMethods;
-//		bool _autoIndex;
+		bool _autoIndex;
+		int _maxBodySize;
 
 	};
 }

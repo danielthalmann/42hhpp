@@ -7,11 +7,15 @@ namespace hhpp {
 	class ErrorPage
 	{
 	public:
-		ErrorPage(const int status, const std::string& location);
+		ErrorPage();
 		~ErrorPage();
 
-		std::string getPage(void);
+		void setStatus(const int status);
+		void setLocation(const std::string& location);
 
+		std::string getPage(void);
+	
+	private:
 		int _status;
 		std::string _location;
 	};

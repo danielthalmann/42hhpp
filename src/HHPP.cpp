@@ -1,5 +1,6 @@
 #include "HHPP.hpp"
 #include <Json.hpp>
+#include <stdlib.h>
 
 namespace hhpp {
 	HHPP::HHPP() {}
@@ -57,7 +58,7 @@ namespace hhpp {
 			if (json->at("servers")->at(i)->exists("domain"))
 				jsonEl = json->at("servers")->at(i)->at("domain");
 			else
-				jsonEl = json->("domain");
+				jsonEl = json->at("domain");
 
 			for (size_t j = 0; j < jsonEl->length(); j++) {
 				newServer->addDomain(jsonEl->at(j)->getString());
@@ -69,7 +70,7 @@ namespace hhpp {
 			if (json->at("servers")->at(i)->exists("index"))
 				jsonEl = json->at("servers")->at(i)->at("index");
 			else
-				jsonEl = json->("index");
+				jsonEl = json->at("index");
 
 			for (size_t j = 0; j < jsonEl->length(); j++) {
 				newServer->addIndex(jsonEl->at(j)->getString());
@@ -90,19 +91,18 @@ namespace hhpp {
 			if (json->at("servers")->at(i)->exists("redirect"))
 				jsonEl = json->at("servers")->at(i)->at("redirect");
 			else if (json->exists("redirect"))
-				jsonEl = json->("redirect");
+				jsonEl = json->at("redirect");
 
 			if (jsonEl)
 			{
 				Redirect* red;
 				for (size_t j = 0; j < jsonEl->length(); j++) {
-					int status = 302;
-					// status (optional)
+					red = new Redirect();
+					red->setPath(jsonEl->at(j)->at("path")->getString());
+					red->setDestination(jsonEl->at(j)->at("destination")->getString());
 					if (jsonEl->at(j)->exists("status")) {
-						status = jsonEl->at(j)->at("status")->getInt();
+						red->setStatus(jsonEl->at(j)->at("status")->getInt());
 					}
-
-					red = new Redirect(jsonEl->at(j)->at("path"), jsonEl->at(j)->at("destination"), status);
 					newServer->addRedirect(red);
 				}
 			}
@@ -110,31 +110,27 @@ namespace hhpp {
 			//
 			// error pages (optional)
 			//
-
-			/*
-			TODO
-
 			jsonEl = NULL;
 			if (json->at("servers")->at(i)->exists("error_pages"))
 				jsonEl = json->at("servers")->at(i)->at("error_pages");
 			else if (json->exists("error_pages"))
-				jsonEl = json->("error_pages");
+				jsonEl = json->at("error_pages");
 
 			if (jsonEl)
 			{
 				ErrorPage* ep;
-				for (size_t j = 0; j < jsonEl->length(); j++) {
-					int status = 302;
-					// status (optional)
-					if (jsonEl->at(j)->exists("status")) {
-						status = jsonEl->at(j)->at("status")->getInt();
-					}
+				std::vector<std::string> errorCodes = jsonEl->keys();
+	
+				for (size_t j = 0; j < errorCodes.size(); j++) {
 
-					ep = new ErrorPage(jsonEl->at(j)->key(), jsonEl->at(j)->value());
-					newServer->addErrorPages(ep);
+					ep = new ErrorPage();
+
+					ep->setLocation(jsonEl->at(errorCodes[j])->getString());
+					ep->setStatus(atoi(errorCodes[j].c_str()));
+
+					newServer->addErrorPage(ep);
 				}
 			}
-			*/
 
 			//
 			// location (optional)
@@ -143,13 +139,15 @@ namespace hhpp {
 			if (json->at("servers")->at(i)->exists("location"))
 				jsonEl = json->at("servers")->at(i)->at("location");
 			else if (json->exists("location"))
-				jsonEl = json->("location");
+				jsonEl = json->at("location");
 
 			if (jsonEl)
 			{
 				Location* loc;
 				for (size_t j = 0; j < jsonEl->length(); j++) {
-					loc = new Location(jsonEl->at(j)->at("path"), jsonEl->at(j)->at("root"));
+					loc = new Location();
+					loc->setPath(jsonEl->at(j)->at("path")->getString());
+					loc->setRoot(jsonEl->at(j)->at("root")->getString());
 					newServer->addLocation(loc);
 				}
 			}
@@ -162,7 +160,7 @@ namespace hhpp {
 			if (json->at("servers")->at(i)->exists("auto_index"))
 				jsonEl = json->at("servers")->at(i)->at("auto_index");
 			else if (json->exists("auto_index"))
-				jsonEl = json->("auto_index");
+				jsonEl = json->at("auto_index");
 			if (jsonEl)
 			{
 				newServer->setAutoIndex(jsonEl->getBool());
@@ -175,7 +173,7 @@ namespace hhpp {
 			if (json->at("servers")->at(i)->exists("access_log"))
 				jsonEl = json->at("servers")->at(i)->at("access_log");
 			else if (json->exists("access_log"))
-				jsonEl = json->("access_log");
+				jsonEl = json->at("access_log");
 			if (jsonEl)
 			{
 				newServer->setAccessLog(jsonEl->getString());
@@ -188,7 +186,7 @@ namespace hhpp {
 			if (json->at("servers")->at(i)->exists("client_max_body_size"))
 				jsonEl = json->at("servers")->at(i)->at("client_max_body_size");
 			else if (json->exists("client_max_body_size"))
-				jsonEl = json->("client_max_body_size");
+				jsonEl = json->at("client_max_body_size");
 			if (jsonEl)
 			{
 				newServer->setClientMaxBodySize(jsonEl->getInt());
@@ -200,7 +198,7 @@ namespace hhpp {
 			if (json->at("servers")->at(i)->exists("allowed_methods"))
 				jsonEl = json->at("servers")->at(i)->at("allowed_methods");
 			else
-				jsonEl = json->("allowed_methods");
+				jsonEl = json->at("allowed_methods");
 
 			for (size_t j = 0; j < jsonEl->length(); j++) {
 				newServer->addAllowedMethod(jsonEl->at(j)->getString());
@@ -213,7 +211,7 @@ namespace hhpp {
 			if (json->at("servers")->at(i)->exists("cgi"))
 				jsonEl = json->at("servers")->at(i)->at("cgi");
 			else if (json->exists("cgi"))
-				jsonEl = json->("cgi");
+				jsonEl = json->at("cgi");
 
 			if (jsonEl)
 			{
@@ -221,16 +219,34 @@ namespace hhpp {
 				for (size_t j = 0; j < jsonEl->length(); j++) {
 
 					cgi = new CGI();
-					cgi->setLocation(jsonEl->at(j)->at("location")->getString())
+					cgi->setLocation(jsonEl->at(j)->at("location")->getString());
 					for (size_t k = 0; k < jsonEl->at(j)->at("extension")->length(); k++) {
 						cgi->addExtension(jsonEl->at(j)->at("extension")->at(k)->getString());
 					}
 					newServer->addCGI(cgi);
 				}
 			}
+/*
+			//
+			// mimetype
+			//
+			jsonEl = NULL;
+			if (json->at("servers")->at(i)->exists("error_pages"))
+				jsonEl = json->at("servers")->at(i)->at("error_pages");
+			else if (json->exists("error_pages"))
+				jsonEl = json->at("error_pages");
 
+			std::vector<std::string> mimes = jsonEl->keys();
 
+			for (size_t j = 0; j < mimes.size(); j++) {
 
+				ep->setLocation(jsonEl->at(mimes[j])->getString());
+				ep->setStatus(atoi(mimes[j].c_str()));
+
+				newServer->addErrorPage(ep);
+			}
+			
+*/
 		}
 		
 

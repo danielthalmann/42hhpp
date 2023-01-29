@@ -19,7 +19,7 @@ namespace hhpp {
 		virtual void setIP(const std::string& ip);
 		virtual void setPort(const int port);
 		virtual void send(std::string str);
-//		virtual void send(AResponse response);
+		virtual void send(Response res);
 		virtual Request readHeader(std::string header);
 		virtual bool isBinding(const std::string& ip, const int port);
 

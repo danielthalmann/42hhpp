@@ -5,7 +5,13 @@ namespace hhpp {
 
 	Location::~Location() {}
 
-	Location::Location(std::string& path, std::string& root) 
-	: _path(path), _root(root) 
-	{}
+	void Location::setPath(const std::string& path) 
+	{
+		_path = path;
+	}
+
+	void Location::setRoot(const std::string& root)
+	{
+		_root = root;
+	}
 }

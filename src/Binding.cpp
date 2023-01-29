@@ -27,9 +27,9 @@ namespace hhpp {
 		(void)str;
 	}
 
-//	void Binding::send(Response response) {
-//		(void)response;
-//	}
+	void Binding::send(Response response) {
+		(void)response;
+	}
 
 	Request Binding::readHeader(std::string header) {
 		(void)header;
@@ -41,4 +41,5 @@ namespace hhpp {
 		(void) port;
 		return false;
 	}
+
 }

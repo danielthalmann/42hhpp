@@ -2,11 +2,27 @@
 
 namespace hhpp {
 
-	Redirect::Redirect(std::string& path, std::string& destination, int status) 
-	: _path(path), _destination(destination), _status(status)
+	Redirect::Redirect() 
+	: _path(""), _destination(""), _status(301)
 	{
 
 	}
 
 	Redirect::~Redirect() {}
+
+	void Redirect::setPath(const std::string& path)
+	{
+		_path = path;
+	}
+
+	void Redirect::setDestination(const std::string& destination)
+	{
+		_destination = destination;
+	}
+
+	void Redirect::setStatus(int status)
+	{
+		_status = status;
+	}
+
 }
