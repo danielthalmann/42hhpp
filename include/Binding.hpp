@@ -21,6 +21,7 @@ namespace hhpp {
 		virtual void send(std::string str);
 //		virtual void send(AResponse response);
 		virtual Request readHeader(std::string header);
+		virtual bool isBinding(const std::string& ip, const int port);
 
 	private:
 

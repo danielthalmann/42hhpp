@@ -35,4 +35,10 @@ namespace hhpp {
 		(void)header;
 		return (Request());
 	}
+
+	bool Binding::isBinding(const std::string& ip, const int port) {
+		(void) ip;
+		(void) port;
+		return false;
+	}
 }

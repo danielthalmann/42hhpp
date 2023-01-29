@@ -35,7 +35,7 @@ namespace hhpp {
 			// binding
 			//
 			std::string ip = json->at("servers")->at(i)->at("binding")->at("ip")->getString();
-			int port = json->at("servers")->at(i)->at("binding")->at("port")->getString();
+			int port = json->at("servers")->at(i)->at("binding")->at("port")->getInt();
 
 			for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
 				if ((*it)->isBinding(ip, port)) {

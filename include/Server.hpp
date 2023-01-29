@@ -22,6 +22,7 @@ namespace hhpp {
 		Server();
 		~Server();
 
+		virtual void setSocket(const int socket);
 		virtual void setBinding(IBinding* binding);
 		virtual void setRoot(const std::string& root);
 		virtual void addDomain(const std::string& domain);
@@ -37,8 +38,7 @@ namespace hhpp {
 		virtual void addMimeType(MimeType* mimetype);
 
 		virtual bool isForMe(Request request);
-//		virtual void bind(Binding binding);
-//		virtual Response treatRequest(Request request);
+		virtual Response treatRequest(Request request);
 
 	private:
 
