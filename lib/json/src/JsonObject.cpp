@@ -168,6 +168,23 @@ namespace json
         }
         _value[key] = o;
     }
+
+    std::size_t JsonObject::length() const
+    {
+        return _value.size();
+    }
+
+    std::vector<std::string> JsonObject::keys() const
+    {
+        std::vector<std::string> k;
+
+        for (std::map<std::string, JsonValue *>::const_iterator it = _value.begin(); it != _value.end() ; ++it) {
+            k.push_back((*it).first);
+        }
+
+        return k;
+    }
+
 }
 
 

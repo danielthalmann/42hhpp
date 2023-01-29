@@ -263,6 +263,11 @@ namespace json
         return 1;
     }
 
+    std::vector<std::string> JsonValue::keys() const
+    {
+        return std::vector<std::string>();
+    }
+
     bool JsonValue::isNull() const
     {
         if (_valueType == json_type_null)

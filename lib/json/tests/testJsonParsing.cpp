@@ -1,6 +1,7 @@
 
 #include <Json.hpp>
 #include <iostream>
+#include <vector>
 
 int main()
 {
@@ -65,6 +66,15 @@ int main()
             std::cout << "value '" << json->at("test5")->getFloat() << "'" << std::endl;
             return 1;
         }
+
+        std::vector<std::string> k = json->keys();
+
+        for (size_t i = 0; i < k.size(); i++)
+        {
+            std::cout << k[i] << " ";
+        }
+        
+
 
         delete json;
 

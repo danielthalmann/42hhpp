@@ -5,6 +5,7 @@
 #include <JsonArray.hpp>
 #include <string>
 #include <map>
+#include <vector>
 
 namespace json
 {
@@ -29,6 +30,9 @@ namespace json
 		void put(const std::string& key, JsonValue* v);
 		void put(const std::string& key, JsonArray* a);
 		void put(const std::string& key, JsonObject* o);
+
+	    std::size_t length() const;
+		std::vector<std::string> keys() const;
 
 	private:
 

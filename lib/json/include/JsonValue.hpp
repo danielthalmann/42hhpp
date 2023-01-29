@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace json
 {
@@ -81,8 +82,10 @@ namespace json
 		JsonType getValueType();
 
 	    virtual std::size_t length() const;
+		virtual std::vector<std::string> keys() const;
 
 		bool isNull() const;
+		
 
 		//JsonValue &operator[]()
     
