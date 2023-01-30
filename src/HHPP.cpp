@@ -44,11 +44,11 @@ namespace hhpp {
 			throw(std::exception());
 
 		if ((fileInfo.st_mode & S_IFMT) == S_IFDIR)
-			throw(std::exception());
+			throw(HHPP::fileStatus());
 
 
 		if (!ifs.good() || pathConfig.empty())
-			throw(std::exception());
+			throw(HHPP::fileStatus());
 
 		if (ifs.is_open())
 		{
@@ -65,13 +65,46 @@ namespace hhpp {
 		}
 		else
 		{
-			throw(std::exception());
+			throw(HHPP::fileStatus());
 		}
 		return (file);
 	}
 
+	void HHPP::create_socket(std::string ip, int port) {
+		int listen_sd;
+
+//		socket
+		listen_sd = socket(PF_INET, SOCK_STREAM, 0);
+		if (listen_sd < 0)
+		{
+			throw(HHPP::socketStatus());
+		}
+
+//		bind
+
+//		listen
+
+	}
+
+//	int guard(int n, char * err) {
+//		if (n == -1)
+//		{
+//			perror(err);
+//			exit(1);
+//		}
+//		return n;
+//	}
+
 	void HHPP::dispatchRequest(hhpp::Request request) {
 		(void)request;
+	}
+
+	const char* HHPP::fileStatus::what() const throw() {
+		return ("File Error");
+	}
+
+	const char* HHPP::socketStatus::what() const throw() {
+		return ("Socket Error");
 	}
 	
 }
