@@ -37,5 +37,9 @@
 #nodejs
 node_modules
 
+#Clion
+.idea
+cmake*
+
 #program
 hhpp

@@ -33,8 +33,10 @@ int main(int ac, char** av) {
 
 	try
 	{
-//		std::cout << "load config" << std::endl;
+		std::cout << "load config" << std::endl;
 		srv.loadConfig(pathConfig);
+		std::cout << "setup socket" << std::endl;
+		srv.setupSocket("127.0.0.1", 8080);
 	}
 	catch (std::exception& e)
 	{

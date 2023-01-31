@@ -8,10 +8,12 @@ namespace hhpp {
 		for (std::vector<IServer*>::iterator it = _servers.begin(); it != _servers.end() ; ++it) {
 			delete *it;
 		}
+		_servers.clear();
 
 		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
 			delete *it;
 		}
+		_bindings.clear();
 	}
 
 	void HHPP::loadConfig(std::string pathConfig) {
@@ -70,20 +72,14 @@ namespace hhpp {
 		return (file);
 	}
 
-	void HHPP::create_socket(std::string ip, int port) {
-		int listen_sd;
+	void HHPP::setupSocket(std::string ip, int port) {
+		IBinding *new_socket = new Binding();
 
-//		socket
-		listen_sd = socket(PF_INET, SOCK_STREAM, 0);
-		if (listen_sd < 0)
-		{
-			throw(HHPP::socketStatus());
-		}
+		new_socket->setIP(ip);
+		new_socket->setPort(port);
+		new_socket->setSocket();
 
-//		bind
-
-//		listen
-
+		_bindings.push_back(new_socket);
 	}
 
 //	int guard(int n, char * err) {
@@ -101,10 +97,6 @@ namespace hhpp {
 
 	const char* HHPP::fileStatus::what() const throw() {
 		return ("File Error");
-	}
-
-	const char* HHPP::socketStatus::what() const throw() {
-		return ("Socket Error");
 	}
 	
 }

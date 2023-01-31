@@ -13,13 +13,17 @@ namespace hhpp {
 
 		virtual ~IBinding() {};
 
-		virtual void setSocket(int socket) = 0;
+		virtual void setSocket() = 0;
 		virtual void setIP(std::string ip) = 0;
 		virtual void setPort(int port) = 0;
-		virtual void send(std::string str) = 0;
-		virtual void send(Response res) = 0;
+		virtual void sendData(std::string str) = 0;
+		virtual void sendData(Response response) = 0;
 		virtual Request readHeader(std::string header) = 0;
 
+		class socketStatus: public std::exception {
+		public:
+			virtual const char* what() const throw();
+		};
 	};
 }
 
