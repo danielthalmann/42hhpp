@@ -189,11 +189,11 @@ namespace hhpp {
 		} while (end_server == 0);
 	}
 
-	void Binding::setIP(std::string ip) {
+	void Binding::setIP(const std::string& ip) {
 		_ip = ip;
 	}
 
-	void Binding::setPort(int port) {
+	void Binding::setPort(const int port) {
 		_port = port;
 	}
 
