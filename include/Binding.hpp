@@ -35,6 +35,11 @@ namespace hhpp {
 		void checkSocket(int ret, const char* str);
 
 	private:
+		void createSocket();
+		void setNonBlocking();
+		sockaddr_in bindSocket();
+		void listenSocket();
+
 		int _listen_sd;
 		std::string _ip;
 		int _port;

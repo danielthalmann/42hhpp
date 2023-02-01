@@ -43,7 +43,7 @@ namespace hhpp {
 		std::ifstream ifs(pathConfig.c_str());
 
 		if (stat(pathConfig.c_str(), &fileInfo) != 0)
-			throw(std::exception());
+			throw(HHPP::fileStatus());
 
 		if ((fileInfo.st_mode & S_IFMT) == S_IFDIR)
 			throw(HHPP::fileStatus());
@@ -74,22 +74,12 @@ namespace hhpp {
 
 	void HHPP::setupSocket(std::string ip, int port) {
 		IBinding *new_socket = new Binding();
+		_bindings.push_back(new_socket);
 
 		new_socket->setIP(ip);
 		new_socket->setPort(port);
 		new_socket->setSocket();
-
-		_bindings.push_back(new_socket);
 	}
-
-//	int guard(int n, char * err) {
-//		if (n == -1)
-//		{
-//			perror(err);
-//			exit(1);
-//		}
-//		return n;
-//	}
 
 	void HHPP::dispatchRequest(hhpp::Request request) {
 		(void)request;
