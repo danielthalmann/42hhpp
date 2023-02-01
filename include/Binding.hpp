@@ -15,17 +15,23 @@ namespace hhpp {
 		Binding();
 		~Binding();
 
-		virtual void setSocket(const int socket);
+		virtual void setSocket();
 		virtual void setIP(const std::string& ip);
 		virtual void setPort(const int port);
-		virtual void send(std::string str);
-		virtual void send(Response res);
+		virtual void sendData(std::string str);
+		virtual void sendData(Response response);
 		virtual Request readHeader(std::string header);
 		virtual bool isBinding(const std::string& ip, const int port);
 
-	private:
+		void checkSocket(int ret, const char* str);
 
-		int _socked;
+	private:
+		void createSocket();
+		void setNonBlocking();
+		sockaddr_in bindSocket();
+		void listenSocket();
+
+		int _listen_sd;
 		std::string _ip;
 		int _port;
 

@@ -37,7 +37,7 @@ void hhpp::Request::setUrl(std::string url) { _url = url; }
 void hhpp::Request::setBody(std::string body) { _body = body; }
 void hhpp::Request::setHttpVersion(std::string httpVersion) { _httpVersion = httpVersion; }
 
-void hhpp::Request::setRequest(const std::string& rawRequest) {
+void hhpp::Request::parseRequest(const std::string& rawRequest) {
 	std::vector<std::string> token;
 	std::vector<std::string> header;
 

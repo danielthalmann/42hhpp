@@ -24,6 +24,12 @@ namespace hhpp {
 		void loadConfig(std::string pathConfig);
 		void run();
 
+		void setupSocket(std::string ip, int port);
+
+		class fileStatus: public std::exception {
+		public:
+			virtual const char* what() const throw();
+		};
 	private:
 
 		std::vector<IServer*> _servers;

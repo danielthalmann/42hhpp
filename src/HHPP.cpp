@@ -9,10 +9,12 @@ namespace hhpp {
 		for (std::vector<IServer*>::iterator it = _servers.begin(); it != _servers.end() ; ++it) {
 			delete (*it);
 		}
+		_servers.clear();
 
 		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
 			delete (*it);
 		}
+		_bindings.clear();
 	}
 
 	void HHPP::loadConfig(std::string pathConfig) {
@@ -263,14 +265,14 @@ namespace hhpp {
 		std::ifstream ifs(pathConfig.c_str());
 
 		if (stat(pathConfig.c_str(), &fileInfo) != 0)
-			throw(std::exception());
+			throw(HHPP::fileStatus());
 
 		if ((fileInfo.st_mode & S_IFMT) == S_IFDIR)
-			throw(std::exception());
+			throw(HHPP::fileStatus());
 
 
 		if (!ifs.good() || pathConfig.empty())
-			throw(std::exception());
+			throw(HHPP::fileStatus());
 
 		if (ifs.is_open())
 		{
@@ -287,13 +289,26 @@ namespace hhpp {
 		}
 		else
 		{
-			throw(std::exception());
+			throw(HHPP::fileStatus());
 		}
 		return (file);
 	}
 
+	void HHPP::setupSocket(std::string ip, int port) {
+		IBinding *new_socket = new Binding();
+		_bindings.push_back(new_socket);
+
+		new_socket->setIP(ip);
+		new_socket->setPort(port);
+		new_socket->setSocket();
+	}
+
 	void HHPP::dispatchRequest(hhpp::Request request) {
 		(void)request;
+	}
+
+	const char* HHPP::fileStatus::what() const throw() {
+		return ("File Error");
 	}
 	
 }

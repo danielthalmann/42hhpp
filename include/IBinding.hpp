@@ -11,18 +11,20 @@ namespace hhpp {
 
 	public:
 
-		IBinding() {}
-		virtual ~IBinding()
-		{};
+		virtual ~IBinding() {};
 
-		virtual void setSocket(const int socket) = 0;
+		virtual void setSocket() = 0;
 		virtual void setIP(const std::string& ip) = 0;
 		virtual void setPort(const int port) = 0;
-		virtual bool isBinding(const std::string& ip, const int port) = 0;
-		virtual void send(std::string str) = 0;
-		virtual void send(Response res) = 0;
+		virtual bool isBinding(const std::string& ip, const int port);
+		virtual void sendData(std::string str) = 0;
+		virtual void sendData(Response response) = 0;
 		virtual Request readHeader(std::string header) = 0;
 
+		class socketStatus: public std::exception {
+		public:
+			virtual const char* what() const throw();
+		};
 	};
 }
 
