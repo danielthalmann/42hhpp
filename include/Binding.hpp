@@ -3,8 +3,18 @@
 
 #include "IBinding.hpp"
 #include "Request.hpp"
-#include <sys/socket.h>
 #include <iostream>
+#include <unistd.h>
+
+#include <arpa/inet.h>
+#include <cstring>
+
+#include <fcntl.h>
+#include <sys/socket.h>
+#include <string>
+#include <sstream>
+#include <cerrno>
+#include <cstdio>
 
 namespace hhpp {
 	class Binding : public IBinding
@@ -13,11 +23,16 @@ namespace hhpp {
 	public:
 
 		Binding();
-		~Binding();
+		virtual ~Binding();
 
 		virtual void setSocket();
 		virtual void setIP(const std::string& ip);
 		virtual void setPort(const int port);
+
+		virtual std::string getIP() const;
+		virtual int getPort() const;
+		virtual int getSocket() const;
+
 		virtual void sendData(std::string str);
 		virtual void sendData(Response response);
 		virtual Request readHeader(std::string header);
@@ -28,7 +43,7 @@ namespace hhpp {
 	private:
 		void createSocket();
 		void setNonBlocking();
-		sockaddr_in bindSocket();
+		struct sockaddr_in bindSocket();
 		void listenSocket();
 
 		int _listen_sd;

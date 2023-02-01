@@ -30,6 +30,36 @@
           "root" : "/var/www/cgi"
         }
       ]
+    },
+    {
+      "binding" : {
+        "ip" : "127.0.0.1",
+        "port" : 9090
+      },
+      "domain" : ["localhost", "mydomain.ch"],
+      "index" : ["index.html", "index.php"],
+      "root" : "/var/www",
+      "redirect" : [
+        {
+          "path" : "no_more_here",
+          "destination" : "/new_location.html",
+          "status" : 302
+        }
+      ],
+
+      "error_pages" : {
+
+        "404" : "pages/error-404.html",
+        "501" : "pages/error-501.html"
+
+      },
+
+      "location" : [
+        {
+          "path" : "script",
+          "root" : "/var/www/cgi"
+        }
+      ]
     }
   ],
 

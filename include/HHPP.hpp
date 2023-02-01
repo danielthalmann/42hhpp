@@ -24,7 +24,7 @@ namespace hhpp {
 		void loadConfig(std::string pathConfig);
 		void run();
 
-		void setupSocket(std::string ip, int port);
+		void setupSocket();
 
 		class fileStatus: public std::exception {
 		public:
@@ -34,6 +34,8 @@ namespace hhpp {
 
 		std::vector<IServer*> _servers;
 		std::vector<IBinding*> _bindings;
+
+		bool isListen(int socket);
 
 		std::string readFileConfig(std::string pathConfig);
 		void dispatchRequest(Request request);

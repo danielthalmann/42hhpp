@@ -1,6 +1,6 @@
 ifeq ($(shell uname), Linux)
 	CC = g++
-else ifeq ($(shell c++-12 -dumpversion), 12)
+else ifeq ($(shell c++-12 -dumpversion 2> /dev/null), 12)
 	CC = c++-12
 else
 	CC = c++

@@ -1,4 +1,5 @@
 #include "HHPP.hpp"
+#include "utility.hpp"
 #include <Json.hpp>
 #include <stdlib.h>
 
@@ -50,6 +51,8 @@ namespace hhpp {
 			if (!newBinding) {
 				newBinding = new Binding();
 				_bindings.push_back(newBinding);
+				newBinding->setIP(ip);
+				newBinding->setPort(port);
 			}
 
 			newServer->setBinding(newBinding);
@@ -256,7 +259,137 @@ namespace hhpp {
 		delete json;
 	}
 
-	void HHPP::run() {}
+	bool HHPP::isListen(int socket) {
+		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
+			if (socket == (*it)->getSocket())
+				return true;
+		}
+		return false;
+	}
+
+	void HHPP::run() {
+		int ret;
+		fd_set current_set, working_set;
+		int max_sd, new_sd;
+		int listen_sd;
+		int desc_ready, end_server = 0;
+		int close_conn;
+		int len;
+		char buffer[4096];
+
+		FD_ZERO(&current_set);
+		max_sd = _bindings.front()->getSocket();
+		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
+			listen_sd = (*it)->getSocket();
+			if (listen_sd > 0)
+				FD_SET(listen_sd, &current_set);
+			if (max_sd < listen_sd)
+				max_sd = listen_sd;
+		}
+
+		do
+		{
+//			copy into working set
+			memcpy(&working_set, &current_set, sizeof(current_set));
+
+//			select
+			std::cout << "Waiting on select()..." << std::endl;
+			ret = select(max_sd + 1, &working_set, NULL, NULL, NULL);
+			if (ret < 0)
+			{
+				std::cerr << "[-] select() failed" << std::endl;
+				break;
+			}
+
+			desc_ready = ret;
+			for (int i = 0; i <= max_sd && desc_ready > 0; ++i)
+			{
+				if (FD_ISSET(i, &working_set))
+				{
+					desc_ready -= 1;
+					if (isListen(i))
+					{
+						std::cout << "Listening socket is readable" << std::endl;
+						do
+						{
+							new_sd = accept(i, NULL, NULL);
+							if (new_sd < 0)
+							{
+								if (errno != EWOULDBLOCK)
+								{
+									std::cerr << "[-] accept() failed" << std::endl;
+									end_server = 1;
+								}
+								break;
+							}
+							std::cout << "New incoming connection - " << new_sd << std::endl;
+							FD_SET(new_sd, &current_set);
+							if (new_sd > max_sd)
+								max_sd = new_sd;
+
+						} while (new_sd != -1);
+					}
+					else
+					{
+						std::cout << "Descriptor " << i << " is readable" << std::endl;
+						close_conn = 0;
+						while (1)
+						{
+							ret = recv(i, buffer, sizeof(buffer), 0);
+							if (ret < 0)
+							{
+								if (errno != EWOULDBLOCK)
+								{
+									std::cout << "recv() finish" << std::endl;
+									close_conn = 1;
+								}
+								break;
+							}
+							if (ret == 0)
+							{
+								std::cout << "Connection closed" << std::endl;
+								close_conn = 1;
+								break;
+							}
+							len = ret;
+							std::cout << len << " bytes received" << std::endl;
+
+//							send data to client
+							std::string dataSend;
+							dataSend = "HTTP/1.1 200 OK\n";
+							dataSend.append("Content-Type: text/plain\n");
+							dataSend.append("Content-Length: 7\n");
+							dataSend.append("\n");
+							dataSend.append("Hello !");
+
+							ret = send(i, dataSend.c_str(), dataSend.size(), 0);
+							std::cout << "data send: " << ret <<"/"<<dataSend.size()<< std::endl;
+							if (ret < 0)
+							{
+								std::cerr << "[-] send() failed" << std::endl;
+								close_conn = 1;
+								break;
+							}
+
+						}
+
+						if (close_conn)
+						{
+							std::cout << "close fd: " << i << std::endl;
+							close(i);
+							FD_CLR(i, &current_set);
+							if (i == max_sd)
+							{
+								while (FD_ISSET(max_sd, &current_set) == 0)
+									max_sd -= 1;
+							}
+						}
+					}
+				}
+			}
+
+		} while (end_server == 0);
+	}
 
 	std::string HHPP::readFileConfig(std::string pathConfig) {
 		std::string file;
@@ -294,13 +427,13 @@ namespace hhpp {
 		return (file);
 	}
 
-	void HHPP::setupSocket(std::string ip, int port) {
-		IBinding *new_socket = new Binding();
-		_bindings.push_back(new_socket);
+	void HHPP::setupSocket() {
+		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
+			(*it)->setSocket();
+		}
+//		IBinding *newSocket = _bindings.front();
+//		newSocket->setSocket();
 
-		new_socket->setIP(ip);
-		new_socket->setPort(port);
-		new_socket->setSocket();
 	}
 
 	void HHPP::dispatchRequest(hhpp::Request request) {

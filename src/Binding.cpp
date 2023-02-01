@@ -26,7 +26,7 @@ namespace hhpp {
 
 	void Binding::setNonBlocking() {
 		int ret;
-		int on = 1;
+//		int on = 1;
 
 //		allow socket to be reuseable
 		ret = setsockopt(_listen_sd, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof(on));
@@ -37,9 +37,9 @@ namespace hhpp {
 		checkSocket(ret, "[-] nonblocking failed");
 	}
 
-	sockaddr_in Binding::bindSocket() {
+	struct sockaddr_in Binding::bindSocket() {
 		int ret;
-		sockaddr_in addr;
+		struct sockaddr_in addr;
 
 		memset(addr.sin_zero, '\0', sizeof(addr.sin_zero));
 		addr.sin_family = AF_INET;
@@ -60,133 +60,12 @@ namespace hhpp {
 	}
 
 	void Binding::setSocket() {
-		sockaddr_in addr;
+		struct sockaddr_in addr;
 
 		createSocket();
-
 		setNonBlocking();
-
 		addr = bindSocket();
-
 		listenSocket();
-
-//TODO put to run and lean
-		int ret;
-		fd_set current_set;
-		fd_set working_set;
-		int max_sd, new_sd;
-
-//		init fds
-		FD_ZERO(&current_set);
-		max_sd = _listen_sd;
-		FD_SET(_listen_sd, &current_set);
-
-		int desc_ready, end_server = 0;
-		int close_conn;
-		int len;
-		char buffer[80];
-		struct timeval timeout;
-		timeout.tv_sec  = 10;
-		timeout.tv_usec = 0;
-		do
-		{
-//			copy into working set
-			memcpy(&working_set, &current_set, sizeof(current_set));
-
-//			select
-			std::cout << "Waiting on select()..." << std::endl;
-			ret = select(max_sd + 1, &working_set, NULL, NULL, &timeout);
-			if (ret < 0)
-			{
-				std::cerr << "[-] select() failed" << std::endl;
-				break;
-			}
-			if (ret == 0)
-			{
-				std::cerr << "[-] select() timed out" << std::endl;
-				break;
-			}
-
-			desc_ready = ret;
-			for (int i = 0; i <= max_sd && desc_ready > 0; ++i)
-			{
-				if (FD_ISSET(i, &working_set))
-				{
-					desc_ready -= 1;
-					if (i == _listen_sd)
-					{
-						std::cout << "Listening socket is readable" << std::endl;
-						do
-						{
-							new_sd = accept(_listen_sd, NULL, NULL);
-							if (new_sd < 0)
-							{
-								if (errno != EWOULDBLOCK)
-								{
-									std::cerr << "[-] accept() failed" << std::endl;
-									end_server = 1;
-								}
-								break;
-							}
-							std::cout << "New incoming connection - " << new_sd << std::endl;
-							FD_SET(new_sd, &current_set);
-							if (new_sd > max_sd)
-								max_sd = new_sd;
-
-						} while (new_sd != -1);
-					}
-					else
-					{
-						std::cout << "Descriptor " << i << " is readable" << std::endl;
-						close_conn = 0;
-						do
-						{
-							ret = recv(i, buffer, sizeof(buffer), 0);
-							if (ret < 0)
-							{
-								if (errno != EWOULDBLOCK)
-								{
-									std::cout << "recv() finish" << std::endl;
-									close_conn = 1;
-								}
-								break;
-							}
-							if (ret == 0)
-							{
-								std::cout << "Connection closed" << std::endl;
-								close_conn = 1;
-								break;
-							}
-							len = ret;
-							std::cout << len << " bytes received" << std::endl;
-
-//							send data to client
-							char hello[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 10\n\nHello test!";
-							ret = send(i, hello, strlen(hello), 0);
-							if (ret < 0)
-							{
-								std::cerr << "[-] send() failed" << std::endl;
-								close_conn = 1;
-								break;
-							}
-
-						} while (1);
-
-						if (close_conn)
-						{
-							close(i);
-							FD_CLR(i, &current_set);
-							if (i == max_sd)
-							{
-								while (FD_ISSET(max_sd, &current_set) == 0)
-									max_sd -= 1;
-							}
-						}
-					}
-				}
-			}
-
-		} while (end_server == 0);
 	}
 
 	void Binding::setIP(const std::string& ip) {
@@ -197,7 +76,19 @@ namespace hhpp {
 		_port = port;
 	}
 
-	void Binding::send(std::string str) {
+	std::string Binding::getIP() const {
+		return _ip;
+	}
+
+	int Binding::getPort() const {
+		return _port;
+	}
+
+	int Binding::getSocket() const {
+		return _listen_sd;
+	}
+
+	void Binding::sendData(std::string str) {
 		(void)str;
 	}
 
@@ -215,8 +106,8 @@ namespace hhpp {
 	}
 
 	bool Binding::isBinding(const std::string& ip, const int port) {
-		(void) ip;
-		(void) port;
+		if (_ip == ip && _port == port)
+			return true;
 		return false;
 	}
 
