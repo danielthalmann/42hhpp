@@ -3,7 +3,11 @@
 namespace hhpp {
 
 	Server::Server() 
-	{}
+	{
+		// default value
+		_autoIndex = false;
+		_maxBodySize = 0;
+	}
 
 	Server::~Server() 
 	{
