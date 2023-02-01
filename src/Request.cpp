@@ -21,9 +21,11 @@ hhpp::Request::Request() {
 hhpp::Request::~Request() {}
 
 
-std::string hhpp::Request::getMethod() { return (_method); }
-std::string hhpp::Request::getQuery() { return (_query); }
-std::string hhpp::Request::getHost() { return (_host); }
+std::string hhpp::Request::getMethod() const { return (_method); }
+std::string hhpp::Request::getQuery() const { return (_query); }
+std::string hhpp::Request::getQueryLocation() const { return (_query); /* TODO */ }
+
+std::string hhpp::Request::getHost() const { return (_host); }
 int hhpp::Request::getPort() { return (_port); }
 std::string hhpp::Request::getUrl() { return (_url); }
 std::string hhpp::Request::getBody() { return (_body); }

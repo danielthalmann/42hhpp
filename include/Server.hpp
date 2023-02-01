@@ -9,6 +9,10 @@
 #include "Location.hpp"
 #include "Redirect.hpp"
 #include "ErrorPage.hpp"
+#include "Request.hpp"
+#include "ResponseError.hpp"
+#include "ResponseFile.hpp"
+#include "ResponseRedirect.hpp"
 
 namespace hhpp {
 
@@ -37,10 +41,14 @@ namespace hhpp {
 		virtual void addCGI(CGI* cgi);
 		virtual void addMimeType(const std::string& mimeType, const std::string& extension);
 
-		virtual bool isForMe(Request request);
-		virtual Response treatRequest(Request request);
+		virtual bool isForMe(const Request& request) const;
+		virtual Response treatRequest(const Request& request);
 
 	private:
+
+		bool isAllowedMethod(const std::string& method) const;
+		Redirect* getUrlRedirect(const std::string& query) const;
+		std::string getLocalPath(const std::string& query) const;
 
 		std::string _host;
 		IBinding* _binding;

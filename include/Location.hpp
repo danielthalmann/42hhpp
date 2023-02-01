@@ -11,6 +11,8 @@ namespace hhpp {
 		~Location();
 		void setPath(const std::string& path);
 		void setRoot(const std::string& root);
+		bool match(const std::string& query) const;
+		std::string getLocalPath(const std::string& query) const;
 
 	private:
 		std::string _path;

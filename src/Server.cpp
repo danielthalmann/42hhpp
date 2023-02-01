@@ -33,11 +33,6 @@ namespace hhpp {
 		(void) socket;
 	}
 
-	bool Server::isForMe(Request request) {
-		(void)request;
-		return (true);
-	}
-	
 	void Server::setBinding(IBinding* binding)
 	{
 		_binding = binding;
@@ -103,9 +98,67 @@ namespace hhpp {
 		_mimetypes[extension] = mimeType;
 	}
 
-	Response Server::treatRequest(Request request)
+
+	bool Server::isForMe(const Request& request) const 
 	{
-		(void) request;
+		for (std::vector<std::string>::const_iterator it; it != _domains.end(); it++) {
+			if (request.getHost() == (*it)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool Server::isAllowedMethod(const std::string& method) const 
+	{
+		for (std::vector<std::string>::const_iterator it; it != _allowedMethods.end(); it++) {
+			if (method == (*it)) {
+				return true;
+			}
+		}
+		return false;	
+	}
+
+
+	Redirect* Server::getUrlRedirect(const std::string& query) const 
+	{
+		for (std::vector<Redirect*>::const_iterator it; it != _redirect.end(); it++) {
+			if ((*it)->match(query)) {
+				return (*it);
+			}
+		}
+		return NULL;	
+	}
+
+	std::string Server::getLocalPath(const std::string& query) const
+	{
+		for (std::vector<Location*>::const_iterator it; it != _locations.end(); it++) {
+			if ((*it)->match(query)) {
+				return (*it)->getLocalPath(query);
+			}
+		}
+		
+	}
+
+	Response Server::treatRequest(const Request& request)
+	{
+		// check allowed method
+		if (!isAllowedMethod(request.getMethod()))
+			return ResponseError(405);
+
+		// check size
+		if (_maxBodySize > 0) {
+			// TODO check size of body and return error
+		}
+
+		// search url in redirect path
+		if (Redirect *redirect = getUrlRedirect(request.getQueryLocation()) ) {
+			return ResponseRedirect(redirect->getDestination(), redirect->getStatus());
+		}
+
+		// search url in location path
+		std::string localPath = getLocalPath(request.getQueryLocation());
+
 		return Response();
 	}
 }
