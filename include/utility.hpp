@@ -11,6 +11,7 @@ namespace utils {
 	std::vector<std::string> split(std::string str, std::string delimiter);
 
 	char** mapStringToArray(const std::map<std::string, std::string> &m);
+	void freeArray(char** a);
 
 	template <typename T>
 	std::string numberToString(T pNumber)
