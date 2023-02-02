@@ -50,6 +50,7 @@ namespace hhpp {
 		_version = request.getHttpVersion();
 		_status = status;
 		_statusMessage = _totalStatus[_status];
+		_header = request.getHeaders();
 	}
 
 	void Response::showResponse() {

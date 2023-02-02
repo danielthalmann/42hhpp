@@ -9,6 +9,7 @@
 #include "Location.hpp"
 #include "Redirect.hpp"
 #include "ErrorPage.hpp"
+#include <algorithm>
 
 namespace hhpp {
 
@@ -25,20 +26,23 @@ namespace hhpp {
 		virtual void setSocket(const int socket);
 		virtual void setBinding(IBinding* binding);
 		virtual void setRoot(const std::string& root);
+		virtual void setAutoIndex(const bool autoindex);
+		virtual void setAccessLog(const std::string& log);
+		virtual void setClientMaxBodySize(const int max);
+
 		virtual void addDomain(const std::string& domain);
 		virtual void addIndex(const std::string& index);
 		virtual void addRedirect(Redirect* redirect);
 		virtual void addErrorPage(ErrorPage* errorpage);
 		virtual void addLocation(Location* location);
-		virtual void setAutoIndex(const bool autoindex);
-		virtual void setAccessLog(const std::string& log);
-		virtual void setClientMaxBodySize(const int max);
 		virtual void addAllowedMethod(const std::string& method);
 		virtual void addCGI(CGI* cgi);
 		virtual void addMimeType(const std::string& mimeType, const std::string& extension);
 
 		virtual bool isForMe(Request request);
 		virtual Response treatRequest(Request request);
+
+		virtual std::vector<ErrorPage*> getErrorPages();
 
 	private:
 

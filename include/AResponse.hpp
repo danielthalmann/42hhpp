@@ -17,11 +17,13 @@ namespace hhpp {
 		std::string& getStatusMessage();
 		Header& getHeaders();
 		std::string& getBody();
+		std::string getResponse();
 
 		void setStatus(int status);
 		void setStatusMessage(std::string statusMessage);
 		virtual void setResponse(Request& request, int status) = 0;
-		void setBody(std::string str);
+		void setBody(std::string body, std::string bodyType);
+		void setErrorPage(int status);
 
 		typedef std::map<int, std::string>	mapIntString;
 		void setTotalStatus(int i, std::string str);
@@ -76,7 +78,7 @@ namespace hhpp {
 			tmp[415] = "Unsupported Media Type";
 			tmp[416] = "Range Not Satisfiable";
 			tmp[417] = "Expectation Failed";
-			tmp[418] = "I'm a teapo";
+			tmp[418] = "I'm a teapot";
 			tmp[421] = "Misdirected Request";
 			tmp[422] = "Unprocessable Entity";
 			tmp[423] = "Locked";

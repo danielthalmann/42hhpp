@@ -2,6 +2,7 @@
 #define RESPONSE_HPP
 
 #include "AResponse.hpp"
+#include "utility.hpp"
 
 namespace hhpp {
 	class Response : public AResponse
@@ -11,6 +12,7 @@ namespace hhpp {
 		~Response();
 
 		void setResponse(Request& request, int status);
+
 		void showResponse();
 
 	};

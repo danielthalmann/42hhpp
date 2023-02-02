@@ -34,8 +34,14 @@ namespace hhpp {
 	}
 
 	bool Server::isForMe(Request request) {
-		(void)request;
-		return (true);
+		std::vector<std::string>::iterator it;
+		std::vector<std::string> host = utils::split(request.getHost(), ":");
+
+		for (it = _domains.begin(); it != _domains.end(); ++it) {
+			if (host[0] == *it && host[1] == utils::numberToString(_binding->getPort()))
+				return (true);
+		}
+		return (false);
 	}
 	
 	void Server::setBinding(IBinding* binding)
@@ -107,6 +113,10 @@ namespace hhpp {
 	{
 		(void) request;
 		return Response();
+	}
+
+	std::vector<ErrorPage*> Server::getErrorPages() {
+		return _errorPages;
 	}
 }
 

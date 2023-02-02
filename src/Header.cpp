@@ -21,7 +21,7 @@ namespace hhpp {
 	}
 
 	void Header::append(std::string key, std::string value) {
-		_params.insert(std::make_pair(key, value));
+		_params[key] = value;
 	}
 
 	void Header::showParams() {
@@ -30,5 +30,6 @@ namespace hhpp {
 						<< it->second << std::endl;
 		}
 	}
-}
 
+	Header::mapStringString Header::getParams() { return (_params); }
+}

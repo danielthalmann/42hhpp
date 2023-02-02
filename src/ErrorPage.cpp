@@ -1,5 +1,4 @@
 #include "ErrorPage.hpp"
-
 namespace hhpp {
 
 	ErrorPage::ErrorPage() 
@@ -11,7 +10,21 @@ namespace hhpp {
 	ErrorPage::~ErrorPage() {}
 
 	std::string ErrorPage::getPage() {
-		return (NULL);
+		std::string page;
+
+		if (_location.empty())
+			page.append("<html><head>"
+							"<title>The page you were looking for doesn't exist (404)</title>"
+							"<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
+							"</head><body>"
+							"<h1>Error 404: Not Found</h1>"
+							"<p>Oops! Something went wrong...</p>"
+							"<p>We seem to be having some technical difficulties. Hang tight.</p>"
+							"</body></html>");
+		else
+			page = utils::readFile(_location);
+
+		return (page);
 	}
 
 	void ErrorPage::setStatus(const int status)
@@ -22,6 +35,10 @@ namespace hhpp {
 	void ErrorPage::setLocation(const std::string& location)
 	{
 		_location = location;
+	}
+
+	int ErrorPage::getStatus() {
+		return _status;
 	}
 
 }

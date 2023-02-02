@@ -276,6 +276,8 @@ namespace hhpp {
 		int close_conn;
 		int len;
 		char buffer[4096];
+		Request clientRequest;
+		Response serverResponse;
 
 		FD_ZERO(&current_set);
 		max_sd = _bindings.front()->getSocket();
@@ -335,6 +337,7 @@ namespace hhpp {
 						close_conn = 0;
 						while (1)
 						{
+							bzero(&buffer, sizeof(buffer));
 							ret = recv(i, buffer, sizeof(buffer), 0);
 							if (ret < 0)
 							{
@@ -355,15 +358,53 @@ namespace hhpp {
 							std::cout << len << " bytes received" << std::endl;
 
 //							send data to client
-							std::string dataSend;
-							dataSend = "HTTP/1.1 200 OK\n";
-							dataSend.append("Content-Type: text/plain\n");
-							dataSend.append("Content-Length: 7\n");
-							dataSend.append("\n");
-							dataSend.append("Hello !");
+							clientRequest.parseRequest(std::string(buffer, ret));
 
-							ret = send(i, dataSend.c_str(), dataSend.size(), 0);
-							std::cout << "data send: " << ret <<"/"<<dataSend.size()<< std::endl;
+							size_t j;
+							for (j = 0; j < _servers.size(); ++j) {
+								if (_servers[j]->isForMe(clientRequest))
+									break;
+							}
+
+							std::string url = clientRequest.getUrl();
+							int status = 200;
+							std::size_t found = url.find("/?");
+							if (found != std::string::npos)
+							{
+								url.erase(0, found + 2);
+								std::vector<std::string> get = utils::split(url, "&&");
+								std::vector<std::string> param;
+								for (size_t k = 0; k < get.size(); ++k) {
+									param = utils::split(get[k], "=");
+								}
+								if (param[0] == "status")
+								{
+									status =  std::atoi(param[1].c_str());
+								}
+							}
+
+							if (status != 200)
+							{
+								int isfound = 0;
+								serverResponse.setResponse(clientRequest, status);
+								for (size_t k = 0; k < _servers[j]->getErrorPages().size(); ++k) {
+									if (_servers[j]->getErrorPages()[k]->getStatus() == status)
+									{
+										serverResponse.setBody(_servers[j]->getErrorPages()[k]->getPage(), "text/html");
+										isfound = 1;
+										break;
+									}
+								}
+								if (!isfound)
+									serverResponse.setErrorPage(status);
+							}
+							else
+							{
+								serverResponse.setResponse(clientRequest, 200);
+								serverResponse.setBody("Hello world !", "text/plain");
+							}
+
+							ret = send(i, serverResponse.getResponse().c_str(), serverResponse.getResponse().size(), 0);
 							if (ret < 0)
 							{
 								std::cerr << "[-] send() failed" << std::endl;

@@ -11,8 +11,6 @@
 #include "Binding.hpp"
 #include "Request.hpp"
 
-namespace json { class JsonValue; } // TODO a supprimer
-
 namespace hhpp {
 	class HHPP
 	{

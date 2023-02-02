@@ -18,6 +18,8 @@ namespace hhpp {
 		std::string getUrl();
 		std::string getBody();
 		std::string getHttpVersion();
+		Header& getHeaders();
+		std::string getRequest();
 
 		void setMethod(std::string method);
 		void setQuery(std::string query);
@@ -29,7 +31,6 @@ namespace hhpp {
 
 		void parseRequest(const std::string& rawRequest);
 		void showRequest();
-		Header& getHeaders();
 
 	private:
 		std::string _method;
