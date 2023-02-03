@@ -20,7 +20,7 @@ namespace hhpp {
 
 		void setStatus(int status);
 		void setStatusMessage(std::string statusMessage);
-		virtual void setResponse(Request& request, int status) = 0;
+		virtual void setResponse(Request& request, int status);
 		void setBody(std::string str);
 
 		typedef std::map<int, std::string>	mapIntString;

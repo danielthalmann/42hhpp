@@ -146,9 +146,10 @@ namespace hhpp {
 
 	}
 
-	Response Server::fileListIndex(const std::string& query) const
+	AResponse* Server::fileListIndex(const std::string& query) const
 	{
-
+		(void) query;
+		return new Response();
 	}
 
 
@@ -163,21 +164,25 @@ namespace hhpp {
 	}
 
 
-	MimeType* Server::getMimeType(const std::string& query) const 
+	std::string Server::getMimeType(const std::string& query) const 
 	{
-		for (std::vector<MimeType*>::const_iterator it; it != _redirect.end(); it++) {
-			if ((*it)->match(query)) {
-				return (*it);
+		//TODO utiliser le map aulieu de faire un parcours de tous les éléments
+
+
+		for (std::map<std::string, std::string>::const_iterator it; it != _mimetypes.end(); it++) {
+			std::string extension = query.substr(query.size() - (it->first).size());
+			if (it->first == extension) {
+				return (it->second);
 			}
 		}
 		return NULL;	
 	}
 
-	Response Server::treatRequest(const Request& request)
+	AResponse* Server::treatRequest(const Request& request)
 	{
 		// check allowed method
 		if (!isAllowedMethod(request.getMethod()))
-			return ResponseError(405);
+			return new ResponseError(405);
 
 		// check size
 		if (_maxBodySize > 0) {
@@ -186,7 +191,7 @@ namespace hhpp {
 
 		// search url in redirect path
 		if (Redirect *redirect = getUrlRedirect(request.getQueryLocation()) ) {
-			return ResponseRedirect(redirect->getDestination(), redirect->getStatus());
+			return new ResponseRedirect(redirect->getDestination(), redirect->getStatus());
 		}
 
 		// search url in location path
@@ -195,29 +200,29 @@ namespace hhpp {
 		struct stat sb;
 
 		if (stat(localPath.c_str(), &sb))
-			return ResponseError(404);
+			return new ResponseError(404);
 
 		// ficher présent mais pas accessible
 		if (!access(localPath.c_str(), R_OK))
-			return ResponseError(403);
+			return new ResponseError(403);
 
 		// is folder
 		if ((sb.st_mode & S_IFMT) == S_IFDIR) {
 			if (!_autoIndex) {
-				return ResponseError(403);
+				return new ResponseError(403);
 			}
 			return fileListIndex(localPath);
 		}
 
 		if (CGI *cgi = getCgi(request.getQueryLocation()) ) {
-			return ResponseCgi(cgi);
+			return new ResponseCgi(cgi, request);
 		}
 
-		if (MimeType *mime = getMimeType(request.getQueryLocation()) ) {
-			return ResponseFile(mime->getMimeType, LocalPath);
+		if (std::string mime = getMimeType(request.getQueryLocation()) ) {
+			return new ResponseFile(localPath, mime);
 		}
 
-		return ResponseError(404);
+		return new ResponseError(415);
 	}
 }
 

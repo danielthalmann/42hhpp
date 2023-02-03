@@ -26,7 +26,7 @@ namespace hhpp {
 
 	void Binding::setNonBlocking() {
 		int ret;
-//		int on = 1;
+		int on = 1;
 
 //		allow socket to be reuseable
 		ret = setsockopt(_listen_sd, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof(on));

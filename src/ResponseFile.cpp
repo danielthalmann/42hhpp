@@ -1,11 +1,15 @@
 #include "ResponseFile.hpp"
 
 namespace hhpp {
-	ResponseFile::ResponseFile() {}
-
-	ResponseFile::~ResponseFile() {}
-
-	void ResponseFile::filename(std::string filename) {
-		(void)filename;
+	ResponseFile::ResponseFile(std::string filename, std::string mimetype) 
+	{
+ 		(void) filename;
+		(void) mimetype;
 	}
+
+	ResponseFile::~ResponseFile() 
+	{
+
+	}
+
 }

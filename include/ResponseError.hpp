@@ -1,10 +1,11 @@
 #ifndef RESPONSEERROR_HPP
 #define RESPONSEERROR_HPP
 
+#include <AResponse.hpp>
 #include <string>
 
 namespace hhpp {
-	class ResponseError
+	class ResponseError: public AResponse
 	{
 	public:
 		ResponseError(int error = 0);

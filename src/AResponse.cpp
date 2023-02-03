@@ -37,6 +37,11 @@ namespace hhpp {
 		_statusMessage = statusMessage;
 	}
 
+	void AResponse::setResponse(Request& request, int status) {
+		(void) request;
+		(void) status;
+	}
+
 	void AResponse::setTotalStatus(int i, std::string str) {
 		_totalStatus[i] = str;
 	}

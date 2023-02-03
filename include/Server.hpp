@@ -10,6 +10,7 @@
 #include "Redirect.hpp"
 #include "ErrorPage.hpp"
 #include "Request.hpp"
+#include "ResponseCgi.hpp"
 #include "ResponseError.hpp"
 #include "ResponseFile.hpp"
 #include "ResponseRedirect.hpp"
@@ -42,16 +43,16 @@ namespace hhpp {
 		virtual void addMimeType(const std::string& mimeType, const std::string& extension);
 
 		virtual bool isForMe(const Request& request) const;
-		virtual Response treatRequest(const Request& request);
+		virtual AResponse* treatRequest(const Request& request);
 
 	private:
 
 		bool isAllowedMethod(const std::string& method) const;
 		Redirect* getUrlRedirect(const std::string& query) const;
 		std::string getLocalPath(const std::string& query) const;
-		Response fileListIndex(const std::string& query) const;
+		AResponse* fileListIndex(const std::string& query) const;
 		CGI* getCgi(const std::string& query) const;
-		MimeType* Server::getMimeType(const std::string& query) const;
+		std::string getMimeType(const std::string& query) const;
 
 		std::string _host;
 		IBinding* _binding;
