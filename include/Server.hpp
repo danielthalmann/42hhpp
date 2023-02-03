@@ -49,6 +49,9 @@ namespace hhpp {
 		bool isAllowedMethod(const std::string& method) const;
 		Redirect* getUrlRedirect(const std::string& query) const;
 		std::string getLocalPath(const std::string& query) const;
+		Response fileListIndex(const std::string& query) const;
+		CGI* getCgi(const std::string& query) const;
+		MimeType* Server::getMimeType(const std::string& query) const;
 
 		std::string _host;
 		IBinding* _binding;

@@ -11,7 +11,9 @@ namespace hhpp {
 		~MimeType();
 
 		void setMimeType(const std::string& mimeType);
+		std::string getMimeType() const;
 		void setExtension(const std::string& extension);
+		bool match(const std::string& query) const;
 
 	private:
 		std::string _mimeType;

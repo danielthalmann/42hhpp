@@ -19,6 +19,7 @@ namespace hhpp {
 		std::string execute(Request request);
 		void setLocation(const std::string& location);
 		void addExtension(const std::string& extension);
+		bool match(const std::string& query) const;
 
 	private:
 

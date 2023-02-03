@@ -17,19 +17,17 @@ namespace hhpp {
 
 	bool Location::match(const std::string& query) const
 	{
-		if (_path == query)
+		if (_path == query.substr(0, _path.size()))
 			return true;
 		return false;
 	}
 
+
+	// query : /script/test.cgi
+	// /var/www/cgi/test.cgi
 	std::string Location::getLocalPath(const std::string& query) const
 	{
-		std::string path = _root;
-		if (query.rfind("titi", 0) == 0) { // pos=0 limits the search to the prefix
-		// s starts with prefix
-		}
+		return _root + query.substr(_path.size());
 	}
-
-
 
 }

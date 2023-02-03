@@ -1,4 +1,7 @@
 #include "Server.hpp"
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 namespace hhpp {
 
@@ -132,12 +135,42 @@ namespace hhpp {
 
 	std::string Server::getLocalPath(const std::string& query) const
 	{
+		// TODO controle des / entre les path
 		for (std::vector<Location*>::const_iterator it; it != _locations.end(); it++) {
 			if ((*it)->match(query)) {
 				return (*it)->getLocalPath(query);
 			}
 		}
-		
+
+		return _root + query;
+
+	}
+
+	Response Server::fileListIndex(const std::string& query) const
+	{
+
+	}
+
+
+	CGI* Server::getCgi(const std::string& query) const 
+	{
+		for (std::vector<CGI*>::const_iterator it; it != _cgi.end(); it++) {
+			if ((*it)->match(query)) {
+				return (*it);
+			}
+		}
+		return NULL;	
+	}
+
+
+	MimeType* Server::getMimeType(const std::string& query) const 
+	{
+		for (std::vector<MimeType*>::const_iterator it; it != _redirect.end(); it++) {
+			if ((*it)->match(query)) {
+				return (*it);
+			}
+		}
+		return NULL;	
 	}
 
 	Response Server::treatRequest(const Request& request)
@@ -159,7 +192,32 @@ namespace hhpp {
 		// search url in location path
 		std::string localPath = getLocalPath(request.getQueryLocation());
 
-		return Response();
+		struct stat sb;
+
+		if (stat(localPath.c_str(), &sb))
+			return ResponseError(404);
+
+		// ficher présent mais pas accessible
+		if (!access(localPath.c_str(), R_OK))
+			return ResponseError(403);
+
+		// is folder
+		if ((sb.st_mode & S_IFMT) == S_IFDIR) {
+			if (!_autoIndex) {
+				return ResponseError(403);
+			}
+			return fileListIndex(localPath);
+		}
+
+		if (CGI *cgi = getCgi(request.getQueryLocation()) ) {
+			return ResponseCgi(cgi);
+		}
+
+		if (MimeType *mime = getMimeType(request.getQueryLocation()) ) {
+			return ResponseFile(mime->getMimeType, LocalPath);
+		}
+
+		return ResponseError(404);
 	}
 }
 
