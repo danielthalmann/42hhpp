@@ -10,6 +10,7 @@
 #include "Server.hpp"
 #include "Binding.hpp"
 #include "Request.hpp"
+#include "MimeType.hpp"
 
 namespace json { class JsonValue; } // TODO a supprimer
 

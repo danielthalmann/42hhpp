@@ -13,6 +13,7 @@ CPPFLAGS += -g3 -fsanitize=address
 
 SRC_DIR = src/
 _SRC =	main.cpp\
+		Server.cpp\
 		AResponse.cpp\
 		Binding.cpp\
 		CGI.cpp\
@@ -25,8 +26,9 @@ _SRC =	main.cpp\
 		Request.cpp\
 		Response.cpp\
 		ResponseFile.cpp\
+		ResponseError.cpp\
+		ResponseCgi.cpp\
 		ResponseRedirect.cpp\
-		Server.cpp\
 		utility.cpp
 
 SRC = $(addprefix $(SRC_DIR), $(_SRC))

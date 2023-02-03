@@ -13,6 +13,7 @@ namespace hhpp {
 		void setMimeType(const std::string& mimeType);
 		std::string getMimeType() const;
 		void setExtension(const std::string& extension);
+		std::string getExtension() const;
 		bool match(const std::string& query) const;
 
 	private:

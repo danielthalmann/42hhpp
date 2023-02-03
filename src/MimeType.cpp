@@ -21,9 +21,14 @@ namespace hhpp {
 
 	std::string MimeType::getMimeType() const
 	{
+		return _mimeType;
+	}
+
+	std::string MimeType::getExtension() const
+	{
 		return _extension;
 	}
-	
+
 	bool MimeType::match(const std::string& query) const
 	{
 		std::string extension = query.substr(query.size() - (_extension).size());

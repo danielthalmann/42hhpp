@@ -1,7 +1,11 @@
 #include "ResponseError.hpp"
 
 namespace hhpp {
-	ResponseError::ResponseError(int error = 0) : AResponse() {}
+	ResponseError::ResponseError(int error) 
+	: AResponse() 
+	{
+		(void)error;
+	}
 
 	ResponseError::~ResponseError() {}
 

@@ -32,7 +32,7 @@ namespace hhpp {
 		virtual void setClientMaxBodySize(const int max) = 0;
 		virtual void addAllowedMethod(const std::string& method) = 0;
 		virtual void addCGI(CGI* cgi) = 0;
-		virtual void addMimeType(const std::string& mimeType, const std::string& extension) = 0;
+		virtual void addMimeType(MimeType* mime) = 0;
 		virtual AResponse* treatRequest(const Request& request) = 0;
 
 	};

@@ -30,6 +30,9 @@ namespace hhpp {
 			delete (*it);
 		}
 
+		for (std::map<std::string, MimeType*>::iterator it = _mimetypes.begin(); it != _mimetypes.end() ; ++it) {
+			delete (it->second);
+		}
 	}
 
 	void Server::setSocket(const int socket) {
@@ -96,9 +99,9 @@ namespace hhpp {
 		_cgi.push_back(cgi);
 	}
 	
-	void Server::addMimeType(const std::string& mimeType, const std::string& extension)
+	void Server::addMimeType(MimeType* mime)
 	{
-		_mimetypes[extension] = mimeType;
+		_mimetypes[mime->getExtension()] = mime;
 	}
 
 
@@ -164,14 +167,12 @@ namespace hhpp {
 	}
 
 
-	std::string Server::getMimeType(const std::string& query) const 
+	MimeType* Server::getMimeType(const std::string& query) const 
 	{
 		//TODO utiliser le map aulieu de faire un parcours de tous les éléments
 
-
-		for (std::map<std::string, std::string>::const_iterator it; it != _mimetypes.end(); it++) {
-			std::string extension = query.substr(query.size() - (it->first).size());
-			if (it->first == extension) {
+		for (std::map<std::string, MimeType*>::const_iterator it; it != _mimetypes.end(); it++) {
+			if (it->second->match(query)) {
 				return (it->second);
 			}
 		}
@@ -180,6 +181,8 @@ namespace hhpp {
 
 	AResponse* Server::treatRequest(const Request& request)
 	{
+		std::string localPath;
+
 		// check allowed method
 		if (!isAllowedMethod(request.getMethod()))
 			return new ResponseError(405);
@@ -195,7 +198,7 @@ namespace hhpp {
 		}
 
 		// search url in location path
-		std::string localPath = getLocalPath(request.getQueryLocation());
+		localPath = getLocalPath(request.getQueryLocation());
 
 		struct stat sb;
 
@@ -214,12 +217,14 @@ namespace hhpp {
 			return fileListIndex(localPath);
 		}
 
+		// search cgi
 		if (CGI *cgi = getCgi(request.getQueryLocation()) ) {
 			return new ResponseCgi(cgi, request);
 		}
 
-		if (std::string mime = getMimeType(request.getQueryLocation()) ) {
-			return new ResponseFile(localPath, mime);
+		
+		if (MimeType* mime = getMimeType(request.getQueryLocation()) ) {
+			return new ResponseFile(localPath, mime->getMimeType());
 		}
 
 		return new ResponseError(415);

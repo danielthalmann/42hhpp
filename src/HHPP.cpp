@@ -243,11 +243,16 @@ namespace hhpp {
 
 			std::vector<std::string> mimes = jsonEl->keys();
 
+			MimeType* mimeType;
 			for (size_t j = 0; j < mimes.size(); j++) {
 
 				for (size_t k = 0; k < json->at("mime_types")->at(mimes[j])->length(); k++)
 				{
-					newServer->addMimeType(mimes[j], json->at("mime_types")->at(mimes[j])->at(k)->getString() );
+					mimeType = new MimeType();
+					mimeType->setMimeType(mimes[j]);
+					mimeType->setExtension(json->at("mime_types")->at(mimes[j])->at(k)->getString());
+
+					newServer->addMimeType(mimeType);
 				}
 				
 			}

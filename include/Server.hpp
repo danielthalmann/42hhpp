@@ -40,7 +40,8 @@ namespace hhpp {
 		virtual void setClientMaxBodySize(const int max);
 		virtual void addAllowedMethod(const std::string& method);
 		virtual void addCGI(CGI* cgi);
-		virtual void addMimeType(const std::string& mimeType, const std::string& extension);
+		virtual void addMimeType(MimeType* mime);
+		
 
 		virtual bool isForMe(const Request& request) const;
 		virtual AResponse* treatRequest(const Request& request);
@@ -52,13 +53,13 @@ namespace hhpp {
 		std::string getLocalPath(const std::string& query) const;
 		AResponse* fileListIndex(const std::string& query) const;
 		CGI* getCgi(const std::string& query) const;
-		std::string getMimeType(const std::string& query) const;
+		MimeType* getMimeType(const std::string& query) const;
 
 		std::string _host;
 		IBinding* _binding;
 		std::string _root;
 		std::vector<CGI*> _cgi;
-		std::map<std::string, std::string> _mimetypes;
+		std::map<std::string, MimeType*> _mimetypes;
 		std::vector<std::string> _domains;
 		std::vector<std::string> _indexes;
 		std::vector<Location*> _locations;
