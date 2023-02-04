@@ -8,6 +8,7 @@
 #include <sstream>
 
 namespace utils {
+
 	std::vector<std::string> split(std::string str, std::string delimiter);
 
 	char** mapStringToArray(const std::map<std::string, std::string> &m);
@@ -20,6 +21,11 @@ namespace utils {
 		oss << pNumber;
 		return oss.str();
 	}
+
+	void ltrim(std::string &s);
+	void rtrim(std::string &s);
+	std::string& trim(std::string &s);
+
 }
 
 #endif
