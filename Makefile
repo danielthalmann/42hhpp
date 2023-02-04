@@ -61,6 +61,7 @@ _OBJ = $(_SRC:.cpp=.o)
 OBJ = $(addprefix $(OBJ_DIR), $(_OBJ))
 
 LIB_JSON=lib/json/bin/json.a
+JSON_DIR=lib/json/
 INCLUDE_JSON=lib/json/include
 
 .PHONY: all clean fclean re run leak json
@@ -69,7 +70,7 @@ all: $(NAME)
 
 #TODO a corriger et ajouter la dependance
 $(LIB_JSON):
-	$(MAKE) -C lib/json/
+	$(MAKE) -C $(JSON_DIR)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
@@ -93,7 +94,7 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 	$(RM) $(NAME).dSYM
-	make -C lib/json/ fclean
+	make -C $(JSON_DIR) fclean
 
 re: fclean all
-	make -C lib/json/ re
+	
