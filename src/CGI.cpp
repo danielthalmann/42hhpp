@@ -25,7 +25,7 @@ namespace hhpp {
 
 	bool CGI::match(const std::string& query) const
 	{
-		for (std::vector<std::string>::iterator it; it != _extension.end(); it++) {
+		for (std::vector<std::string>::const_iterator it = _extension.begin(); it != _extension.end(); it++) {
 			std::string extension = query.substr(query.size() - (*it).size());
 			if (extension == (*it))
 				return true;
