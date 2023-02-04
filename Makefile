@@ -1,17 +1,19 @@
 ifeq ($(shell uname), Linux)
-	CC = g++
+	CXX = g++
 else ifeq ($(shell c++-12 -dumpversion 2> /dev/null), 12)
-	CC = c++-12
+	CXX = c++-12
 else
-	CC = c++
+	CXX = c++
 endif
 
 RM = rm -rf
-CPPFLAGS = -Werror -Wall -Wextra -Wfatal-errors
-CPPFLAGS += -std=c++98 -pedantic
-CPPFLAGS += -g3 -fsanitize=address
+CXXFLAGS = -Werror -Wall -Wextra -Wfatal-errors
+CXXFLAGS += -std=c++98 -pedantic
+CXXFLAGS += -I$(INC_DIR) -I$(INCLUDE_JSON)
+CXXFLAGS += -g3 -fsanitize=address
 
 SRC_DIR = src/
+
 _SRC =	main.cpp\
 		Server.cpp\
 		AResponse.cpp\
@@ -75,16 +77,22 @@ $(LIB_JSON):
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
-$(OBJ): $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp $(INC) ./Makefile | $(OBJ_DIR)
-	$(CC) $(CPPFLAGS) -I $(INC_DIR) -I$(INCLUDE_JSON) -o $@ -c $<
 
-$(NAME): $(OBJ) $(LIB_JSON)
-	$(CC) $(CPPFLAGS) $(OBJ) $(LIB_JSON) -o $(NAME)
+#$(OBJ): 
+$(OBJ_DIR)%.o : $(SRC_DIR)%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+
+#$(OBJ): $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp $(INC) ./Makefile | $(OBJ_DIR)
+#	$(CXX) $(CXXFLAGS) -I $(INC_DIR) -I$(INCLUDE_JSON) -o $@ -c $<
+
+$(NAME): $(OBJ_DIR) $(OBJ) $(LIB_JSON)
+	$(CXX) $(CXXFLAGS) $(OBJ) $(LIB_JSON) -o $(NAME)
 
 run:
 	./$(NAME)
 
-leak: CPPFLAGS = -Werror -Wall -Wextra -std=c++98 -pedantic -g3
+leak: CXXFLAGS = -Werror -Wall -Wextra -std=c++98 -pedantic -g3
 leak: re
 	leaks -atExit -- ./$(NAME)
 
