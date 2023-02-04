@@ -1,6 +1,7 @@
 #include "Request.hpp"
 #include "utility.hpp"
 #include <iostream>
+#include <cstdlib>
 
 //GET / HTTP/1.1
 //Host: www.quicksite.ch
@@ -46,22 +47,40 @@ void hhpp::Request::parseRequest(const std::string& rawRequest) {
 	header = utils::split(rawRequest, "\n");
 
 	for (size_t i = 0; i < header.size(); i++) {
-		size_t pos;
-		pos = header[i].find(":");
-		if (pos == std::string::npos)
+
+		if (i == 0)
+		{
 			token = utils::split(header[i], " ");
-		else
+
+			if (token.size() == 3) {
+				setMethod(utils::trim(token[0]));
+				setUrl(utils::trim(token[1]));
+				setHttpVersion(utils::trim(token[2]));
+			}
+		}
+		else {
+			
 			token = utils::split(header[i], ": ");
 
-		if (pos == std::string::npos)
-		{
-			setMethod(token[0]);
-			setUrl(token[1]);
-			setHttpVersion(token[2]);
+			_headers.append(utils::trim(token[0]), utils::trim(token[1]));
 		}
-		else
-			_headers.append(token[0], token[1]);
 	}
+
+	// extract host
+	try {
+
+		_host = _headers.get("Host");
+		token = utils::split(_host, ":");
+		if (token.size() == 2) {
+			_host = token[0];
+			_port = std::atoi(token[1].c_str());
+		} else
+			_port = 80;
+
+	} catch(std::exception &e) {
+
+	}
+
 }
 
 void hhpp::Request::showRequest() {
