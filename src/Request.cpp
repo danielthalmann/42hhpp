@@ -61,8 +61,10 @@ void hhpp::Request::parseRequest(const std::string& rawRequest) {
 		else {
 			
 			token = utils::split(header[i], ": ");
-
-			_headers.append(utils::trim(token[0]), utils::trim(token[1]));
+			
+			if (token.size() == 2) {
+				_headers.append(utils::trim(token[0]), utils::trim(token[1]));
+			}
 		}
 	}
 
