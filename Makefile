@@ -77,14 +77,8 @@ $(LIB_JSON):
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
-
-#$(OBJ): 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-
-#$(OBJ): $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp $(INC) ./Makefile | $(OBJ_DIR)
-#	$(CXX) $(CXXFLAGS) -I $(INC_DIR) -I$(INCLUDE_JSON) -o $@ -c $<
 
 $(NAME): $(OBJ_DIR) $(OBJ) $(LIB_JSON)
 	$(CXX) $(CXXFLAGS) $(OBJ) $(LIB_JSON) -o $(NAME)

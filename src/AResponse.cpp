@@ -52,4 +52,16 @@ namespace hhpp {
 		_header.append("Content-Length", utils::numberToString(_body.size()));
 	}
 
+	std::string AResponse::raw() const
+	{
+		std::string dataSend;
+		dataSend = "HTTP/1.1 200 OK\n";
+		dataSend.append("Content-Type: text/plain\n");
+		dataSend.append("Content-Length: 7\n");
+		dataSend.append("\n");
+		dataSend.append("Hello !");
+
+		return dataSend;
+	}
+
 }

@@ -359,6 +359,40 @@ namespace hhpp {
 							len = ret;
 							std::cout << len << " bytes received" << std::endl;
 
+							// prepare request
+							Request* request = new Request();
+							request->parseRequest(std::string(buffer));
+
+							IServer* server = NULL;
+							// dispatch request
+							for (std::vector<IServer*>::iterator it = _servers.begin(); it != _servers.end() ; ++it) {
+								if ((*it)->isForMe(*request)) {
+									server = (*it);
+								}
+							}
+							
+							// take first server if not exists
+							if (!server) {
+								server = _servers[0];
+							}
+
+							AResponse* response = server->treatRequest(*request);
+
+							std::string dataSend = response->raw();
+							ret = send(i, response->raw().c_str(), dataSend.size(), 0);
+							std::cout << "[+] data send: " << ret << "/" << dataSend.size() << std::endl;
+							if (ret < 0) {
+								std::cerr << "[-] send() failed" << std::endl;
+							}
+							close_conn = 1;
+							break;
+							
+							// free memory
+							delete response;
+							delete request;
+
+/*
+
 //							send data to client
 							std::string dataSend;
 							dataSend = "HTTP/1.1 200 OK\n";
@@ -367,6 +401,7 @@ namespace hhpp {
 							dataSend.append("\n");
 							dataSend.append("Hello !");
 
+							
 							ret = send(i, dataSend.c_str(), dataSend.size(), 0);
 							std::cout << "data send: " << ret <<"/"<<dataSend.size()<< std::endl;
 							if (ret < 0)
@@ -375,6 +410,7 @@ namespace hhpp {
 								close_conn = 1;
 								break;
 							}
+*/
 
 						}
 

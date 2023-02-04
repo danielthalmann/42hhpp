@@ -26,6 +26,8 @@ namespace hhpp {
 		typedef std::map<int, std::string>	mapIntString;
 		void setTotalStatus(int i, std::string str);
 
+		virtual std::string raw() const;
+
 	protected:
 		std::string _version;
 		int _status;
