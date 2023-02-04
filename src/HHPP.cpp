@@ -368,6 +368,7 @@ namespace hhpp {
 							for (std::vector<IServer*>::iterator it = _servers.begin(); it != _servers.end() ; ++it) {
 								if ((*it)->isForMe(*request)) {
 									server = (*it);
+									break;
 								}
 							}
 							
