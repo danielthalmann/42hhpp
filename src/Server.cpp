@@ -107,7 +107,7 @@ namespace hhpp {
 
 	bool Server::isForMe(const Request& request) const 
 	{
-		for (std::vector<std::string>::const_iterator it; it != _domains.end(); it++) {
+		for (std::vector<std::string>::const_iterator it = _domains.begin(); it != _domains.end(); it++) {
 			if (request.getHost() == (*it)) {
 				return true;
 			}
@@ -117,7 +117,7 @@ namespace hhpp {
 
 	bool Server::isAllowedMethod(const std::string& method) const 
 	{
-		for (std::vector<std::string>::const_iterator it; it != _allowedMethods.end(); it++) {
+		for (std::vector<std::string>::const_iterator it = _allowedMethods.begin(); it != _allowedMethods.end(); it++) {
 			if (method == (*it)) {
 				return true;
 			}
@@ -128,7 +128,7 @@ namespace hhpp {
 
 	Redirect* Server::getUrlRedirect(const std::string& query) const 
 	{
-		for (std::vector<Redirect*>::const_iterator it; it != _redirect.end(); it++) {
+		for (std::vector<Redirect*>::const_iterator it = _redirect.begin(); it != _redirect.end(); it++) {
 			if ((*it)->match(query)) {
 				return (*it);
 			}
@@ -139,7 +139,7 @@ namespace hhpp {
 	std::string Server::getLocalPath(const std::string& query) const
 	{
 		// TODO controle des / entre les path
-		for (std::vector<Location*>::const_iterator it; it != _locations.end(); it++) {
+		for (std::vector<Location*>::const_iterator it = _locations.begin(); it != _locations.end(); it++) {
 			if ((*it)->match(query)) {
 				return (*it)->getLocalPath(query);
 			}
@@ -158,7 +158,7 @@ namespace hhpp {
 
 	CGI* Server::getCgi(const std::string& query) const 
 	{
-		for (std::vector<CGI*>::const_iterator it; it != _cgi.end(); it++) {
+		for (std::vector<CGI*>::const_iterator it = _cgi.begin(); it != _cgi.end(); it++) {
 			if ((*it)->match(query)) {
 				return (*it);
 			}
@@ -171,7 +171,7 @@ namespace hhpp {
 	{
 		//TODO utiliser le map aulieu de faire un parcours de tous les éléments
 
-		for (std::map<std::string, MimeType*>::const_iterator it; it != _mimetypes.end(); it++) {
+		for (std::map<std::string, MimeType*>::const_iterator it = _mimetypes.begin(); it != _mimetypes.end(); it++) {
 			if (it->second->match(query)) {
 				return (it->second);
 			}
