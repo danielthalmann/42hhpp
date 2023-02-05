@@ -13,13 +13,11 @@ namespace hhpp {
 
 		std::string getMethod() const;
 		std::string getQuery() const;
-		// query without parameters
-		std::string getQueryLocation() const;
 		std::string getHost() const;
-		int getPort();
-		std::string getUrl();
-		std::string getBody();
-		std::string getHttpVersion();
+		int getPort() const;
+		std::string getUrl() const;
+		std::string getBody() const;
+		std::string getHttpVersion() const;
 		int getBodySize() const;
 
 		void setMethod(std::string method);

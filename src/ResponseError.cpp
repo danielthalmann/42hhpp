@@ -1,10 +1,13 @@
 #include "ResponseError.hpp"
+#include "utility.hpp"
 
 namespace hhpp {
 	ResponseError::ResponseError(int error) 
 	: Response() 
 	{
-		(void)error;
+		setStatus(error);
+		setBody(getStatusMessage());
+		setContentType("text/plain");
 	}
 
 	ResponseError::~ResponseError() {}
@@ -12,4 +15,5 @@ namespace hhpp {
 	void ResponseError::filename(std::string filename) {
 		(void)filename;
 	}
+
 }

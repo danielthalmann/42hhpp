@@ -24,13 +24,12 @@ hhpp::Request::~Request() {}
 
 std::string hhpp::Request::getMethod() const { return (_method); }
 std::string hhpp::Request::getQuery() const { return (_query); }
-std::string hhpp::Request::getQueryLocation() const { return (_query); /* TODO */ }
 
 std::string hhpp::Request::getHost() const { return (_host); }
-int hhpp::Request::getPort() { return (_port); }
-std::string hhpp::Request::getUrl() { return (_url); }
-std::string hhpp::Request::getBody() { return (_body); }
-std::string hhpp::Request::getHttpVersion() { return (_httpVersion); }
+int hhpp::Request::getPort() const { return (_port); }
+std::string hhpp::Request::getUrl() const { return (_url); }
+std::string hhpp::Request::getBody() const { return (_body); }
+std::string hhpp::Request::getHttpVersion() const { return (_httpVersion); }
 int hhpp::Request::getBodySize() const { return (_bodySize); }
 
 void hhpp::Request::setMethod(std::string method) { _method = method; }
@@ -44,6 +43,7 @@ void hhpp::Request::setHttpVersion(std::string httpVersion) { _httpVersion = htt
 void hhpp::Request::parseRequest(const std::string& rawRequest) {
 	std::vector<std::string> token;
 	std::vector<std::string> header;
+	std::vector<std::string> query;
 
 	header = utils::split(rawRequest, "\n");
 
@@ -57,7 +57,14 @@ void hhpp::Request::parseRequest(const std::string& rawRequest) {
 
 			if (token.size() == 3) {
 				setMethod(utils::trim(token[0]));
-				setUrl(utils::trim(token[1]));
+				query = utils::split(token[1], "?");
+				if (query.size() == 2)
+				{
+					setUrl(query[0]);
+					setQuery(query[1]);
+				} else 
+					setUrl(utils::trim(token[1]));
+
 				setHttpVersion(utils::trim(token[2]));
 			}
 		}

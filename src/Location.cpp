@@ -1,4 +1,5 @@
 #include "Location.hpp"
+#include "utility.hpp"
 
 namespace hhpp {
 	Location::Location() {}
@@ -27,7 +28,7 @@ namespace hhpp {
 	// /var/www/cgi/test.cgi
 	std::string Location::getLocalPath(const std::string& query) const
 	{
-		return _root + query.substr(_path.size());
+		return utils::path(_root, query.substr(_path.size()));
 	}
 
 }

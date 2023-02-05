@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "utility.hpp"
 
 namespace hhpp {
 
@@ -145,14 +146,15 @@ namespace hhpp {
 			}
 		}
 
-		return _root + query;
+		return utils::path(_root, query);
 
 	}
 
 	Response* Server::fileListIndex(const std::string& query) const
 	{
-		(void) query;
-		return new Response();
+		Response* r = new Response(); 
+		r->setBody(query);
+		return r;
 	}
 
 
@@ -195,21 +197,17 @@ namespace hhpp {
 		}
 
 		// search url in redirect path
-		if (Redirect *redirect = getUrlRedirect(request.getQueryLocation()) ) {
+		if (Redirect *redirect = getUrlRedirect(request.getUrl()) ) {
 			return new ResponseRedirect(redirect->getDestination(), redirect->getStatus());
 		}
 
 		// search url in location path
-		localPath = getLocalPath(request.getQueryLocation());
+		localPath = getLocalPath(request.getUrl());
 
 		struct stat sb;
 
 		if (stat(localPath.c_str(), &sb))
 			return new ResponseError(404);
-
-		// ficher présent mais pas accessible
-		if (!access(localPath.c_str(), R_OK))
-			return new ResponseError(403);
 
 		// is folder
 		if ((sb.st_mode & S_IFMT) == S_IFDIR) {
@@ -219,13 +217,17 @@ namespace hhpp {
 			return fileListIndex(localPath);
 		}
 
+		// ficher présent mais pas accessible
+		if (access(localPath.c_str(), R_OK))
+			return new ResponseError(403);
+
 		// search cgi
-		if (CGI *cgi = getCgi(request.getQueryLocation()) ) {
+		if (CGI *cgi = getCgi(request.getUrl()) ) {
 			return new ResponseCgi(cgi, request);
 		}
 
 		
-		if (MimeType* mime = getMimeType(request.getQueryLocation()) ) {
+		if (MimeType* mime = getMimeType(request.getUrl()) ) {
 			return new ResponseFile(localPath, mime->getMimeType());
 		}
 

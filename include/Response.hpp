@@ -14,29 +14,31 @@ namespace hhpp {
 
 		std::string& getVersion();
 		int& getStatus();
-		std::string& getStatusMessage();
 		Header& getHeaders();
 		std::string& getBody();
 
 		void setStatus(int status);
-		void setStatusMessage(std::string statusMessage);
-		virtual void setResponse(Request& request, int status);
+		void setContentType(std::string contentType);
 		void setBody(std::string str);
 
-		typedef std::map<int, std::string>	mapIntString;
-		void setTotalStatus(int i, std::string str);
+		std::string getStatusMessage() const;
 
+		typedef std::map<int, std::string>	mapIntString;
 		virtual std::string raw() const;
 
 	protected:
+
+
 		std::string _version;
 		int _status;
 		std::string _statusMessage;
 		Header _header;
 		std::string _body;
+		std::string _contentType;
 		static std::map<int, std::string> _totalStatus;
 
 		static mapIntString init_map() {
+			std::cout << "init_map()\n";
 			mapIntString tmp;
 			tmp[101] = "Switching Protocols";
 			tmp[102] = "Processing";

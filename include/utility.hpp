@@ -25,6 +25,7 @@ namespace utils {
 	void ltrim(std::string &s);
 	void rtrim(std::string &s);
 	std::string& trim(std::string &s);
+	std::string path(const std::string& path1, const std::string& path2);
 
 }
 

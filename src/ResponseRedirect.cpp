@@ -5,8 +5,8 @@ namespace hhpp {
 	ResponseRedirect::ResponseRedirect(std::string url, int status) 
 	: Response()
 	{
-		(void) url;
-		(void) status;
+		getHeaders()["Location"] = url;
+		setStatus(status);
 	}
 
 	ResponseRedirect::~ResponseRedirect() {}

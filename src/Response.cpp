@@ -1,11 +1,19 @@
 #include "Response.hpp"
 #include "utility.hpp"
+#include <sstream>
 
 namespace hhpp {
 
 	Response::mapIntString Response::_totalStatus = init_map();
 
-	Response::Response() {}
+	Response::Response() 
+	{
+		setStatus(200);
+		setBody(getStatusMessage());
+		setContentType("text/plain");
+		getHeaders()["Server"] = "HHPP/0.0.1";
+		getHeaders()["Connection"] = "close";
+	}
 
 	Response::~Response() {}
 
@@ -17,7 +25,7 @@ namespace hhpp {
 		return (_status);
 	}
 
-	std::string& Response::getStatusMessage() {
+	std::string Response::getStatusMessage() const {
 		return (_statusMessage);
 	}
 
@@ -31,35 +39,45 @@ namespace hhpp {
 
 	void Response::setStatus(int status) {
 		_status = status;
+		try {
+			_statusMessage = _totalStatus.at(_status);
+		} catch (std::exception &e) {
+			_status = 500;
+			_statusMessage = _totalStatus.at(_status);
+		}
 	}
 
-	void Response::setStatusMessage(std::string statusMessage) {
-		_statusMessage = statusMessage;
-	}
-
-	void Response::setResponse(Request& request, int status) {
-		(void) request;
-		(void) status;
-	}
-
-	void Response::setTotalStatus(int i, std::string str) {
-		_totalStatus[i] = str;
+	void Response::setContentType(std::string contentType) {
+		_header["Content-Type"] = contentType;
 	}
 
 	void Response::setBody(std::string str) {
 		_body = str;
-//		str.size();
-		_header.append("Content-Length", utils::numberToString(_body.size()));
+		_header["Content-Length"] = utils::numberToString(_body.size());
 	}
 
 	std::string Response::raw() const
 	{
+		std::string statusMessage;
+		int status = _status;
+
+		try {
+			statusMessage = _totalStatus.at(status);
+		} catch (std::exception &e) {
+			status = 200;
+			statusMessage = "OK";
+		}
+
 		std::string dataSend;
-		dataSend = "HTTP/1.1 200 OK\n";
-		dataSend.append("Content-Type: text/plain\n");
-		dataSend.append("Content-Length: 7\n");
+		dataSend.append("HTTP/1.1");
+		dataSend.append(" ");
+		dataSend.append(utils::numberToString(status));
+		dataSend.append(" ");
+		dataSend.append(statusMessage);
 		dataSend.append("\n");
-		dataSend.append("Hello !");
+		dataSend.append(_header.raw());
+		dataSend.append("\n");
+		dataSend.append(_body);
 
 		return dataSend;
 	}
