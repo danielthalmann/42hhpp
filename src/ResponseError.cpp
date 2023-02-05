@@ -2,7 +2,7 @@
 
 namespace hhpp {
 	ResponseError::ResponseError(int error) 
-	: AResponse() 
+	: Response() 
 	{
 		(void)error;
 	}

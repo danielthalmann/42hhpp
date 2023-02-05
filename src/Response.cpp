@@ -1,58 +1,58 @@
-#include "AResponse.hpp"
+#include "Response.hpp"
 #include "utility.hpp"
 
 namespace hhpp {
 
-	AResponse::mapIntString AResponse::_totalStatus = init_map();
+	Response::mapIntString Response::_totalStatus = init_map();
 
-	AResponse::AResponse() {}
+	Response::Response() {}
 
-	AResponse::~AResponse() {}
+	Response::~Response() {}
 
-	std::string& AResponse::getVersion() {
+	std::string& Response::getVersion() {
 		return (_version);
 	}
 
-	int& AResponse::getStatus() {
+	int& Response::getStatus() {
 		return (_status);
 	}
 
-	std::string& AResponse::getStatusMessage() {
+	std::string& Response::getStatusMessage() {
 		return (_statusMessage);
 	}
 
-	Header& AResponse::getHeaders() {
+	Header& Response::getHeaders() {
 		return (_header);
 	}
 
-	std::string& AResponse::getBody() {
+	std::string& Response::getBody() {
 		return (_body);
 	}
 
-	void AResponse::setStatus(int status) {
+	void Response::setStatus(int status) {
 		_status = status;
 	}
 
-	void AResponse::setStatusMessage(std::string statusMessage) {
+	void Response::setStatusMessage(std::string statusMessage) {
 		_statusMessage = statusMessage;
 	}
 
-	void AResponse::setResponse(Request& request, int status) {
+	void Response::setResponse(Request& request, int status) {
 		(void) request;
 		(void) status;
 	}
 
-	void AResponse::setTotalStatus(int i, std::string str) {
+	void Response::setTotalStatus(int i, std::string str) {
 		_totalStatus[i] = str;
 	}
 
-	void AResponse::setBody(std::string str) {
+	void Response::setBody(std::string str) {
 		_body = str;
 //		str.size();
 		_header.append("Content-Length", utils::numberToString(_body.size()));
 	}
 
-	std::string AResponse::raw() const
+	std::string Response::raw() const
 	{
 		std::string dataSend;
 		dataSend = "HTTP/1.1 200 OK\n";

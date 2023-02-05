@@ -2,7 +2,8 @@
 
 namespace hhpp {
 
-	ResponseCgi::ResponseCgi(CGI *cgi, const Request &request) : AResponse() 
+	ResponseCgi::ResponseCgi(CGI *cgi, const Request &request) 
+    : Response() 
     {
         (void) cgi;
         (void) request;

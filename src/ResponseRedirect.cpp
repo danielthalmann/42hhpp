@@ -2,7 +2,9 @@
 
 namespace hhpp {
 	
-	ResponseRedirect::ResponseRedirect(std::string url, int status) {
+	ResponseRedirect::ResponseRedirect(std::string url, int status) 
+	: Response()
+	{
 		(void) url;
 		(void) status;
 	}

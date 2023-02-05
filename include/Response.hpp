@@ -1,16 +1,16 @@
-#ifndef ARESPONSE_HPP
-#define ARESPONSE_HPP
+#ifndef RESPONSE_HPP
+#define RESPONSE_HPP
 
 #include <string>
 #include "Header.hpp"
 #include "Request.hpp"
 
 namespace hhpp {
-	class AResponse
+	class Response
 	{
 	public:
-		AResponse();
-		virtual ~AResponse();
+		Response();
+		virtual ~Response();
 
 		std::string& getVersion();
 		int& getStatus();

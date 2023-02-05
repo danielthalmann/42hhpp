@@ -7,7 +7,9 @@ namespace hhpp {
 	std::string Header::get(std::string key) {
 		std::map<std::string, std::string>::iterator it;
 		it = _params.find(key);
-		return (it->second);
+		if (it != _params.end())
+			return (it->second);
+		return std::string();
 	}
 
 	void Header::remove(std::string key) {

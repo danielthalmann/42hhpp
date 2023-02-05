@@ -33,7 +33,7 @@ namespace hhpp {
 		virtual void addAllowedMethod(const std::string& method) = 0;
 		virtual void addCGI(CGI* cgi) = 0;
 		virtual void addMimeType(MimeType* mime) = 0;
-		virtual AResponse* treatRequest(const Request& request) = 0;
+		virtual Response* treatRequest(const Request& request) = 0;
 
 	};
 }

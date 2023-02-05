@@ -44,14 +44,14 @@ namespace hhpp {
 		
 
 		virtual bool isForMe(const Request& request) const;
-		virtual AResponse* treatRequest(const Request& request);
+		virtual Response* treatRequest(const Request& request);
 
 	private:
 
 		bool isAllowedMethod(const std::string& method) const;
 		Redirect* getUrlRedirect(const std::string& query) const;
 		std::string getLocalPath(const std::string& query) const;
-		AResponse* fileListIndex(const std::string& query) const;
+		Response* fileListIndex(const std::string& query) const;
 		CGI* getCgi(const std::string& query) const;
 		MimeType* getMimeType(const std::string& query) const;
 

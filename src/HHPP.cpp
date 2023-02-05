@@ -377,7 +377,7 @@ namespace hhpp {
 								server = _servers[0];
 							}
 
-							AResponse* response = server->treatRequest(*request);
+							Response* response = server->treatRequest(*request);
 
 							std::string dataSend = response->raw();
 							ret = send(i, response->raw().c_str(), dataSend.size(), 0);

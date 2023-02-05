@@ -1,11 +1,11 @@
 #ifndef RESPONSEREDIRECT_HPP
 #define RESPONSEREDIRECT_HPP
 
-#include <AResponse.hpp>
+#include <Response.hpp>
 #include <string>
 
 namespace hhpp {
-	class ResponseRedirect : public AResponse
+	class ResponseRedirect : public Response
 	{
 	public:
 		ResponseRedirect(std::string url, int status = 301);

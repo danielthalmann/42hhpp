@@ -149,7 +149,7 @@ namespace hhpp {
 
 	}
 
-	AResponse* Server::fileListIndex(const std::string& query) const
+	Response* Server::fileListIndex(const std::string& query) const
 	{
 		(void) query;
 		return new Response();
@@ -179,7 +179,7 @@ namespace hhpp {
 		return NULL;	
 	}
 
-	AResponse* Server::treatRequest(const Request& request)
+	Response* Server::treatRequest(const Request& request)
 	{
 		std::string localPath;
 

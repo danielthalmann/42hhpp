@@ -10,13 +10,13 @@ RM = rm -rf
 CXXFLAGS = -Werror -Wall -Wextra -Wfatal-errors
 CXXFLAGS += -std=c++98 -pedantic
 CXXFLAGS += -I$(INC_DIR) -I$(INCLUDE_JSON)
-CXXFLAGS += -g3 -fsanitize=address
+CXXFLAGS += -g
+#CXXFLAGS += -g3 -fsanitize=address
 
 SRC_DIR = src/
 
 _SRC =	main.cpp\
 		Server.cpp\
-		AResponse.cpp\
 		Binding.cpp\
 		CGI.cpp\
 		ErrorPage.cpp\
@@ -27,17 +27,16 @@ _SRC =	main.cpp\
 		Redirect.cpp\
 		Request.cpp\
 		Response.cpp\
-		ResponseFile.cpp\
-		ResponseError.cpp\
 		ResponseCgi.cpp\
+		ResponseError.cpp\
+		ResponseFile.cpp\
 		ResponseRedirect.cpp\
 		utility.cpp
 
 SRC = $(addprefix $(SRC_DIR), $(_SRC))
 
 INC_DIR = include/
-HEADER=	AResponse.hpp\
-		Binding.hpp\
+HEADER=	Binding.hpp\
 		CGI.hpp\
 		ErrorPage.hpp\
 		Header.hpp\
@@ -49,6 +48,8 @@ HEADER=	AResponse.hpp\
 		Redirect.hpp\
 		Request.hpp\
 		Response.hpp\
+		ResponseCgi.cpp\
+		ResponseError.cpp\
 		ResponseFile.hpp\
 		ResponseRedirect.hpp\
 		Server.hpp\
