@@ -20,6 +20,7 @@ namespace hhpp {
 		std::string getUrl();
 		std::string getBody();
 		std::string getHttpVersion();
+		int getBodySize() const;
 
 		void setMethod(std::string method);
 		void setQuery(std::string query);
@@ -34,6 +35,7 @@ namespace hhpp {
 		Header& getHeaders();
 
 	private:
+		int _bodySize;
 		std::string _method;
 		std::string _url;
 		std::string _httpVersion;

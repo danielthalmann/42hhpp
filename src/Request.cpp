@@ -31,6 +31,7 @@ int hhpp::Request::getPort() { return (_port); }
 std::string hhpp::Request::getUrl() { return (_url); }
 std::string hhpp::Request::getBody() { return (_body); }
 std::string hhpp::Request::getHttpVersion() { return (_httpVersion); }
+int hhpp::Request::getBodySize() const { return (_bodySize); }
 
 void hhpp::Request::setMethod(std::string method) { _method = method; }
 void hhpp::Request::setQuery(std::string query) { _query = query; }
@@ -45,6 +46,8 @@ void hhpp::Request::parseRequest(const std::string& rawRequest) {
 	std::vector<std::string> header;
 
 	header = utils::split(rawRequest, "\n");
+
+	_bodySize = 0;
 
 	for (size_t i = 0; i < header.size(); i++) {
 
@@ -83,6 +86,11 @@ void hhpp::Request::parseRequest(const std::string& rawRequest) {
 
 	}
 
+	try {
+		_bodySize = std::atoi(_headers.get("Content-Length").c_str());
+	} catch(std::exception &e) {
+
+	}
 }
 
 void hhpp::Request::showRequest() {

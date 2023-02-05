@@ -189,7 +189,9 @@ namespace hhpp {
 
 		// check size
 		if (_maxBodySize > 0) {
-			// TODO check size of body and return error
+			if (request.getBodySize() > _maxBodySize) {
+				return new ResponseError(413);
+			}
 		}
 
 		// search url in redirect path
