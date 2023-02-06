@@ -38,7 +38,6 @@ namespace hhpp {
 		static std::map<int, std::string> _totalStatus;
 
 		static mapIntString init_map() {
-			std::cout << "init_map()\n";
 			mapIntString tmp;
 			tmp[101] = "Switching Protocols";
 			tmp[102] = "Processing";

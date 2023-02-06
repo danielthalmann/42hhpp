@@ -1,5 +1,6 @@
 #include "utility.hpp"
 #include <algorithm>
+#include <iostream>
 
 #define PATH_SEPARATOR '/'
 namespace utils {
@@ -96,6 +97,67 @@ namespace utils {
 			p = path1 + "\\" + path2.substr(1);
 		
 		return p;
+	}
+
+	std::string base64Encode(const std::string& s) {
+
+		if (s.size() == 0)
+			return std::string("");
+
+		char encode_table[64] = {
+		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+		'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+		'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+		'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+		's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2',
+		'3', '4', '5', '6', '7', '8', '9', '+', '/'};
+
+		std::string encode(4 + (4 * s.size() / 3), '\0');
+		size_t i = 0, y = 0;
+		char a, b, c;
+		long int concat_bits;
+
+		std::cout << "s.size() :" << s.size() << std::endl;
+
+		while((i + 2) < s.size()) {
+			if (y >= encode.capacity()){
+				encode.resize(encode.capacity() * 2, '\0');
+			}
+			a = s[i++];
+			b = s[i++];
+			c = s[i++];
+			concat_bits = (a << 16) | (b << 8) | c;
+			encode[y++] = encode_table[(concat_bits >> 18) & 0x3F];
+			encode[y++] = encode_table[(concat_bits >> 12) & 0x3F];
+			encode[y++] = encode_table[(concat_bits >> 6) & 0x3F];
+			encode[y++] = encode_table[concat_bits & 0x3F];
+		}
+		if (s.size() - i == 1) {
+			if (y >= encode.capacity()){
+				encode.resize(encode.capacity() * 2, '\0');
+			}
+			a = s[i++];
+			concat_bits = (a << 16);
+			encode[y++] = encode_table[(concat_bits >> 18) & 0x3F];
+			encode[y++] = encode_table[(concat_bits >> 12) & 0x3F];
+			encode[y++] = '=';
+			encode[y++] = '=';
+		}
+		if (s.size() - i == 2) {
+			if (y >= encode.capacity()){
+				encode.resize(encode.capacity() * 2, '\0');
+			}
+			a = s[i++];
+			b = s[i++];
+			concat_bits = (a << 16) | (b << 8) ;
+			encode[y++] = encode_table[(concat_bits >> 18) & 0x3F];
+			encode[y++] = encode_table[(concat_bits >> 12) & 0x3F];
+			encode[y++] = encode_table[(concat_bits >> 6) & 0x3F];
+			encode[y++] = '=';
+		}
+
+		encode.resize(y, '\0');
+		return encode;
 	}
 
 }
