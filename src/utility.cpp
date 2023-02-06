@@ -80,7 +80,6 @@ namespace utils {
 	// trim from both ends (in place)
 	std::string path(const std::string& path1, const std::string& path2) {
 		
-		std::string p;
 		if (path1.size() == 0) {
 			return path2;
 		}
@@ -88,15 +87,19 @@ namespace utils {
 			return path1;
 		}
 		if (*(path1.rbegin()) == PATH_SEPARATOR && *(path2.begin()) != PATH_SEPARATOR)
-			p = path1 + path2;
-		else if (*path1.rbegin() != PATH_SEPARATOR && *path2.begin() == PATH_SEPARATOR)
-			p = path1 + path2;
+			return path1 + path2;
+		else if (*path1.rbegin() != PATH_SEPARATOR && *path2.begin() == PATH_SEPARATOR) {
+			if (path2.size() > 1)
+				return path1 + path2;
+			else
+				return path1;
+		}
 		else if (*path1.rbegin() == PATH_SEPARATOR && *path2.begin() == PATH_SEPARATOR)
-			p = path1 + path2.substr(1);
+			return path1 + path2.substr(1);
 		else 
-			p = path1 + "\\" + path2.substr(1);
+			return path1 + PATH_SEPARATOR + path2;
 		
-		return p;
+		return path1;
 	}
 
 	std::string base64Encode(const std::string& s) {

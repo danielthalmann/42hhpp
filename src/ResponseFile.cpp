@@ -11,21 +11,25 @@ namespace hhpp {
 		std::stringstream buffer;
 
 		if (mimetype->isBinary()) {
-
-			fs.open(filename.c_str(), std::ios_base::binary);
-			buffer << fs.rdbuf();
-
-			setBody(utils::base64Encode(buffer.str()));
+			fs.open(filename.c_str(), std::ios::in);
+			getHeaders()["Content-Transfer-Encoding"] = "base64";
 		}
 		else {
-			fs.open(filename.c_str(), std::ios_base::in);
-			buffer << fs.rdbuf();
-
-			setBody(buffer.str());
+			fs.open(filename.c_str(), std::ios::in);
 		}
-		setContentType(mimetype->getMimeType());
 
+		if (!fs){
+			setStatus(500);
+			setBody(getStatusMessage());
+			setContentType("text/plain");
+		} else {
+			buffer << fs.rdbuf();
+			setBody(buffer.str());
+			setContentType(mimetype->getMimeType());
+		}
+		buffer << fs.rdbuf();
 		fs.close();
+		
 	}
 
 	ResponseFile::~ResponseFile() 

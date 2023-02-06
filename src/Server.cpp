@@ -205,16 +205,30 @@ namespace hhpp {
 		localPath = getLocalPath(request.getUrl());
 
 		struct stat sb;
+				std::cout << localPath << std::endl;
 
 		if (stat(localPath.c_str(), &sb))
 			return new ResponseError(404);
 
 		// is folder
 		if ((sb.st_mode & S_IFMT) == S_IFDIR) {
-			if (!_autoIndex) {
-				return new ResponseError(403);
+			
+			bool indexFound = false;
+			for (std::vector<std::string>::const_iterator it = _indexes.begin(); it != _indexes.end(); it++) {
+				std::string filename = utils::path(localPath, (*it));
+				if (!access(filename.c_str(), R_OK)) {
+					localPath = filename;
+					indexFound = true;
+				}
 			}
-			return fileListIndex(localPath);
+
+			if (!indexFound){
+				if (!_autoIndex) {
+					return new ResponseError(403);
+				}
+				return fileListIndex(localPath);
+			}
+
 		}
 
 		// ficher présent mais pas accessible
@@ -222,12 +236,12 @@ namespace hhpp {
 			return new ResponseError(403);
 
 		// search cgi
-		if (CGI *cgi = getCgi(request.getUrl()) ) {
+		if (CGI *cgi = getCgi(localPath) ) {
 			return new ResponseCgi(cgi, request);
 		}
 
 		
-		if (MimeType* mime = getMimeType(request.getUrl()) ) {
+		if (MimeType* mime = getMimeType(localPath) ) {
 			return new ResponseFile(localPath, mime);
 		}
 

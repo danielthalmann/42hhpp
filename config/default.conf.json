@@ -8,7 +8,7 @@
       },
       "domain" : ["localhost", "mydomain.ch"],
       "index" : ["index.html", "index.php"],
-      "root" : "/var/www",
+      "root" : "test/www/domain1",
       "redirect" : [
         {
           "path" : "no_more_here",
@@ -43,7 +43,7 @@
       },
       "domain" : ["localhost", "mydomain.ch"],
       "index" : ["index.html", "index.php"],
-      "root" : "/var/www",
+      "root" : "test/www/domain2",
       "redirect" : [
         {
           "path" : "no_more_here",
