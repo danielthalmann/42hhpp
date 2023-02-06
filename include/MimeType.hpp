@@ -15,10 +15,12 @@ namespace hhpp {
 		void setExtension(const std::string& extension);
 		std::string getExtension() const;
 		bool match(const std::string& query) const;
+		bool isBinary() const;
 
 	private:
 		std::string _mimeType;
 		std::string _extension;
+		bool _isBinary;
 
 	};
 }

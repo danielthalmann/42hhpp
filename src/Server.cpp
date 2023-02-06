@@ -228,7 +228,7 @@ namespace hhpp {
 
 		
 		if (MimeType* mime = getMimeType(request.getUrl()) ) {
-			return new ResponseFile(localPath, mime->getMimeType());
+			return new ResponseFile(localPath, mime);
 		}
 
 		return new ResponseError(415);
