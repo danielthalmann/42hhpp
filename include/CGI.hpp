@@ -15,7 +15,6 @@ namespace hhpp {
 		CGI();
 		~CGI();
 
-		bool isForMe(Request request);
 		std::string execute(Request request);
 		void setLocation(const std::string& location);
 		void addExtension(const std::string& extension);

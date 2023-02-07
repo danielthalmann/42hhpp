@@ -7,7 +7,10 @@ namespace hhpp {
     {
         (void) cgi;
         (void) request;
-        
+		setStatus(501);
+		setBody(getStatusMessage());
+		setContentType("text/plain");
+
     }
 
 	ResponseCgi::~ResponseCgi() 

@@ -205,7 +205,7 @@ namespace hhpp {
 		localPath = getLocalPath(request.getUrl());
 
 		struct stat sb;
-				std::cout << localPath << std::endl;
+		std::cout << localPath << std::endl;
 
 		if (stat(localPath.c_str(), &sb))
 			return new ResponseError(404);

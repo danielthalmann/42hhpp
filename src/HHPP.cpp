@@ -378,7 +378,9 @@ namespace hhpp {
 							}
 
 							Response* response = server->treatRequest(*request);
-
+							// propage les cookie
+							response->getHeaders()["Cookie"] = request->getHeaders()["Cookie"];
+							
 							std::string dataSend = response->raw();
 							ret = send(i, response->raw().c_str(), dataSend.size(), 0);
 							std::cout << "[+] data send: " << ret << "/" << dataSend.size() << std::endl;
