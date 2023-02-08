@@ -11,6 +11,8 @@
 #include "MimeType.hpp"
 
 namespace hhpp {
+	class IBinding;
+	
 	class IServer
 	{
 

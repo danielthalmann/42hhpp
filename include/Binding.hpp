@@ -3,8 +3,10 @@
 
 #include "IBinding.hpp"
 #include "Request.hpp"
+#include "Server.hpp"
 #include <iostream>
 #include <unistd.h>
+#include <vector>
 
 #include <arpa/inet.h>
 #include <cstring>
@@ -28,6 +30,11 @@ namespace hhpp {
 		virtual void setSocket();
 		virtual void setIP(const std::string& ip);
 		virtual void setPort(const int port);
+		virtual void addServer(IServer* server);
+		virtual int acceptConnection();
+		virtual void closeConnection(int socket); 
+		virtual bool hasConnection(const int socket);
+		virtual IServer* getServerFor(const Request& request) const;
 
 		virtual std::string getIP() const;
 		virtual int getPort() const;
@@ -46,6 +53,8 @@ namespace hhpp {
 		struct sockaddr_in bindSocket();
 		void listenSocket();
 
+		std::vector<IServer*> _servers;
+		std::vector<int> _connections;
 		int _listen_sd;
 		std::string _ip;
 		int _port;

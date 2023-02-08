@@ -67,6 +67,10 @@ namespace hhpp {
 		addr = bindSocket();
 		listenSocket();
 	}
+	
+	void Binding::addServer(IServer* server) {
+		_servers.push_back(server);
+	}
 
 	void Binding::setIP(const std::string& ip) {
 		_ip = ip;
@@ -109,6 +113,49 @@ namespace hhpp {
 		if (_ip == ip && _port == port)
 			return true;
 		return false;
+	}
+
+	IServer* Binding::getServerFor(const Request& request) const 
+	{
+		for (std::vector<IServer*>::const_iterator it = _servers.begin(); it != _servers.end(); it++) {
+			if ((*it)->isForMe(request)) {
+				return (*it);
+			}
+		}
+		return _servers[0];
+	}
+
+	int Binding::acceptConnection() 
+	{
+		int new_sd;
+		new_sd = accept(_listen_sd, NULL, NULL);
+		_connections.push_back(new_sd);
+		return new_sd;
+	}
+
+	bool Binding::hasConnection(const int socket)
+	{
+		for (std::vector<int>::iterator it = _connections.begin(); it != _connections.end(); it++) {
+
+	}
+
+	void Binding::closeConnection(int socket) 
+	{
+		_connections.erase(std::find(_connections.begin()
+								_connections.end(),
+								socket));
+
+	}
+
+	IServer* Binding::getServerFor(const Request& request) const
+	{
+		for (std::vector<IServer*>::iterator it = _servers.begin(); it != _servers.end(); it++) {
+			if ((*it)->isForMe(request)) {
+				return (*it);
+			}
+		}
+		return _servers[0];
+
 	}
 
 }

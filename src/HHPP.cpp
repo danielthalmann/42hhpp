@@ -264,12 +264,12 @@ namespace hhpp {
 		delete json;
 	}
 
-	bool HHPP::isListen(int socket) {
+	IBinding* HHPP::isListen(int socket) {
 		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
 			if (socket == (*it)->getSocket())
-				return true;
+				return (*it);
 		}
-		return false;
+		return NULL;
 	}
 
 	void HHPP::run() {
@@ -281,6 +281,7 @@ namespace hhpp {
 		int close_conn;
 		int len;
 		char buffer[4096];
+		IBinding *currentBinding;
 
 		FD_ZERO(&current_set);
 		max_sd = _bindings.front()->getSocket();
@@ -312,7 +313,7 @@ namespace hhpp {
 				if (FD_ISSET(i, &working_set))
 				{
 					desc_ready -= 1;
-					if (isListen(i))
+					if ((currentBinding = isListen(i)) != NULL )
 					{
 						std::cout << "Listening socket is readable" << std::endl;
 						do

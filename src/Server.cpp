@@ -43,6 +43,7 @@ namespace hhpp {
 	void Server::setBinding(IBinding* binding)
 	{
 		_binding = binding;
+		_binding->addServer(this);
 	}
 	
 	void Server::setRoot(const std::string& root)
