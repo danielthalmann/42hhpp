@@ -272,6 +272,17 @@ namespace hhpp {
 		return NULL;
 	}
 
+	IBinding* HHPP::getBindingFromSocket(int socket) {
+
+		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
+			if (socket == (*it)->getSocket())
+				return (*it);
+			if ((*it)->hasConnection(socket))
+				return (*it);
+		}
+		return NULL;
+	}
+
 	void HHPP::run() {
 		int ret;
 		fd_set current_set, working_set;
@@ -318,7 +329,7 @@ namespace hhpp {
 						std::cout << "Listening socket is readable" << std::endl;
 						do
 						{
-							new_sd = accept(i, NULL, NULL);
+							new_sd = currentBinding->acceptConnection();
 							if (new_sd < 0)
 							{
 								if (errno != EWOULDBLOCK)
@@ -339,6 +350,9 @@ namespace hhpp {
 					{
 						std::cout << "Descriptor " << i << " is readable" << std::endl;
 						close_conn = 0;
+
+						currentBinding = getBindingFromSocket(i);
+
 						while (1)
 						{
 							ret = recv(i, buffer, sizeof(buffer), 0);
@@ -365,13 +379,7 @@ namespace hhpp {
 							request->parseRequest(std::string(buffer));
 
 							IServer* server = NULL;
-							// dispatch request
-							for (std::vector<IServer*>::iterator it = _servers.begin(); it != _servers.end() ; ++it) {
-								if ((*it)->isForMe(*request)) {
-									server = (*it);
-									break;
-								}
-							}
+							server = currentBinding->getServerFor(*request);
 							
 							// take first server if not exists
 							if (!server) {
@@ -421,7 +429,8 @@ namespace hhpp {
 						if (close_conn)
 						{
 							std::cout << "close fd: " << i << std::endl;
-							close(i);
+							currentBinding->closeConnection(i);
+							// close(i);
 							FD_CLR(i, &current_set);
 							if (i == max_sd)
 							{

@@ -1,4 +1,5 @@
 #include "Binding.hpp"
+#include <algorithm>
 
 namespace hhpp {
 	Binding::Binding() {}
@@ -129,33 +130,24 @@ namespace hhpp {
 	{
 		int new_sd;
 		new_sd = accept(_listen_sd, NULL, NULL);
-		_connections.push_back(new_sd);
+		if (new_sd > 0)
+			_connections.push_back(new_sd);
 		return new_sd;
 	}
 
 	bool Binding::hasConnection(const int socket)
 	{
 		for (std::vector<int>::iterator it = _connections.begin(); it != _connections.end(); it++) {
-
+			if ((*it) == socket)
+				return true;
+		}
+		return false;
 	}
 
 	void Binding::closeConnection(int socket) 
 	{
-		_connections.erase(std::find(_connections.begin()
-								_connections.end(),
-								socket));
-
-	}
-
-	IServer* Binding::getServerFor(const Request& request) const
-	{
-		for (std::vector<IServer*>::iterator it = _servers.begin(); it != _servers.end(); it++) {
-			if ((*it)->isForMe(request)) {
-				return (*it);
-			}
-		}
-		return _servers[0];
-
+		_connections.erase(std::find(_connections.begin(), _connections.end(), socket));
+		close(socket);
 	}
 
 }

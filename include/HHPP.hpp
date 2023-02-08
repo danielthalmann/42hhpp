@@ -38,6 +38,7 @@ namespace hhpp {
 		std::vector<IBinding*> _bindings;
 
 		IBinding* isListen(int socket);
+		IBinding* getBindingFromSocket(int socket);
 
 		std::string readFileConfig(std::string pathConfig);
 		void dispatchRequest(Request request);
