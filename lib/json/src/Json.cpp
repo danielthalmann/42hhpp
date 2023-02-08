@@ -86,7 +86,7 @@ namespace json
         {
             
             if (_s.compare(_pos, 4, "true") == 0 ||
-                _s.compare(_pos, 4, "false") == 0 )
+                _s.compare(_pos, 5, "false") == 0 )
                 return true;
         }
         return false;
@@ -378,11 +378,14 @@ namespace json
     {
         JsonBoolean *j = new JsonBoolean();
 
-        if (_s.compare(_pos, 4, "true") == 0)
+        if (_s.compare(_pos, 4, "true") == 0){
             j->set(true);
-        else if (_s.compare(_pos, 4, "false") == 0)
+            _pos += 4;
+        }
+        else if (_s.compare(_pos, 5, "false") == 0){
             j->set(false);
-        _pos += 4;
+            _pos += 5;
+        }
 
         if (!(isEndOfString() || isWhitespace() || isEndOfAccolade()))
             invalidCharacter();
