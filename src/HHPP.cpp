@@ -2,6 +2,7 @@
 #include "utility.hpp"
 #include <Json.hpp>
 #include <stdlib.h>
+#include <unistd.h>
 
 namespace hhpp {
 	HHPP::HHPP() {}
@@ -274,7 +275,7 @@ namespace hhpp {
 		int listen_sd;
 		int desc_ready, end_server = 0;
 		int close_conn;
-		int len;
+//		int len;
 		char buffer[4096];
 		Request clientRequest;
 		Response serverResponse;
@@ -295,7 +296,7 @@ namespace hhpp {
 			memcpy(&working_set, &current_set, sizeof(current_set));
 
 //			select
-			std::cout << "Waiting on select()..." << std::endl;
+//			std::cout << "Waiting on select()..." << std::endl;
 			ret = select(max_sd + 1, &working_set, NULL, NULL, NULL);
 			if (ret < 0)
 			{
@@ -311,7 +312,7 @@ namespace hhpp {
 					desc_ready -= 1;
 					if (isListen(i))
 					{
-						std::cout << "Listening socket is readable" << std::endl;
+//						std::cout << "Listening socket is readable" << std::endl;
 						do
 						{
 							new_sd = accept(i, NULL, NULL);
@@ -324,7 +325,7 @@ namespace hhpp {
 								}
 								break;
 							}
-							std::cout << "New incoming connection - " << new_sd << std::endl;
+//							std::cout << "New incoming connection - " << new_sd << std::endl;
 							FD_SET(new_sd, &current_set);
 							if (new_sd > max_sd)
 								max_sd = new_sd;
@@ -333,7 +334,7 @@ namespace hhpp {
 					}
 					else
 					{
-						std::cout << "Descriptor " << i << " is readable" << std::endl;
+//						std::cout << "Descriptor " << i << " is readable" << std::endl;
 						close_conn = 0;
 						while (1)
 						{
@@ -343,19 +344,19 @@ namespace hhpp {
 							{
 								if (errno != EWOULDBLOCK)
 								{
-									std::cout << "recv() finish" << std::endl;
+//									std::cout << "recv() finish" << std::endl;
 									close_conn = 1;
 								}
 								break;
 							}
 							if (ret == 0)
 							{
-								std::cout << "Connection closed" << std::endl;
+//								std::cout << "Connection closed" << std::endl;
 								close_conn = 1;
 								break;
 							}
-							len = ret;
-							std::cout << len << " bytes received" << std::endl;
+//							len = ret;
+//							std::cout << len << " bytes received" << std::endl;
 
 //							send data to client
 							clientRequest.parseRequest(std::string(buffer, ret));
@@ -367,6 +368,7 @@ namespace hhpp {
 							}
 
 							std::string url = clientRequest.getUrl();
+
 							int status = 200;
 							std::size_t found = url.find("/?");
 							if (found != std::string::npos)
@@ -379,11 +381,62 @@ namespace hhpp {
 								}
 								if (param[0] == "status")
 								{
-									status =  std::atoi(param[1].c_str());
+									status = std::atoi(param[1].c_str());
 								}
 							}
 
-							if (status != 200)
+							found = url.find(".py");
+
+							if (found != std::string::npos)
+							{
+								std::cout << "found py" << std::endl;
+
+								int p[2];
+								pipe(p);
+//								fcntl(p[0], F_SETFL, O_NONBLOCK);
+//								fcntl(p[1], F_SETFL, O_NONBLOCK);
+
+								std::vector<char*> path;
+								std::string test = "/usr/bin/python3";
+								path.push_back(const_cast<char*>(test.c_str()));
+								std::string test2 = "/Users/tpinto-m/gh/42hhpp/var/www/hello_get.py";
+								path.push_back(const_cast<char*>(test2.c_str()));
+								std::string test3 = "first_name=ZARA&last_name=ALI";
+								path.push_back(const_cast<char*>(test3.c_str()));
+								path.push_back(NULL);
+
+								std::map<std::string, std::string> env;
+								env["CONTENT_LENGTH"] = "154";
+								env["GATEWAY_INTERFACE"] = "CGI/1.1";
+								env["SERVER_PROTOCOL"] = "HTTP/1.1";
+								env["SCRIPT_FILENAME"] = "/Users/tpinto-m/gh/42hhpp/var/www/hello_get.py";
+								env["SCRIPT_NAME"] = "hello_get.py";
+								env["REDIRECT_STATUS"] = "200";
+
+								int pid = fork();
+
+								if (pid == 0) {
+									std::cout << "fork created" << std::endl;
+									close(p[0]);
+									dup2(p[1], STDOUT_FILENO);
+//									dup2(pp[0], STDIN_FILENO); // faire l invers
+									close(p[1]);
+
+									execve(path[0], &path[0], utils::mapStringToArray(env));
+									exit(0);
+								} else {
+									std::cout << "pipe closed" << std::endl;
+									close(p[1]);
+
+									waitpid(pid, NULL, 0);
+									bzero(&buffer, sizeof(buffer));
+									ret = read(p[0], buffer, sizeof(buffer));
+
+									serverResponse.setResponse(clientRequest, 200);
+									serverResponse.setBody(buffer, "text/html");
+								}
+							}
+							else if (found == std::string::npos && status != 200)
 							{
 								int isfound = 0;
 								serverResponse.setResponse(clientRequest, status);
@@ -416,7 +469,7 @@ namespace hhpp {
 
 						if (close_conn)
 						{
-							std::cout << "close fd: " << i << std::endl;
+//							std::cout << "close fd: " << i << std::endl;
 							close(i);
 							FD_CLR(i, &current_set);
 							if (i == max_sd)
