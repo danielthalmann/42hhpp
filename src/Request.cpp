@@ -1,6 +1,7 @@
 #include "Request.hpp"
 #include "utility.hpp"
 #include <iostream>
+#include <cstdlib>
 
 namespace hhpp {
 	Request::Request() {

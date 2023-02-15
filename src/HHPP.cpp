@@ -387,6 +387,8 @@ namespace hhpp {
 							}
 
 							Response* response = server->treatRequest(*request);
+							response->setServer(server);
+
 							// propage les cookie
 							response->getHeaders()["Cookie"] = request->getHeaders()["Cookie"];
 

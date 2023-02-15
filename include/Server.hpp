@@ -41,10 +41,11 @@ namespace hhpp {
 		virtual void addAllowedMethod(const std::string& method);
 		virtual void addCGI(CGI* cgi);
 		virtual void addMimeType(MimeType* mime);
-		
 
 		virtual bool isForMe(const Request& request) const;
 		virtual Response* treatRequest(const Request& request);
+
+		std::vector<ErrorPage*> getErrorPages();
 
 	private:
 

@@ -5,13 +5,16 @@
 #include <string>
 
 namespace hhpp {
-	class ResponseError: public Response
+	class ResponseError : public Response
 	{
 	public:
 		ResponseError(int error = 0);
 		~ResponseError();
 
 		void filename(std::string filename);
+
+	protected:
+		void prepareResponse();
 
 	private:
 

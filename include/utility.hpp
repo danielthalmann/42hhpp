@@ -6,6 +6,8 @@
 # include <string>
 //# include <iostream>
 #include <sstream>
+#include <sys/stat.h>
+#include <fstream>
 
 namespace utils {
 
@@ -28,6 +30,8 @@ namespace utils {
 	std::string path(const std::string& path1, const std::string& path2);
 	std::string base64Encode(const unsigned char* s, unsigned int len);
 
+	std::string getTime();
+	std::string readFile(std::string path);
 }
 
 #endif

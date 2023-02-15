@@ -36,6 +36,7 @@ namespace hhpp {
 		virtual void addCGI(CGI* cgi) = 0;
 		virtual void addMimeType(MimeType* mime) = 0;
 		virtual Response* treatRequest(const Request& request) = 0;
+		virtual std::vector<ErrorPage*> getErrorPages() = 0;
 
 	};
 }

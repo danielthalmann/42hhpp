@@ -56,8 +56,18 @@ namespace hhpp {
 		_header["Content-Length"] = utils::numberToString(_body.size());
 	}
 
-	std::string Response::raw() const
+	void Response::setServer(IServer *server) {
+		_server = server;
+	}
+
+	IServer *Response::getServer() {
+		return _server;
+	}
+
+	std::string Response::raw()
 	{
+		prepareResponse();
+
 		std::string statusMessage;
 		int status = _status;
 
@@ -80,6 +90,12 @@ namespace hhpp {
 		dataSend.append(_body);
 
 		return dataSend;
+	}
+
+	void Response::prepareResponse() {
+		std::cout << "response prepareResponse" << std::endl;
+//		getServer()->;
+//		_server
 	}
 
 }

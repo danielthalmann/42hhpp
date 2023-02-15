@@ -18,9 +18,13 @@ namespace hhpp {
 
     }
 
-  	std::string ResponseCgi::raw() const
+	std::string ResponseCgi::raw()
 	{
         return _cgi->execute(*_request);
-    }  
+    }
+
+	void ResponseCgi::prepareResponse() {
+
+	}
 
 }

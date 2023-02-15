@@ -163,4 +163,48 @@ namespace utils {
 		return encode;
 	}
 
+	std::string readFile(std::string path) {
+		std::string file;
+		char c;
+		struct stat fileInfo;
+		std::ifstream ifs(path.c_str());
+
+		if (stat(path.c_str(), &fileInfo) != 0)
+			throw(std::exception());
+
+		if ((fileInfo.st_mode & S_IFMT) == S_IFDIR)
+			throw(std::exception());
+
+
+		if (!ifs.good() || path.empty())
+			throw(std::exception());
+
+		if (ifs.is_open())
+		{
+
+			c = ifs.get();
+
+			do {
+				file += c;
+				c = ifs.get();
+			}
+			while (!ifs.eof());
+
+			ifs.close();
+		}
+		else
+		{
+			throw(std::exception());
+		}
+		return (file);
+	}
+
+	std::string getTime() {
+		char buf[1000];
+		time_t now = time(0);
+		struct tm tm = *gmtime(&now);
+		strftime(buf, sizeof buf, "%a, %d %b %Y %H:%M:%S %Z", &tm);
+		return (std::string(buf));
+	}
+
 }

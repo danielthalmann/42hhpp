@@ -4,8 +4,12 @@
 #include <string>
 #include "Header.hpp"
 #include "Request.hpp"
+#include "IServer.hpp"
 
 namespace hhpp {
+
+	class IServer;
+
 	class Response
 	{
 	public:
@@ -20,15 +24,20 @@ namespace hhpp {
 		void setStatus(int status);
 		void setContentType(std::string contentType);
 		void setBody(std::string str);
+		void setServer(IServer *server);
+
+		IServer *getServer();
 
 		std::string getStatusMessage() const;
 
 		typedef std::map<int, std::string>	mapIntString;
-		virtual std::string raw() const;
+		virtual std::string raw();
 
 	protected:
 
+		virtual void prepareResponse();
 
+		IServer *_server;
 		std::string _version;
 		int _status;
 		std::string _statusMessage;
