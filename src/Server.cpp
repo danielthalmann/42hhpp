@@ -240,7 +240,7 @@ namespace hhpp {
 
 		// search cgi
 		if (CGI *cgi = getCgi(localPath) ) {
-			return new ResponseCgi(cgi, &request);
+			return new ResponseCgi(cgi, localPath, &request);
 		}
 
 		
