@@ -9,6 +9,7 @@ namespace hhpp {
 	{
 		std::fstream fs;
 		std::stringstream buffer;
+		std::string content;
 
 		if (mimetype->isBinary()) {
 			fs.open(filename.c_str(), std::ios::in);
@@ -24,7 +25,15 @@ namespace hhpp {
 			setContentType("text/plain");
 		} else {
 			buffer << fs.rdbuf();
-			setBody(buffer.str());
+			// content.append(buffer.str());
+			// TODO : voir comment encoder correctement l'image
+			if (false) {
+			//if (mimetype->isBinary()) {
+				setBody(  utils::base64Encode(reinterpret_cast<const unsigned char*>(content.c_str()), content.size())  );
+				std::cout << getBody() << std::endl;
+			}
+			else
+				setBody(buffer.str());
 			setContentType(mimetype->getMimeType());
 		}
 		buffer << fs.rdbuf();

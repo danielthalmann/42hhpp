@@ -230,11 +230,13 @@ namespace hhpp {
 				return fileListIndex(localPath);
 			}
 
-		}
+		} else {
 
-		// ficher présent mais pas accessible
-		if (access(localPath.c_str(), R_OK))
-			return new ResponseError(403);
+			// ficher présent mais pas accessible
+			if (access(localPath.c_str(), R_OK))
+				return new ResponseError(403);
+
+		}
 
 		// search cgi
 		if (CGI *cgi = getCgi(localPath) ) {

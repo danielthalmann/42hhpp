@@ -26,7 +26,7 @@ namespace utils {
 	void rtrim(std::string &s);
 	std::string& trim(std::string &s);
 	std::string path(const std::string& path1, const std::string& path2);
-	std::string base64Encode(const std::string& s);
+	std::string base64Encode(const unsigned char* s, unsigned int len);
 
 }
 
