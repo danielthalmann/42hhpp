@@ -43,3 +43,6 @@ cmake*
 
 #program
 hhpp
+
+#Mac
+.DS_Store

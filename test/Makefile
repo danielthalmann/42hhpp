@@ -9,7 +9,6 @@ INC_JSON=../lib/json/include
 NAME=test
 
 SRCS=test$(TEST_NAME).cpp\
-	$(SRC_DIR)AResponse.cpp\
 	$(SRC_DIR)Binding.cpp\
 	$(SRC_DIR)CGI.cpp\
 	$(SRC_DIR)ErrorPage.cpp\
@@ -20,6 +19,8 @@ SRCS=test$(TEST_NAME).cpp\
 	$(SRC_DIR)Redirect.cpp\
 	$(SRC_DIR)Request.cpp\
 	$(SRC_DIR)Response.cpp\
+	$(SRC_DIR)ResponseCgi.cpp\
+	$(SRC_DIR)ResponseError.cpp\
 	$(SRC_DIR)ResponseFile.cpp\
 	$(SRC_DIR)ResponseRedirect.cpp\
 	$(SRC_DIR)Server.cpp\

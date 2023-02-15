@@ -1,4 +1,5 @@
 #include "Header.hpp"
+#include "sstream"
 
 namespace hhpp {
 	Header::Header() {}
@@ -7,7 +8,9 @@ namespace hhpp {
 	std::string Header::get(std::string key) {
 		std::map<std::string, std::string>::iterator it;
 		it = _params.find(key);
-		return (it->second);
+		if (it != _params.end())
+			return (it->second);
+		return std::string();
 	}
 
 	void Header::remove(std::string key) {
@@ -30,5 +33,24 @@ namespace hhpp {
 						<< it->second << std::endl;
 		}
 	}
+
+	std::string Header::raw() const {
+		std::stringstream oss;
+
+		for (mapStringString::const_iterator it = _params.begin(); it != _params.end(); it++) {
+			oss	<< it->first << ": "
+				<< it->second << std::endl;
+		}
+		return oss.str();
+	}
+
+	std::string& Header::operator[](const std::string& key)	{
+		return _params[key];
+	}
+
+
+
+
+
 }
 

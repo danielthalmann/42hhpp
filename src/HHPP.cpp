@@ -243,11 +243,16 @@ namespace hhpp {
 
 			std::vector<std::string> mimes = jsonEl->keys();
 
+			MimeType* mimeType;
 			for (size_t j = 0; j < mimes.size(); j++) {
 
 				for (size_t k = 0; k < json->at("mime_types")->at(mimes[j])->length(); k++)
 				{
-					newServer->addMimeType(mimes[j], json->at("mime_types")->at(mimes[j])->at(k)->getString() );
+					mimeType = new MimeType();
+					mimeType->setMimeType(mimes[j]);
+					mimeType->setExtension(json->at("mime_types")->at(mimes[j])->at(k)->getString());
+
+					newServer->addMimeType(mimeType);
 				}
 				
 			}
@@ -259,12 +264,23 @@ namespace hhpp {
 		delete json;
 	}
 
-	bool HHPP::isListen(int socket) {
+	IBinding* HHPP::isListen(int socket) {
 		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
 			if (socket == (*it)->getSocket())
-				return true;
+				return (*it);
 		}
-		return false;
+		return NULL;
+	}
+
+	IBinding* HHPP::getBindingFromSocket(int socket) {
+
+		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
+			if (socket == (*it)->getSocket())
+				return (*it);
+			if ((*it)->hasConnection(socket))
+				return (*it);
+		}
+		return NULL;
 	}
 
 	void HHPP::run() {
@@ -276,6 +292,7 @@ namespace hhpp {
 		int close_conn;
 		int len;
 		char buffer[4096];
+		IBinding *currentBinding;
 
 		FD_ZERO(&current_set);
 		max_sd = _bindings.front()->getSocket();
@@ -307,12 +324,12 @@ namespace hhpp {
 				if (FD_ISSET(i, &working_set))
 				{
 					desc_ready -= 1;
-					if (isListen(i))
+					if ((currentBinding = isListen(i)) != NULL )
 					{
 						std::cout << "Listening socket is readable" << std::endl;
 						do
 						{
-							new_sd = accept(i, NULL, NULL);
+							new_sd = currentBinding->acceptConnection();
 							if (new_sd < 0)
 							{
 								if (errno != EWOULDBLOCK)
@@ -333,6 +350,9 @@ namespace hhpp {
 					{
 						std::cout << "Descriptor " << i << " is readable" << std::endl;
 						close_conn = 0;
+
+						currentBinding = getBindingFromSocket(i);
+
 						while (1)
 						{
 							ret = recv(i, buffer, sizeof(buffer), 0);
@@ -354,6 +374,37 @@ namespace hhpp {
 							len = ret;
 							std::cout << len << " bytes received" << std::endl;
 
+							// prepare request
+							Request* request = new Request();
+							request->parseRequest(std::string(buffer));
+
+							IServer* server = NULL;
+							server = currentBinding->getServerFor(*request);
+							
+							// take first server if not exists
+							if (!server) {
+								server = _servers[0];
+							}
+
+							Response* response = server->treatRequest(*request);
+							// propage les cookie
+							response->getHeaders()["Cookie"] = request->getHeaders()["Cookie"];
+							
+							std::string dataSend = response->raw();
+							ret = send(i, response->raw().c_str(), dataSend.size(), 0);
+							std::cout << "[+] data send: " << ret << "/" << dataSend.size() << std::endl;
+							if (ret < 0) {
+								std::cerr << "[-] send() failed" << std::endl;
+							}
+							close_conn = 1;
+							break;
+							
+							// free memory
+							delete response;
+							delete request;
+
+/*
+
 //							send data to client
 							std::string dataSend;
 							dataSend = "HTTP/1.1 200 OK\n";
@@ -362,6 +413,7 @@ namespace hhpp {
 							dataSend.append("\n");
 							dataSend.append("Hello !");
 
+							
 							ret = send(i, dataSend.c_str(), dataSend.size(), 0);
 							std::cout << "data send: " << ret <<"/"<<dataSend.size()<< std::endl;
 							if (ret < 0)
@@ -370,13 +422,15 @@ namespace hhpp {
 								close_conn = 1;
 								break;
 							}
+*/
 
 						}
 
 						if (close_conn)
 						{
 							std::cout << "close fd: " << i << std::endl;
-							close(i);
+							currentBinding->closeConnection(i);
+							// close(i);
 							FD_CLR(i, &current_set);
 							if (i == max_sd)
 							{

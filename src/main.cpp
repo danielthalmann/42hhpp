@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include <AResponse.hpp>
 #include <Binding.hpp>
 #include <CGI.hpp>
 #include <ErrorPage.hpp>

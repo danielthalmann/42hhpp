@@ -1,16 +1,17 @@
 #ifndef RESPONSEFILE_HPP
 #define RESPONSEFILE_HPP
 
+#include <Response.hpp>
+#include <MimeType.hpp>
 #include <string>
 
 namespace hhpp {
-	class ResponseFile
+	class ResponseFile : public Response
 	{
 	public:
-		ResponseFile();
+		ResponseFile(std::string filename, MimeType* mimetype);
 		~ResponseFile();
 
-		void filename(std::string filename);
 
 	private:
 

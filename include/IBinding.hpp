@@ -2,10 +2,14 @@
 #define IBINDING_HPP
 
 #include <string>
+#include "Server.hpp"
 #include "Request.hpp"
 #include "Response.hpp"
 
 namespace hhpp {
+	
+	class IServer;
+
 	class IBinding
 	{
 
@@ -17,6 +21,11 @@ namespace hhpp {
 		virtual void setSocket() = 0;
 		virtual void setIP(const std::string& ip) = 0;
 		virtual void setPort(const int port) = 0;
+		virtual void addServer(IServer* server) = 0;
+		virtual int acceptConnection() = 0;
+		virtual void closeConnection(int socket) = 0; 
+		virtual bool hasConnection(const int socket) = 0;
+		virtual IServer* getServerFor(const Request& request) const = 0;
 
 		virtual std::string getIP() const = 0;
 		virtual int getPort() const = 0;

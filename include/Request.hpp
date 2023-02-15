@@ -11,13 +11,14 @@ namespace hhpp {
 		Request();
 		~Request();
 
-		std::string getMethod();
-		std::string getQuery();
-		std::string getHost();
-		int getPort();
-		std::string getUrl();
-		std::string getBody();
-		std::string getHttpVersion();
+		std::string getMethod() const;
+		std::string getQuery() const;
+		std::string getHost() const;
+		int getPort() const;
+		std::string getUrl() const;
+		std::string getBody() const;
+		std::string getHttpVersion() const;
+		int getBodySize() const;
 
 		void setMethod(std::string method);
 		void setQuery(std::string query);
@@ -32,6 +33,7 @@ namespace hhpp {
 		Header& getHeaders();
 
 	private:
+		int _bodySize;
 		std::string _method;
 		std::string _url;
 		std::string _httpVersion;

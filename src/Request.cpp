@@ -1,6 +1,7 @@
 #include "Request.hpp"
 #include "utility.hpp"
 #include <iostream>
+#include <cstdlib>
 
 //GET / HTTP/1.1
 //Host: www.quicksite.ch
@@ -21,13 +22,15 @@ hhpp::Request::Request() {
 hhpp::Request::~Request() {}
 
 
-std::string hhpp::Request::getMethod() { return (_method); }
-std::string hhpp::Request::getQuery() { return (_query); }
-std::string hhpp::Request::getHost() { return (_host); }
-int hhpp::Request::getPort() { return (_port); }
-std::string hhpp::Request::getUrl() { return (_url); }
-std::string hhpp::Request::getBody() { return (_body); }
-std::string hhpp::Request::getHttpVersion() { return (_httpVersion); }
+std::string hhpp::Request::getMethod() const { return (_method); }
+std::string hhpp::Request::getQuery() const { return (_query); }
+
+std::string hhpp::Request::getHost() const { return (_host); }
+int hhpp::Request::getPort() const { return (_port); }
+std::string hhpp::Request::getUrl() const { return (_url); }
+std::string hhpp::Request::getBody() const { return (_body); }
+std::string hhpp::Request::getHttpVersion() const { return (_httpVersion); }
+int hhpp::Request::getBodySize() const { return (_bodySize); }
 
 void hhpp::Request::setMethod(std::string method) { _method = method; }
 void hhpp::Request::setQuery(std::string query) { _query = query; }
@@ -40,25 +43,60 @@ void hhpp::Request::setHttpVersion(std::string httpVersion) { _httpVersion = htt
 void hhpp::Request::parseRequest(const std::string& rawRequest) {
 	std::vector<std::string> token;
 	std::vector<std::string> header;
+	std::vector<std::string> query;
 
 	header = utils::split(rawRequest, "\n");
 
-	for (size_t i = 0; i < header.size(); i++) {
-		size_t pos;
-		pos = header[i].find(":");
-		if (pos == std::string::npos)
-			token = utils::split(header[i], " ");
-		else
-			token = utils::split(header[i], ": ");
+	_bodySize = 0;
 
-		if (pos == std::string::npos)
+	for (size_t i = 0; i < header.size(); i++) {
+
+		if (i == 0)
 		{
-			setMethod(token[0]);
-			setUrl(token[1]);
-			setHttpVersion(token[2]);
+			token = utils::split(header[i], " ");
+
+			if (token.size() == 3) {
+				setMethod(utils::trim(token[0]));
+				query = utils::split(token[1], "?");
+				if (query.size() == 2)
+				{
+					setUrl(query[0]);
+					setQuery(query[1]);
+				} else 
+					setUrl(utils::trim(token[1]));
+
+				setHttpVersion(utils::trim(token[2]));
+			}
 		}
-		else
-			_headers.append(token[0], token[1]);
+		else {
+			
+			token = utils::split(header[i], ": ");
+			
+			if (token.size() == 2) {
+				_headers.append(utils::trim(token[0]), utils::trim(token[1]));
+			}
+		}
+	}
+
+	// extract host
+	try {
+
+		_host = _headers.get("Host");
+		token = utils::split(_host, ":");
+		if (token.size() == 2) {
+			_host = token[0];
+			_port = std::atoi(token[1].c_str());
+		} else
+			_port = 80;
+
+	} catch(std::exception &e) {
+
+	}
+
+	try {
+		_bodySize = std::atoi(_headers.get("Content-Length").c_str());
+	} catch(std::exception &e) {
+
 	}
 }
 

@@ -3,9 +3,9 @@
 BIN_FOLDER=./
 TEST_FOLDER=./
 
-TEST_NAMES=('MapStringToArray')
+TEST_NAMES=('MapStringToArray' 'Base64')
 
-make  TEST_NAME=test fclean > /dev/null
+#make  TEST_NAME=test fclean > /dev/null
 set -e
 
 build_code () {

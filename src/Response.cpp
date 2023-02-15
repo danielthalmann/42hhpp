@@ -1,64 +1,85 @@
 #include "Response.hpp"
+#include "utility.hpp"
+#include <sstream>
 
 namespace hhpp {
-	Response::Response() {}
+
+	Response::mapIntString Response::_totalStatus = init_map();
+
+	Response::Response() 
+	{
+		setStatus(200);
+		setBody(getStatusMessage());
+		setContentType("text/plain");
+		getHeaders()["Server"] = "HHPP/0.0.1";
+		getHeaders()["Connection"] = "close";
+	}
 
 	Response::~Response() {}
 
-	//request
-	//*GET / HTTP/1.1
-	//*Host: www.quicksite.ch
-	//User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:107.0) Gecko/20100101 Firefox/107.0
-	//*Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
-	//Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
-	//Accept-Encoding: gzip, deflate, br
-	//Connection: keep-alive
-	//Upgrade-Insecure-Requests: 1
-	//Sec-Fetch-Dest: document
-	//Sec-Fetch-Mode: navigate
-	//Sec-Fetch-Site: none
-	//Sec-Fetch-User: ?1
-
-	//minimum
-	//*HTTP/1.1 200 OK
-	//*Content-Type: text/html; Charset=utf-8
-	//*Content-Length: 34971
-	//**Transfer-Encoding: chunked
-	//**body
-	//?Connection: close
-
-	//response
-	//HTTP/1.1 200 OK
-	//Cache-Control: no-cache,must-revalidate
-	//Content-Type: text/html; Charset=utf-8
-	//Content-Encoding: gzip
-	//Vary: Accept-Encoding
-	//Server: Webserver
-	//Set-Cookie: SiteSettings=clear; expires=Tue, 24-Jan-2023 12:51:20 GMT; path=/; secure; HttpOnly;
-	//Set-Cookie: lngStatQSSession=1056898499; expires=Thu, 25-Jan-2024 12:51:20 GMT; path=/; secure; HttpOnly;
-	//Access-Control-Allow-Origin: *
-	//Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
-	//X-Frame-Options: SAMEORIGIN
-	//X-Xss-Protection: 1; mode=block
-	//X-Content-Type-Options: nosniff
-	//Date: Wed, 25 Jan 2023 12:51:21 GMT
-	//Content-Length: 34971
-
-	//https://fr.wikipedia.org/wiki/Chunked_transfer_encoding
-
-	void Response::setResponse(Request& request, int status) {
-		_version = request.getHttpVersion();
-		_status = status;
-		_statusMessage = _totalStatus[_status];
+	std::string& Response::getVersion() {
+		return (_version);
 	}
 
-	void Response::showResponse() {
-		std::cout	<< _version << " "
-					<< _status << " "
-					<< _statusMessage << std::endl;
-		_header.showParams();
-		if (!_body.empty())
-			std::cout << _body << std::endl;
+	int& Response::getStatus() {
+		return (_status);
+	}
+
+	std::string Response::getStatusMessage() const {
+		return (_statusMessage);
+	}
+
+	Header& Response::getHeaders() {
+		return (_header);
+	}
+
+	std::string& Response::getBody() {
+		return (_body);
+	}
+
+	void Response::setStatus(int status) {
+		_status = status;
+		try {
+			_statusMessage = _totalStatus.at(_status);
+		} catch (std::exception &e) {
+			_status = 500;
+			_statusMessage = _totalStatus.at(_status);
+		}
+	}
+
+	void Response::setContentType(std::string contentType) {
+		_header["Content-Type"] = contentType;
+	}
+
+	void Response::setBody(std::string str) {
+		_body = str;
+		_header["Content-Length"] = utils::numberToString(_body.size());
+	}
+
+	std::string Response::raw() const
+	{
+		std::string statusMessage;
+		int status = _status;
+
+		try {
+			statusMessage = _totalStatus.at(status);
+		} catch (std::exception &e) {
+			status = 200;
+			statusMessage = "OK";
+		}
+
+		std::string dataSend;
+		dataSend.append("HTTP/1.1");
+		dataSend.append(" ");
+		dataSend.append(utils::numberToString(status));
+		dataSend.append(" ");
+		dataSend.append(statusMessage);
+		dataSend.append("\n");
+		dataSend.append(_header.raw());
+		dataSend.append("\n");
+		dataSend.append(_body);
+
+		return dataSend;
 	}
 
 }

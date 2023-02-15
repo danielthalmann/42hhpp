@@ -10,6 +10,8 @@
 #include "Server.hpp"
 #include "Binding.hpp"
 #include "Request.hpp"
+#include "Response.hpp"
+#include "MimeType.hpp"
 
 namespace json { class JsonValue; } // TODO a supprimer
 
@@ -35,7 +37,8 @@ namespace hhpp {
 		std::vector<IServer*> _servers;
 		std::vector<IBinding*> _bindings;
 
-		bool isListen(int socket);
+		IBinding* isListen(int socket);
+		IBinding* getBindingFromSocket(int socket);
 
 		std::string readFileConfig(std::string pathConfig);
 		void dispatchRequest(Request request);
