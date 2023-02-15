@@ -25,6 +25,8 @@ namespace hhpp {
 		typedef std::map<std::string, std::string> mapStringString;
 		typedef std::map<std::string, std::string>::iterator mapStringStringIt;
 
+		mapStringString getParams();
+
 	private:
 		mapStringString _params;
 

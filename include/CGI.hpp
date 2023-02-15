@@ -4,7 +4,14 @@
 #include <string>
 #include <vector>
 #include "Request.hpp"
-#include "Request.hpp"
+
+#include "utility.hpp"
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <strings.h>
+//#include <stdlib.h>
+//#include <unistd.h>
 
 namespace hhpp {
 	class CGI

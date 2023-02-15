@@ -2,6 +2,7 @@
 #define ERRORPAGE_HPP
 
 #include <string>
+#include <utility.hpp>
 
 namespace hhpp {
 	class ErrorPage
@@ -10,11 +11,12 @@ namespace hhpp {
 		ErrorPage();
 		~ErrorPage();
 
+		std::string getPage();
+
 		void setStatus(const int status);
 		void setLocation(const std::string& location);
+		int getStatus();
 
-		std::string getPage(void);
-	
 	private:
 		int _status;
 		std::string _location;

@@ -380,7 +380,7 @@ namespace hhpp {
 
 							IServer* server = NULL;
 							server = currentBinding->getServerFor(*request);
-							
+
 							// take first server if not exists
 							if (!server) {
 								server = _servers[0];
@@ -389,7 +389,7 @@ namespace hhpp {
 							Response* response = server->treatRequest(*request);
 							// propage les cookie
 							response->getHeaders()["Cookie"] = request->getHeaders()["Cookie"];
-							
+
 							std::string dataSend = response->raw();
 							ret = send(i, response->raw().c_str(), dataSend.size(), 0);
 							std::cout << "[+] data send: " << ret << "/" << dataSend.size() << std::endl;
@@ -398,7 +398,7 @@ namespace hhpp {
 							}
 							close_conn = 1;
 							break;
-							
+
 							// free memory
 							delete response;
 							delete request;
@@ -413,7 +413,17 @@ namespace hhpp {
 							dataSend.append("\n");
 							dataSend.append("Hello !");
 
-							
+							// gestion errors
+							for (size_t k = 0; k < _servers[j]->getErrorPages().size(); ++k) {
+								if (_servers[j]->getErrorPages()[k]->getStatus() == status)
+								{
+									serverResponse.setBody(_servers[j]->getErrorPages()[k]->getPage(), "text/html");
+									isfound = 1;
+									break;
+								}
+							}
+
+
 							ret = send(i, dataSend.c_str(), dataSend.size(), 0);
 							std::cout << "data send: " << ret <<"/"<<dataSend.size()<< std::endl;
 							if (ret < 0)

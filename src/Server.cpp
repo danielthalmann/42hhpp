@@ -107,7 +107,7 @@ namespace hhpp {
 	}
 
 
-	bool Server::isForMe(const Request& request) const 
+	bool Server::isForMe(const Request& request) const
 	{
 		for (std::vector<std::string>::const_iterator it = _domains.begin(); it != _domains.end(); it++) {
 			if (request.getHost() == (*it)) {
@@ -117,25 +117,25 @@ namespace hhpp {
 		return false;
 	}
 
-	bool Server::isAllowedMethod(const std::string& method) const 
+	bool Server::isAllowedMethod(const std::string& method) const
 	{
 		for (std::vector<std::string>::const_iterator it = _allowedMethods.begin(); it != _allowedMethods.end(); it++) {
 			if (method == (*it)) {
 				return true;
 			}
 		}
-		return false;	
+		return false;
 	}
 
 
-	Redirect* Server::getUrlRedirect(const std::string& query) const 
+	Redirect* Server::getUrlRedirect(const std::string& query) const
 	{
 		for (std::vector<Redirect*>::const_iterator it = _redirect.begin(); it != _redirect.end(); it++) {
 			if ((*it)->match(query)) {
 				return (*it);
 			}
 		}
-		return NULL;	
+		return NULL;
 	}
 
 	std::string Server::getLocalPath(const std::string& query) const
@@ -153,24 +153,24 @@ namespace hhpp {
 
 	Response* Server::fileListIndex(const std::string& query) const
 	{
-		Response* r = new Response(); 
+		Response* r = new Response();
 		r->setBody(query);
 		return r;
 	}
 
 
-	CGI* Server::getCgi(const std::string& query) const 
+	CGI* Server::getCgi(const std::string& query) const
 	{
 		for (std::vector<CGI*>::const_iterator it = _cgi.begin(); it != _cgi.end(); it++) {
 			if ((*it)->match(query)) {
 				return (*it);
 			}
 		}
-		return NULL;	
+		return NULL;
 	}
 
 
-	MimeType* Server::getMimeType(const std::string& query) const 
+	MimeType* Server::getMimeType(const std::string& query) const
 	{
 		//TODO utiliser le map aulieu de faire un parcours de tous les éléments
 
@@ -179,7 +179,7 @@ namespace hhpp {
 				return (it->second);
 			}
 		}
-		return NULL;	
+		return NULL;
 	}
 
 	Response* Server::treatRequest(const Request& request)
@@ -213,7 +213,7 @@ namespace hhpp {
 
 		// is folder
 		if ((sb.st_mode & S_IFMT) == S_IFDIR) {
-			
+
 			bool indexFound = false;
 			for (std::vector<std::string>::const_iterator it = _indexes.begin(); it != _indexes.end(); it++) {
 				std::string filename = utils::path(localPath, (*it));
@@ -243,12 +243,16 @@ namespace hhpp {
 			return new ResponseCgi(cgi, localPath, &request);
 		}
 
-		
+
 		if (MimeType* mime = getMimeType(localPath) ) {
 			return new ResponseFile(localPath, mime);
 		}
 
 		return new ResponseError(415);
+	}
+
+	std::vector<ErrorPage*> Server::getErrorPages() {
+		return _errorPages;
 	}
 }
 

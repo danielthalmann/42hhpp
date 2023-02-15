@@ -13,8 +13,6 @@
 #include "Response.hpp"
 #include "MimeType.hpp"
 
-namespace json { class JsonValue; } // TODO a supprimer
-
 namespace hhpp {
 	class HHPP
 	{
