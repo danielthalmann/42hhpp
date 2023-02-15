@@ -1,4 +1,5 @@
 #include "Binding.hpp"
+#include "Response.hpp"
 #include <algorithm>
 
 namespace hhpp {

@@ -92,10 +92,6 @@ namespace hhpp {
 		return dataSend;
 	}
 
-	void Response::prepareResponse() {
-		std::cout << "response prepareResponse" << std::endl;
-//		getServer()->;
-//		_server
-	}
+	void Response::prepareResponse() {	}
 
 }

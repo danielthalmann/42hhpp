@@ -6,6 +6,7 @@
 #include <string>
 
 namespace hhpp {
+
 	class ResponseCgi: public Response
 	{
 	public:

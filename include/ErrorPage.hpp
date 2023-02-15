@@ -11,7 +11,7 @@ namespace hhpp {
 		ErrorPage();
 		~ErrorPage();
 
-		std::string getPage();
+		std::string getPage(std::string root = "");
 
 		void setStatus(const int status);
 		void setLocation(const std::string& location);

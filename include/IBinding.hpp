@@ -2,13 +2,13 @@
 #define IBINDING_HPP
 
 #include <string>
-#include "Server.hpp"
 #include "Request.hpp"
-#include "Response.hpp"
 
 namespace hhpp {
 	
 	class IServer;
+
+	class Response;
 
 	class IBinding
 	{

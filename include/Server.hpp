@@ -10,6 +10,7 @@
 #include "Redirect.hpp"
 #include "ErrorPage.hpp"
 #include "Request.hpp"
+#include "Response.hpp"
 #include "ResponseCgi.hpp"
 #include "ResponseError.hpp"
 #include "ResponseFile.hpp"
@@ -30,6 +31,7 @@ namespace hhpp {
 		virtual void setSocket(const int socket);
 		virtual void setBinding(IBinding* binding);
 		virtual void setRoot(const std::string& root);
+		virtual std::string getRoot();
 		virtual void addDomain(const std::string& domain);
 		virtual void addIndex(const std::string& index);
 		virtual void addRedirect(Redirect* redirect);

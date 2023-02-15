@@ -9,7 +9,7 @@ namespace hhpp {
 
 	ErrorPage::~ErrorPage() {}
 
-	std::string ErrorPage::getPage() {
+	std::string ErrorPage::getPage(std::string root) {
 		std::string page;
 
 		if (_location.empty())
@@ -22,7 +22,7 @@ namespace hhpp {
 							"<p>We seem to be having some technical difficulties. Hang tight.</p>"
 							"</body></html>");
 		else
-			page = utils::readFile(_location);
+			page = utils::readFile(utils::path(root, _location));
 
 		return (page);
 	}

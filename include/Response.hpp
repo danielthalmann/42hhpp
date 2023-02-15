@@ -1,14 +1,13 @@
+
 #ifndef RESPONSE_HPP
 #define RESPONSE_HPP
 
+#include "IServer.hpp"
 #include <string>
 #include "Header.hpp"
-#include "Request.hpp"
-#include "IServer.hpp"
+
 
 namespace hhpp {
-
-	class IServer;
 
 	class Response
 	{

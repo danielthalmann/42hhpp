@@ -30,17 +30,15 @@ namespace hhpp {
 	}
 
 	void ResponseError::prepareResponse() {
-		std::cout << "ResponseError prepareResponse" << std::endl;
-//		_server->
 
-//		for (size_t k = 0; k < _server->getErrorPages().size(); ++k) {
-//			if (_server->getErrorPages()[k]->getStatus() == _status)
-//			{
-//				setContentType("text/html");
-//				setBody(_server->getErrorPages()[k]->getPage());
-//				break;
-//			}
-//		}
+		for (size_t k = 0; k < _server->getErrorPages().size(); ++k) {
+			if (_server->getErrorPages()[k]->getStatus() == _status)
+			{
+				setContentType("text/html");
+				setBody(_server->getErrorPages()[k]->getPage(_server->getRoot()));
+				break;
+			}
+		}
 	}
 
 }

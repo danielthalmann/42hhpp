@@ -50,6 +50,11 @@ namespace hhpp {
 	{
 		_root = root;
 	}
+
+	std::string Server::getRoot()
+	{
+		return _root;
+	}
 	
 	void Server::addDomain(const std::string& domain)
 	{
