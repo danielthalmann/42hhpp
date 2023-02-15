@@ -1,8 +1,8 @@
 #include "HHPP.hpp"
 #include "utility.hpp"
 #include <Json.hpp>
-#include <stdlib.h>
-#include <unistd.h>
+//#include <stdlib.h>
+//#include <unistd.h>
 
 namespace hhpp {
 	HHPP::HHPP() {}
@@ -279,6 +279,7 @@ namespace hhpp {
 		char buffer[4096];
 		Request clientRequest;
 		Response serverResponse;
+		CGI cgi;
 
 		FD_ZERO(&current_set);
 		max_sd = _bindings.front()->getSocket();
@@ -389,52 +390,9 @@ namespace hhpp {
 
 							if (found != std::string::npos)
 							{
-								std::cout << "found py" << std::endl;
-
-								int p[2];
-								pipe(p);
-//								fcntl(p[0], F_SETFL, O_NONBLOCK);
-//								fcntl(p[1], F_SETFL, O_NONBLOCK);
-
-								std::vector<char*> path;
-								std::string test = "/usr/bin/python3";
-								path.push_back(const_cast<char*>(test.c_str()));
-								std::string test2 = "/Users/tpinto-m/gh/42hhpp/var/www/hello_get.py";
-								path.push_back(const_cast<char*>(test2.c_str()));
-								std::string test3 = "first_name=ZARA&last_name=ALI";
-								path.push_back(const_cast<char*>(test3.c_str()));
-								path.push_back(NULL);
-
-								std::map<std::string, std::string> env;
-								env["CONTENT_LENGTH"] = "154";
-								env["GATEWAY_INTERFACE"] = "CGI/1.1";
-								env["SERVER_PROTOCOL"] = "HTTP/1.1";
-								env["SCRIPT_FILENAME"] = "/Users/tpinto-m/gh/42hhpp/var/www/hello_get.py";
-								env["SCRIPT_NAME"] = "hello_get.py";
-								env["REDIRECT_STATUS"] = "200";
-
-								int pid = fork();
-
-								if (pid == 0) {
-									std::cout << "fork created" << std::endl;
-									close(p[0]);
-									dup2(p[1], STDOUT_FILENO);
-//									dup2(pp[0], STDIN_FILENO); // faire l invers
-									close(p[1]);
-
-									execve(path[0], &path[0], utils::mapStringToArray(env));
-									exit(0);
-								} else {
-									std::cout << "pipe closed" << std::endl;
-									close(p[1]);
-
-									waitpid(pid, NULL, 0);
-									bzero(&buffer, sizeof(buffer));
-									ret = read(p[0], buffer, sizeof(buffer));
-
-									serverResponse.setResponse(clientRequest, 200);
-									serverResponse.setBody(buffer, "text/html");
-								}
+//								std::cout << "found py (is cgi)" << std::endl;
+								serverResponse.setResponse(clientRequest, 200);
+								serverResponse.setBody(cgi.execute(clientRequest), "text/html");
 							}
 							else if (found == std::string::npos && status != 200)
 							{
