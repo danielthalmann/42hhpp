@@ -2,11 +2,11 @@
 
 namespace hhpp {
 
-	ResponseCgi::ResponseCgi(CGI *cgi, const Request &request) 
-    : Response() 
+	ResponseCgi::ResponseCgi(CGI *cgi, const Request *request) 
+    : Response(), _cgi(cgi), _request(request) 
     {
-        (void) cgi;
-        (void) request;
+        //_cgi = cgi;
+        //_request = request;
 		setStatus(501);
 		setBody(getStatusMessage());
 		setContentType("text/plain");
@@ -17,5 +17,10 @@ namespace hhpp {
     {
 
     }
+
+  	std::string ResponseCgi::raw() const
+	{
+        return _cgi->execute(*_request);
+    }  
 
 }
