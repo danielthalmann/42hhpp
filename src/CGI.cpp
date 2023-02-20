@@ -14,6 +14,13 @@ namespace hhpp {
 
 //		request.showRequest();
 
+//		std::cout << "exception" << std::endl;
+//		std::cout << "query:" << request.getUrl() << std::endl;
+
+// TODO
+//		if (!match(request.getUrl()))
+//			return 501 ?
+
 		std::vector<char*> path;
 		std::string test = "/usr/bin/python3";
 		path.push_back(const_cast<char*>(test.c_str()));
