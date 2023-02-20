@@ -92,6 +92,21 @@ namespace hhpp {
 		return dataSend;
 	}
 
-	void Response::prepareResponse() {	}
+	void Response::prepareResponse() {}
+
+	std::string Response::get404() {
+		std::string page;
+
+		page.append("<html><head>"
+					"<title>The page you were looking for doesn't exist (404)</title>"
+					"<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
+					"</head><body>"
+					"<h1>Error 404: Not Found</h1>"
+					"<p>The page you were looking for doesn't exist</p>"
+					"<img src=\"https://www.lesdebrouillards.com/wp-content/uploads/2019/10/Pigeon-1.jpg\" alt=\"Pigeon with 404 message\" width=\"500\" height=\"600\">"
+					"</body></html>");
+
+		return (page);
+	}
 
 }

@@ -11,8 +11,6 @@ namespace hhpp {
 		ResponseError(int error = 0);
 		~ResponseError();
 
-		void filename(std::string filename);
-
 	protected:
 		void prepareResponse();
 

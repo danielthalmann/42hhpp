@@ -32,6 +32,7 @@ namespace hhpp {
 		typedef std::map<int, std::string>	mapIntString;
 		virtual std::string raw();
 
+		std::string get404();
 	protected:
 
 		virtual void prepareResponse();
