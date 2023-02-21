@@ -4,42 +4,43 @@ namespace hhpp {
 	CGI::CGI() {}
 	CGI::~CGI() {}
 
-	std::string CGI::execute(Request request) {
+	std::string CGI::execute(std::string script, Request request) {
 		int p[2];
-		char buffer[4096];
+//		char buffer[4096];
+		char buffer[100000];
 
 		pipe(p);
 		fcntl(p[0], F_SETFL, O_NONBLOCK);
 		fcntl(p[1], F_SETFL, O_NONBLOCK);
 
 //		request.showRequest();
-
-//		std::cout << "exception" << std::endl;
-//		std::cout << "query:" << request.getUrl() << std::endl;
-
-// TODO
-//		if (!match(request.getUrl()))
-//			return 501 ?
+		(void)request;
+		std::cout << "loc:" << _location << std::endl;
+		std::cout << "ext:";
+		for (std::vector<std::string>::iterator it = _extension.begin(); it < _extension.end() ; ++it) {
+			std::cout << *it << std::endl;
+		}
+		std::cout << "script:" << script << std::endl;
 
 		std::vector<char*> path;
-		std::string test = "/usr/bin/python3";
+		std::string test = _location;
+		test = "/Users/tpinto-m/gh/42hhpp/cgi-bin/php-cgi";
 		path.push_back(const_cast<char*>(test.c_str()));
-		std::string test2 = "/Users/tpinto-m/gh/42hhpp/var/www/hello_get.py";
+		std::string test2 = script;
+		test2 = script;
 		path.push_back(const_cast<char*>(test2.c_str()));
-		std::string test3 = "first_name=Tiago&last_name=PM";
-		path.push_back(const_cast<char*>(test3.c_str()));
+//		std::string test3 = "first_name=Tiago&last_name=PM";
+//		path.push_back(const_cast<char*>(test3.c_str()));
 		path.push_back(NULL);
 //
 		std::map<std::string, std::string> env;
-		env["CONTENT_LENGTH"] = "154";
+//		env["CONTENT_LENGTH"] = "4102";
 		env["GATEWAY_INTERFACE"] = "CGI/1.1";
 		env["SERVER_PROTOCOL"] = "HTTP/1.1";
-		env["SCRIPT_FILENAME"] = "/Users/tpinto-m/gh/42hhpp/var/www/hello_get.py";
-		env["SCRIPT_NAME"] = "hello_get.py";
+		env["SCRIPT_FILENAME"] = script;
+		env["SCRIPT_NAME"] = "result.php";
 		env["REDIRECT_STATUS"] = "200";
 
-//		TODO resquest to path
-		(void)request;
 
 		int pid = fork();
 
@@ -50,6 +51,7 @@ namespace hhpp {
 			close(p[1]);
 
 			execve(path[0], &path[0], utils::mapStringToArray(env));
+//			execve(path[0], &path[0], NULL);
 			exit(0);
 		} else {
 			close(p[1]);
@@ -61,6 +63,9 @@ namespace hhpp {
 //			serverResponse.setResponse(clientRequest, 200);
 //			serverResponse.setBody(buffer, "text/html");
 		}
+//		std::cout << "resp:" << std::endl;
+//		std::cout << buffer << std::endl;
+
 		return (buffer);
 	}
 

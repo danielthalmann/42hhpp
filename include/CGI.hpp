@@ -22,7 +22,7 @@ namespace hhpp {
 		CGI();
 		~CGI();
 
-		std::string execute(Request request);
+		std::string execute(std::string script, Request request);
 		void setLocation(const std::string& location);
 		void addExtension(const std::string& extension);
 		bool match(const std::string& query) const;
