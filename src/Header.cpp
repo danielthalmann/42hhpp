@@ -39,7 +39,7 @@ namespace hhpp {
 
 		for (mapStringString::const_iterator it = _params.begin(); it != _params.end(); it++) {
 			oss	<< it->first << ": "
-				<< it->second << std::endl;
+				<< it->second << "\r\n";
 		}
 		return oss.str();
 	}

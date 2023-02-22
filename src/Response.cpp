@@ -84,9 +84,9 @@ namespace hhpp {
 		dataSend.append(utils::numberToString(status));
 		dataSend.append(" ");
 		dataSend.append(statusMessage);
-		dataSend.append("\n");
+		dataSend.append("\r\n");
 		dataSend.append(_header.raw());
-		dataSend.append("\n");
+		dataSend.append("\r\n");
 		dataSend.append(_body);
 
 		return dataSend;
