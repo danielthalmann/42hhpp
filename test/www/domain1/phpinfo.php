@@ -7,10 +7,9 @@
 
 <body>
 
-<h1>Testing result</h1>
+<h1>php info</h1>
 
-<p>content post : <?php echo $_POST["content"] ?></p>
-<p>content get : <?php echo $_GET["contentGet"] ?></p>
+<p><?php echo phpinfo() ?></p>
 
 </body>
 

@@ -21,7 +21,7 @@ namespace hhpp {
 	std::string ResponseCgi::raw()
 	{
 //		prepareResponse();
-//
+
 		std::string statusMessage;
 		int status = _status;
 
@@ -32,7 +32,12 @@ namespace hhpp {
 			statusMessage = "OK";
 		}
 
+		setBody(_cgi->execute(_script, *_request));
+		setContentType("text/html");
+		setStatus(200);
+
 		std::string dataSend;
+
 		dataSend.append("HTTP/1.1");
 		dataSend.append(" ");
 		dataSend.append(utils::numberToString(status));
@@ -41,15 +46,9 @@ namespace hhpp {
 		dataSend.append("\n");
 		dataSend.append(_header.raw());
 		dataSend.append("\n");
-//		dataSend.append(_body);
-//
-//		return dataSend;
+		dataSend.append(_body);
 
-
-//		std::cout << "raw cgi" << std::endl;
-
-		dataSend.append(_cgi->execute(_script, *_request));
-//		std::cout << dataSend << std::endl;
+//		std::cout << _body << std::endl;
 
 		return dataSend;
 	}

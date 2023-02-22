@@ -1,5 +1,7 @@
 #include "CGI.hpp"
 
+//TODO check upload into nginx for example (POST AND DELETE)
+
 namespace hhpp {
 	CGI::CGI() {}
 	CGI::~CGI() {}
@@ -7,6 +9,7 @@ namespace hhpp {
 	std::string CGI::execute(std::string script, Request request) {
 		int p[2];
 //		char buffer[4096];
+//TODO change to dynamic size
 		char buffer[100000];
 
 		pipe(p);
@@ -15,12 +18,12 @@ namespace hhpp {
 
 //		request.showRequest();
 		(void)request;
-		std::cout << "loc:" << _location << std::endl;
-		std::cout << "ext:";
-		for (std::vector<std::string>::iterator it = _extension.begin(); it < _extension.end() ; ++it) {
-			std::cout << *it << std::endl;
-		}
-		std::cout << "script:" << script << std::endl;
+//		std::cout << "loc:" << _location << std::endl;
+//		std::cout << "ext:";
+//		for (std::vector<std::string>::iterator it = _extension.begin(); it < _extension.end() ; ++it) {
+//			std::cout << *it << std::endl;
+//		}
+//		std::cout << "script:" << script << std::endl;
 
 		std::vector<char*> path;
 		std::string test = _location;
@@ -29,18 +32,23 @@ namespace hhpp {
 		std::string test2 = script;
 		test2 = script;
 		path.push_back(const_cast<char*>(test2.c_str()));
-//		std::string test3 = "first_name=Tiago&last_name=PM";
-//		path.push_back(const_cast<char*>(test3.c_str()));
+		std::string test3 = "contentGet=get";
+		path.push_back(const_cast<char*>(test3.c_str()));
 		path.push_back(NULL);
-//
-		std::map<std::string, std::string> env;
-//		env["CONTENT_LENGTH"] = "4102";
-		env["GATEWAY_INTERFACE"] = "CGI/1.1";
-		env["SERVER_PROTOCOL"] = "HTTP/1.1";
-		env["SCRIPT_FILENAME"] = script;
-		env["SCRIPT_NAME"] = "result.php";
-		env["REDIRECT_STATUS"] = "200";
 
+		size_t pos = script.rfind("/");
+		std::string nameScript = script.substr(pos + 1, script.size());
+
+		std::map<std::string, std::string> env;
+		if (request.getMethod() != "GET")
+		{
+//			env["CONTENT_LENGTH"] = "4102";
+			env["GATEWAY_INTERFACE"] = "CGI/1.1";
+			env["SERVER_PROTOCOL"] = "HTTP/1.1";
+			env["SCRIPT_FILENAME"] = script;
+			env["SCRIPT_NAME"] = nameScript;
+			env["REDIRECT_STATUS"] = "200";
+		}
 
 		int pid = fork();
 
