@@ -102,67 +102,6 @@ namespace utils {
 		return path1;
 	}
 
-	std::string base64Encode(const unsigned char* s, unsigned int len) {
-
-		if (len == 0)
-			return std::string("");
-
-		char encode_table[64] = {
-		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
-		'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
-		'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
-		'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-		's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2',
-		'3', '4', '5', '6', '7', '8', '9', '+', '/'};
-
-		std::string encode(4 + (4 * len / 3), '\0');
-		size_t i = 0, y = 0;
-		char a, b, c;
-		long int concat_bits;
-
-		std::cout << "len :" << len << std::endl;
-
-		while((i + 2) < len) {
-			if (y >= encode.capacity()){
-				encode.resize(encode.capacity() * 2, '\0');
-			}
-			a = s[i++];
-			b = s[i++];
-			c = s[i++];
-			concat_bits = (a << 16) | (b << 8) | c;
-			encode[y++] = encode_table[(concat_bits >> 18) & 0x3F];
-			encode[y++] = encode_table[(concat_bits >> 12) & 0x3F];
-			encode[y++] = encode_table[(concat_bits >> 6) & 0x3F];
-			encode[y++] = encode_table[concat_bits & 0x3F];
-		}
-		if (len - i == 1) {
-			if (y >= encode.capacity()){
-				encode.resize(encode.capacity() * 2, '\0');
-			}
-			a = s[i++];
-			concat_bits = (a << 16);
-			encode[y++] = encode_table[(concat_bits >> 18) & 0x3F];
-			encode[y++] = encode_table[(concat_bits >> 12) & 0x3F];
-			encode[y++] = '=';
-			encode[y++] = '=';
-		}
-		if (len - i == 2) {
-			if (y >= encode.capacity()){
-				encode.resize(encode.capacity() * 2, '\0');
-			}
-			a = s[i++];
-			b = s[i++];
-			concat_bits = (a << 16) | (b << 8) ;
-			encode[y++] = encode_table[(concat_bits >> 18) & 0x3F];
-			encode[y++] = encode_table[(concat_bits >> 12) & 0x3F];
-			encode[y++] = encode_table[(concat_bits >> 6) & 0x3F];
-			encode[y++] = '=';
-		}
-
-		encode.resize(y, '\0');
-		return encode;
-	}
-
 	std::string readFile(std::string path) {
 		std::string file;
 		char c;
