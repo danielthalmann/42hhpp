@@ -30,7 +30,7 @@ LDFLAGS=-lstdc++ -lm
 all: ${BIN_DIR}${NAME}
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp
-	$(CXX) $(CXXFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
