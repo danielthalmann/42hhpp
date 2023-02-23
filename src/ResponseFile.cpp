@@ -28,8 +28,10 @@ namespace hhpp {
 			// content.append(buffer.str());
 			// TODO : voir comment encoder correctement l'image
 			if (false) {
-			//if (mimetype->isBinary()) {
-				setBody(  utils::base64Encode(reinterpret_cast<const unsigned char*>(content.c_str()), content.size())  );
+//			if (mimetype->isBinary())
+//			{
+//				setBody(utils::base64Encode(reinterpret_cast<const unsigned char*>(content.c_str()), content.size()));
+				setBody(content.c_str());
 				std::cout << getBody() << std::endl;
 			}
 			else

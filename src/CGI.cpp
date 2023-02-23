@@ -7,72 +7,81 @@ namespace hhpp {
 	CGI::~CGI() {}
 
 	std::string CGI::execute(std::string script, Request request) {
-		int p[2];
+		int p_out[2];
+		int p_in[2];
 //		char buffer[4096];
 //TODO change to dynamic size
 		char buffer[100000];
 
-		pipe(p);
-		fcntl(p[0], F_SETFL, O_NONBLOCK);
-		fcntl(p[1], F_SETFL, O_NONBLOCK);
+		pipe(p_out);
+		pipe(p_in);
 
-//		request.showRequest();
-		(void)request;
-//		std::cout << "loc:" << _location << std::endl;
-//		std::cout << "ext:";
-//		for (std::vector<std::string>::iterator it = _extension.begin(); it < _extension.end() ; ++it) {
-//			std::cout << *it << std::endl;
-//		}
-//		std::cout << "script:" << script << std::endl;
+		fcntl(p_out[0], F_SETFL, O_NONBLOCK);
+		fcntl(p_out[1], F_SETFL, O_NONBLOCK);
+		fcntl(p_in[0], F_SETFL, O_NONBLOCK);
+		fcntl(p_in[1], F_SETFL, O_NONBLOCK);
 
 		std::vector<char*> path;
-		std::string test = _location;
-		test = "/Users/tpinto-m/gh/42hhpp/cgi-bin/php-cgi";
-		path.push_back(const_cast<char*>(test.c_str()));
-		std::string test2 = script;
-		test2 = script;
-		path.push_back(const_cast<char*>(test2.c_str()));
-		std::string test3 = "contentGet=get";
-		path.push_back(const_cast<char*>(test3.c_str()));
+		path.push_back(const_cast<char*>(_location.c_str()));
+		path.push_back(const_cast<char*>(script.c_str()));
+		if (!request.getQuery().empty())
+			path.push_back(const_cast<char*>(request.getQuery().c_str()));
 		path.push_back(NULL);
 
-		size_t pos = script.rfind("/");
-		std::string nameScript = script.substr(pos + 1, script.size());
-
 		std::map<std::string, std::string> env;
-		if (request.getMethod() != "GET")
+		if (request.getMethod() == "POST")
 		{
-//			env["CONTENT_LENGTH"] = "4102";
+			size_t pos = script.rfind("/");
+			std::string nameScript = script.substr(pos + 1, script.size());
+
+			env["AUTH_TYPE"] = "null";
+			env["CONTENT_TYPE"] = "application/x-www-form-urlencoded";
+			env["CONTENT_LENGTH"] = utils::numberToString(request.getBodySize());
+
 			env["GATEWAY_INTERFACE"] = "CGI/1.1";
-			env["SERVER_PROTOCOL"] = "HTTP/1.1";
+			env["PATH_INFO"] = _location;
+
+			env["SERVER_NAME"] = request.getHost();
+			env["SERVER_PROTOCOL"] = request.getHttpVersion();
+			env["SERVER_PORT"] = utils::numberToString(request.getPort());
+
+			env["REQUEST_METHOD"] = "POST";
 			env["SCRIPT_FILENAME"] = script;
 			env["SCRIPT_NAME"] = nameScript;
-			env["REDIRECT_STATUS"] = "200";
+
+			env["REDIRECT_STATUS"] = "CGI";
+		}
+		if (request.getHeaders()["Cookie"].length() > 0) {
+			env["HTTP_COOKIE"] = request.getHeaders()["Cookie"];
 		}
 
 		int pid = fork();
 
 		if (pid == 0) {
-			close(p[0]);
-			dup2(p[1], STDOUT_FILENO);
-//			dup2(pp[0], STDIN_FILENO); // faire l'inverse
-			close(p[1]);
+			close(p_out[0]);
+			dup2(p_out[1], STDOUT_FILENO);
+			close(p_out[1]);
+
+			close(p_in[1]);
+			dup2(p_in[0], STDIN_FILENO);
+			close(p_in[0]);
 
 			execve(path[0], &path[0], utils::mapStringToArray(env));
-//			execve(path[0], &path[0], NULL);
 			exit(0);
-		} else {
-			close(p[1]);
+		}
+		else
+		{
+			close(p_in[0]);
+			close(p_out[1]);
+
+			write(p_in[1], request.getBody().c_str(), request.getBody().size());
+			close(p_in[1]);
 
 			waitpid(pid, NULL, 0);
 			bzero(&buffer, sizeof(buffer));
-			read(p[0], buffer, sizeof(buffer));
-
-//			serverResponse.setResponse(clientRequest, 200);
-//			serverResponse.setBody(buffer, "text/html");
+			read(p_out[0], buffer, sizeof(buffer));
+			close(p_out[0]);
 		}
-//		std::cout << "resp:" << std::endl;
-//		std::cout << buffer << std::endl;
 
 		return (buffer);
 	}

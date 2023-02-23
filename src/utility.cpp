@@ -207,4 +207,13 @@ namespace utils {
 		return (std::string(buf));
 	}
 
+	std::string upperKebabCase(std::string str) {
+		for (size_t i = 0; i < str.size(); ++i) {
+			if (i == 0 || str[i - 1] == ' ' || str[i - 1] == '-')
+				str[i] = std::toupper(str[i]);
+		}
+
+		return str;
+	}
+
 }

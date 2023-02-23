@@ -8,8 +8,8 @@ import time
 form = cgi.FieldStorage()
 
 # Get data from fields
-first_name = form.getvalue('first_name')
-last_name  = form.getvalue('last_name')
+postContent = form.getvalue('contentPost')
+getContent = form.getvalue('contentGet')
 
 print("Set-Cookie:lastvisit=" + str(time.time()))
 print("Content-type:text/html\r\n\r\n")
@@ -18,8 +18,7 @@ print("<head>")
 print("<title>Hello - CGI Program</title>")
 print("</head>")
 print("<body>")
-print("<h2>Hello %s %s</h2>" % (first_name, last_name))
-# time.sleep(2)
-# print("<h2>stop sleeping</h2>")
+print("<h2>post %s</h2>" % (postContent))
+print("<h2>get %s</h2>" % (getContent))
 print("</body>")
 print("</html>")

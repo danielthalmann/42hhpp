@@ -5,12 +5,9 @@ namespace hhpp {
 	ResponseCgi::ResponseCgi(CGI *cgi, std::string script, const Request *request)
 			: Response(), _cgi(cgi), _script(script), _request(request)
 	{
-//		_cgi = cgi;
-//		_request = request;
 		setStatus(501);
 		setBody(getStatusMessage());
-		setContentType("text/plain");
-
+		setContentType("text/html");
 	}
 
 	ResponseCgi::~ResponseCgi()
@@ -20,7 +17,6 @@ namespace hhpp {
 
 	std::string ResponseCgi::raw()
 	{
-//		prepareResponse();
 
 		std::string statusMessage;
 		int status = _status;
@@ -33,8 +29,12 @@ namespace hhpp {
 		}
 
 		setBody(_cgi->execute(_script, *_request));
-		setContentType("text/html");
-		setStatus(200);
+
+		prepareResponse();
+
+		status = 200;
+		statusMessage = "OK";
+		setStatus(status);
 
 		std::string dataSend;
 
@@ -48,13 +48,26 @@ namespace hhpp {
 		dataSend.append("\n");
 		dataSend.append(_body);
 
-//		std::cout << _body << std::endl;
-
 		return dataSend;
 	}
 
 	void ResponseCgi::prepareResponse() {
+		std::string header;
+		std::vector<std::string> token;
+		std::vector<std::string> headers;
 
+		header = _body.substr(0, _body.find("\r\n\r\n"));
+		setBody(_body.substr(_body.find("\r\n\r\n")));
+
+		token = utils::split(header, "\n");
+		std::cout << token[0] << std::endl;
+
+		for (size_t i = 0; i < token.size(); ++i) {
+			headers = utils::split(token[i], ":");
+			if (headers.size() == 2)
+			{
+				_header[utils::upperKebabCase(headers[0])] = utils::trim(headers[1]);
+			}
+		}
 	}
-
 }

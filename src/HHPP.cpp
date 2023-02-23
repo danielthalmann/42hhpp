@@ -355,6 +355,7 @@ namespace hhpp {
 
 						while (1)
 						{
+							bzero(buffer, sizeof(buffer));
 							ret = recv(i, buffer, sizeof(buffer), 0);
 							if (ret < 0)
 							{
