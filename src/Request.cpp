@@ -32,13 +32,13 @@ void Request::parseRequest(const std::string& rawRequest) {
 	std::vector<std::string> token;
 	std::vector<std::string> header;
 	std::vector<std::string> query;
+	bool isBody = false;
 
-		header = utils::split(rawRequest, "\n");
+	header = utils::split(rawRequest, "\r\n");
 
 	_bodySize = 0;
 
 	for (size_t i = 0; i < header.size(); i++) {
-
 		if (i == 0)
 		{
 			token = utils::split(header[i], " ");
@@ -50,18 +50,25 @@ void Request::parseRequest(const std::string& rawRequest) {
 				{
 					setUrl(query[0]);
 					setQuery(query[1]);
-				} else
+				}
+				else
 					setUrl(utils::trim(token[1]));
 
 				setHttpVersion(utils::trim(token[2]));
 			}
 		}
-		else {
-
+		else
+		{
 			token = utils::split(header[i], ": ");
 
-			if (token.size() == 2) {
+			if (token.size() != 2 && !isBody)
+				isBody = true;
+
+			if (!isBody) {
 				_headers.append(utils::trim(token[0]), utils::trim(token[1]));
+			}
+			else {
+				_body.append(header[i]);
 			}
 		}
 	}
@@ -89,10 +96,22 @@ void Request::parseRequest(const std::string& rawRequest) {
 }
 
 	void Request::showRequest() {
+		std::cout << "show request" << std::endl;
 		std::cout	<< getMethod() << " "
 					<< getUrl() << " "
 					<< getHttpVersion() << std::endl;
+		std::cout << "headers:" << std::endl;
 		_headers.showParams();
+		std::cout << "end headers" << std::endl;
+
+		std::cout << "body Size:" << _bodySize << std::endl;
+		std::cout << "bodyContent:" << std::endl;
+		std::cout << "bodyContent:" << _body << std::endl;
+		std::cout << "query:" << _query << std::endl;
+		std::cout << "host:" << _host << std::endl;
+		std::cout << "post:" << _port << std::endl;
+
+		std::cout << "end show request" << std::endl;
 	}
 
 	hhpp::Header &Request::getHeaders() {

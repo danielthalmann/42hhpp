@@ -6,57 +6,106 @@ namespace hhpp {
 	CGI::CGI() {}
 	CGI::~CGI() {}
 
-	std::string CGI::execute(Request request) {
-		int p[2];
-		char buffer[4096];
-
-		pipe(p);
-		fcntl(p[0], F_SETFL, O_NONBLOCK);
-		fcntl(p[1], F_SETFL, O_NONBLOCK);
-
-//		request.showRequest();
-
+	std::vector<char*> CGI::preparePath(const std::string &query) {
 		std::vector<char*> path;
-		std::string test = "/usr/bin/python3";
-		path.push_back(const_cast<char*>(test.c_str()));
-		std::string test2 = "/Users/tpinto-m/gh/42hhpp/var/www/hello_get.py";
-		path.push_back(const_cast<char*>(test2.c_str()));
-		std::string test3 = "first_name=Tiago&last_name=PM";
-		path.push_back(const_cast<char*>(test3.c_str()));
-		path.push_back(NULL);
-//
-		std::map<std::string, std::string> env;
-		env["CONTENT_LENGTH"] = "154";
-		env["GATEWAY_INTERFACE"] = "CGI/1.1";
-		env["SERVER_PROTOCOL"] = "HTTP/1.1";
-		env["SCRIPT_FILENAME"] = "/Users/tpinto-m/gh/42hhpp/var/www/hello_get.py";
-		env["SCRIPT_NAME"] = "hello_get.py";
-		env["REDIRECT_STATUS"] = "200";
 
-//		TODO resquest to path
-		(void)request;
+		path.push_back(const_cast<char*>(_location.c_str()));
+		path.push_back(const_cast<char*>(_scriptPath.c_str()));
+		if (!query.empty())
+			path.push_back(const_cast<char*>(query.c_str()));
+		path.push_back(NULL);
+
+		return path;
+	}
+
+	std::map<std::string, std::string> CGI::prepareEnv(Request request) {
+		std::map<std::string, std::string> env;
+
+		if (request.getMethod() == "POST")
+		{
+			size_t pos = _scriptPath.rfind("/");
+			std::string nameScript = _scriptPath.substr(pos + 1, _scriptPath.size());
+
+			env["AUTH_TYPE"] = "null";
+			env["CONTENT_TYPE"] = "application/x-www-form-urlencoded";
+			env["CONTENT_LENGTH"] = utils::numberToString(request.getBodySize());
+
+			env["GATEWAY_INTERFACE"] = "CGI/1.1";
+			env["PATH_INFO"] = _location;
+
+			env["SERVER_NAME"] = request.getHost();
+			env["SERVER_PROTOCOL"] = request.getHttpVersion();
+			env["SERVER_PORT"] = utils::numberToString(request.getPort());
+
+			env["REQUEST_METHOD"] = "POST";
+			env["SCRIPT_FILENAME"] = _scriptPath;
+			env["SCRIPT_NAME"] = nameScript;
+
+			env["REDIRECT_STATUS"] = "CGI";
+		}
+		if (request.getHeaders()["Cookie"].length() > 0) {
+			env["HTTP_COOKIE"] = request.getHeaders()["Cookie"];
+		}
+
+		return env;
+	}
+
+	std::string CGI::execute(std::string scriptPath, Request request) {
+		int p_out[2];
+		int p_in[2];
+		int ret;
+		char buffer[4096];
+		std::string result;
+
+		_scriptPath = scriptPath;
+
+		pipe(p_out);
+		pipe(p_in);
+
+		fcntl(p_out[0], F_SETFL, O_NONBLOCK);
+		fcntl(p_out[1], F_SETFL, O_NONBLOCK);
+		fcntl(p_in[0], F_SETFL, O_NONBLOCK);
+		fcntl(p_in[1], F_SETFL, O_NONBLOCK);
+
+		std::vector<char*> path = preparePath(request.getQuery());
+		std::map<std::string, std::string> env = prepareEnv(request);
 
 		int pid = fork();
 
 		if (pid == 0) {
-			close(p[0]);
-			dup2(p[1], STDOUT_FILENO);
-//			dup2(pp[0], STDIN_FILENO); // faire l'inverse
-			close(p[1]);
+			close(p_out[0]);
+			dup2(p_out[1], STDOUT_FILENO);
+			close(p_out[1]);
+
+			close(p_in[1]);
+			dup2(p_in[0], STDIN_FILENO);
+			close(p_in[0]);
 
 			execve(path[0], &path[0], utils::mapStringToArray(env));
 			exit(0);
-		} else {
-			close(p[1]);
-
-			waitpid(pid, NULL, 0);
-			bzero(&buffer, sizeof(buffer));
-			read(p[0], buffer, sizeof(buffer));
-
-//			serverResponse.setResponse(clientRequest, 200);
-//			serverResponse.setBody(buffer, "text/html");
 		}
-		return (buffer);
+		else
+		{
+			close(p_in[0]);
+			close(p_out[1]);
+
+			write(p_in[1], request.getBody().c_str(), request.getBody().size());
+			close(p_in[1]);
+
+			if (waitpid(pid, &ret, 0) == -1)
+				throw(std::exception());
+			if (ret != 0)
+				throw(std::exception());
+
+			do {
+				bzero(&buffer, sizeof(buffer));
+				ret = read(p_out[0], buffer, sizeof(buffer));
+				result.append(std::string(buffer, sizeof(buffer)));
+			} while(ret == sizeof(buffer));
+			close(p_out[0]);
+		}
+
+		return (result);
 	}
 
 	void CGI::addExtension(const std::string& extension)

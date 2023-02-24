@@ -13,11 +13,6 @@
 <p>content get : <?php echo $_GET["contentGet"] ?></p>
 
 <?php
-
-    echo '<pre>';
-    var_dump($_COOKIE);
-    echo '</pre>';
-
     echo '<pre>';
     var_dump($_ENV);
     echo '</pre>';

@@ -7,13 +7,45 @@
 
 <body>
 
-<h1>Form</h1>
+<h1>Form PHP</h1>
+<h2>POST</h2>
 
-<form action="script/result.php" method="post">
+<form action="cgi/result.php" method="post">
 
-    content : <input type="text" name="content" />
+	content : <input type="text" name="contentPost" />
 
-    <button type="submit">send</button>
+	<button type="submit">send</button>
+
+</form>
+
+<h2>GET</h2>
+
+<form action="script/result.php" method="get">
+
+	content : <input type="text" name="contentGet" />
+
+	<button type="submit">send</button>
+
+</form>
+
+<h1>Form PY</h1>
+<h2>POST</h2>
+
+<form action="script/result.py" method="post">
+
+	content : <input type="text" name="contentPost" />
+
+	<button type="submit">send</button>
+
+</form>
+
+<h2>GET</h2>
+
+<form action="cgi/result.py" method="get">
+
+	content : <input type="text" name="contentGet" />
+
+	<button type="submit">send</button>
 
 </form>
 

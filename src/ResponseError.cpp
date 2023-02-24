@@ -2,17 +2,20 @@
 #include "utility.hpp"
 
 namespace hhpp {
-	ResponseError::ResponseError(int error) 
+	ResponseError::ResponseError(int error)
 	: Response()
 	{
+		std::string page;
+
 		setStatus(error);
 
-		std::string page;
-		if (error == 404)
+		if (_status == 404)
+		{
 			page = get404();
+		}
 		else
 		{
-			std::string errorMsg = "generate Error " + utils::numberToString(error) + ": " + _totalStatus[error];
+			std::string errorMsg = "Error " + utils::numberToString(_status) + ": " + _statusMessage;
 
 			page.append("<html><head>"
 						"<title>" + errorMsg + "</title>"
@@ -22,7 +25,6 @@ namespace hhpp {
 						"<p>Oops! Something went wrong...</p>"
 						"</body></html>");
 		}
-
 		setBody(page);
 		setContentType("text/html");
 	}
@@ -40,10 +42,10 @@ namespace hhpp {
 					page = _server->getErrorPages()[i]->getPage(_server->getRoot());
 				else
 					page = get404();
+				setBody(page);
 				break;
 			}
 		}
-		setBody(page);
 	}
 
 }

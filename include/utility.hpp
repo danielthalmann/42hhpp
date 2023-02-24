@@ -31,6 +31,8 @@ namespace utils {
 
 	std::string getTime();
 	std::string readFile(std::string path);
+
+	std::string upperKebabCase(std::string str);
 }
 
 #endif

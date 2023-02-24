@@ -290,7 +290,7 @@ namespace hhpp {
 		int listen_sd;
 		int desc_ready, end_server = 0;
 		int close_conn;
-//		int len;
+		int len;
 		char buffer[4096];
 		IBinding *currentBinding;
 
@@ -355,6 +355,7 @@ namespace hhpp {
 
 						while (1)
 						{
+							bzero(buffer, sizeof(buffer));
 							ret = recv(i, buffer, sizeof(buffer), 0);
 							if (ret < 0)
 							{
@@ -371,8 +372,8 @@ namespace hhpp {
 								close_conn = 1;
 								break;
 							}
-//							len = ret;
-//							std::cout << len << " bytes received" << std::endl;
+							len = ret;
+							std::cout << len << " bytes received" << std::endl;
 
 							// prepare request
 							Request* request = new Request();
@@ -392,8 +393,21 @@ namespace hhpp {
 							// propage les cookie
 							response->getHeaders()["Cookie"] = request->getHeaders()["Cookie"];
 
-							std::string dataSend = response->raw();
-							ret = send(i, response->raw().c_str(), dataSend.size(), 0);
+							std::string dataSend;
+							try
+							{
+								dataSend = response->raw();
+							}
+							catch (std::exception &e)
+							{
+								delete response;
+								response = new ResponseError(502);
+								response->setServer(server);
+								response->getHeaders()["Cookie"] = request->getHeaders()["Cookie"];
+								dataSend = response->raw();
+							}
+
+							ret = send(i, dataSend.c_str(), dataSend.size(), 0);
 							std::cout << "[+] data send: " << ret << "/" << dataSend.size() << std::endl;
 							if (ret < 0) {
 								std::cerr << "[-] send() failed" << std::endl;

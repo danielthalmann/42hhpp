@@ -21,10 +21,6 @@ namespace hhpp {
 		} else {
 			
 			buffer << fs.rdbuf();
-
-			// There is no need to use base64 encoding, you can send your image data as binary.
-			// 
-			/*
 			if (mimetype->isBinary()) {
 				getHeaders()["Content-Transfer-Encoding"] = "base64";
 				getHeaders()["Content-Encoding"] = "base64";

@@ -34,6 +34,16 @@
           "path" : "/script",
           "root" : "test/www/domain1/cgi"
         }
+      ],
+      "cgi" : [
+        {
+          "extension" : [".php"],
+          "location" : "cgi-bin/php-cgi"
+        },
+        {
+          "extension" : [".py"],
+          "location" : "/usr/bin/python3"
+        }
       ]
     },
     {
@@ -64,10 +74,9 @@
       "location" : [
         {
           "path" : "script",
-          "root" : "/var/www/cgi"
+          "root" : "test/www/domain2/cgi"
         }
       ]
-
     }
   ],
 
@@ -84,7 +93,7 @@
   "cgi" : [
     {
       "extension" : [".php"],
-      "location" : "/usr/bin/php"
+      "location" : "cgi-bin/php-cgi"
     }
   ],
 
