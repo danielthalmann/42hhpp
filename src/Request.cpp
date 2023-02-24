@@ -32,6 +32,7 @@ void Request::parseRequest(const std::string& rawRequest) {
 	std::vector<std::string> token;
 	std::vector<std::string> header;
 	std::vector<std::string> query;
+	std::string body;
 	bool isBody = false;
 
 	header = utils::split(rawRequest, "\r\n");
@@ -68,9 +69,10 @@ void Request::parseRequest(const std::string& rawRequest) {
 				_headers.append(utils::trim(token[0]), utils::trim(token[1]));
 			}
 			else {
-				_body.append(header[i]);
+				body.append(header[i]);
 			}
 		}
+		setBody(body);
 	}
 
 	// extract host

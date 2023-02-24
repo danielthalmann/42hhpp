@@ -377,7 +377,7 @@ namespace hhpp {
 
 							// prepare request
 							Request* request = new Request();
-							request->parseRequest(std::string(buffer));
+							request->parseRequest(std::string(buffer, ret));
 
 							IServer* server = NULL;
 							server = currentBinding->getServerFor(*request);

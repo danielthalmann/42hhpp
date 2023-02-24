@@ -24,9 +24,8 @@ namespace hhpp {
 			if (mimetype->isBinary()) {
 				getHeaders()["Content-Transfer-Encoding"] = "base64";
 				getHeaders()["Content-Encoding"] = "base64";
-				setBody(  Base64::Encode(buffer.str())  );
+				setBody(Base64::Encode(buffer.str()));
 			}
-			*/
 			setBody(buffer.str());
 			setContentType(mimetype->getMimeType());
 		}
