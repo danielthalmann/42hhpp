@@ -55,12 +55,16 @@ namespace hhpp {
 		std::string header;
 		std::vector<std::string> token;
 		std::vector<std::string> headers;
+		size_t find;
 
-		header = _body.substr(0, _body.find("\r\n\r\n"));
-		setBody(_body.substr(_body.find("\r\n\r\n")));
+		find = _body.find("\r\n\r\n");
+		if (find == std::string::npos)
+			return;
+
+		header = _body.substr(0, find);
+		setBody(_body.substr(find));
 
 		token = utils::split(header, "\n");
-		std::cout << token[0] << std::endl;
 
 		for (size_t i = 0; i < token.size(); ++i) {
 			headers = utils::split(token[i], ":");

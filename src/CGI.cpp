@@ -1,38 +1,28 @@
 #include "CGI.hpp"
 
-//TODO check upload into nginx for example (POST AND DELETE)
-
 namespace hhpp {
 	CGI::CGI() {}
 	CGI::~CGI() {}
 
-	std::string CGI::execute(std::string script, Request request) {
-		int p_out[2];
-		int p_in[2];
-//		char buffer[4096];
-//TODO change to dynamic size
-		char buffer[100000];
-
-		pipe(p_out);
-		pipe(p_in);
-
-		fcntl(p_out[0], F_SETFL, O_NONBLOCK);
-		fcntl(p_out[1], F_SETFL, O_NONBLOCK);
-		fcntl(p_in[0], F_SETFL, O_NONBLOCK);
-		fcntl(p_in[1], F_SETFL, O_NONBLOCK);
-
+	std::vector<char*> CGI::preparePath(const std::string &query) {
 		std::vector<char*> path;
+
 		path.push_back(const_cast<char*>(_location.c_str()));
-		path.push_back(const_cast<char*>(script.c_str()));
-		if (!request.getQuery().empty())
-			path.push_back(const_cast<char*>(request.getQuery().c_str()));
+		path.push_back(const_cast<char*>(_scriptPath.c_str()));
+		if (!query.empty())
+			path.push_back(const_cast<char*>(query.c_str()));
 		path.push_back(NULL);
 
+		return path;
+	}
+
+	std::map<std::string, std::string> CGI::prepareEnv(Request request) {
 		std::map<std::string, std::string> env;
+
 		if (request.getMethod() == "POST")
 		{
-			size_t pos = script.rfind("/");
-			std::string nameScript = script.substr(pos + 1, script.size());
+			size_t pos = _scriptPath.rfind("/");
+			std::string nameScript = _scriptPath.substr(pos + 1, _scriptPath.size());
 
 			env["AUTH_TYPE"] = "null";
 			env["CONTENT_TYPE"] = "application/x-www-form-urlencoded";
@@ -46,7 +36,7 @@ namespace hhpp {
 			env["SERVER_PORT"] = utils::numberToString(request.getPort());
 
 			env["REQUEST_METHOD"] = "POST";
-			env["SCRIPT_FILENAME"] = script;
+			env["SCRIPT_FILENAME"] = _scriptPath;
 			env["SCRIPT_NAME"] = nameScript;
 
 			env["REDIRECT_STATUS"] = "CGI";
@@ -54,6 +44,29 @@ namespace hhpp {
 		if (request.getHeaders()["Cookie"].length() > 0) {
 			env["HTTP_COOKIE"] = request.getHeaders()["Cookie"];
 		}
+
+		return env;
+	}
+
+	std::string CGI::execute(std::string scriptPath, Request request) {
+		int p_out[2];
+		int p_in[2];
+		int ret;
+		char buffer[4096];
+		std::string result;
+
+		_scriptPath = scriptPath;
+
+		pipe(p_out);
+		pipe(p_in);
+
+		fcntl(p_out[0], F_SETFL, O_NONBLOCK);
+		fcntl(p_out[1], F_SETFL, O_NONBLOCK);
+		fcntl(p_in[0], F_SETFL, O_NONBLOCK);
+		fcntl(p_in[1], F_SETFL, O_NONBLOCK);
+
+		std::vector<char*> path = preparePath(request.getQuery());
+		std::map<std::string, std::string> env = prepareEnv(request);
 
 		int pid = fork();
 
@@ -77,13 +90,20 @@ namespace hhpp {
 			write(p_in[1], request.getBody().c_str(), request.getBody().size());
 			close(p_in[1]);
 
-			waitpid(pid, NULL, 0);
-			bzero(&buffer, sizeof(buffer));
-			read(p_out[0], buffer, sizeof(buffer));
+			if (waitpid(pid, &ret, 0) == -1)
+				throw(std::exception());
+			if (ret != 0)
+				throw(std::exception());
+
+			do {
+				bzero(&buffer, sizeof(buffer));
+				ret = read(p_out[0], buffer, sizeof(buffer));
+				result.append(std::string(buffer, sizeof(buffer)));
+			} while(ret == sizeof(buffer));
 			close(p_out[0]);
 		}
 
-		return (buffer);
+		return (result);
 	}
 
 	void CGI::addExtension(const std::string& extension)

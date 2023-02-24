@@ -393,10 +393,22 @@ namespace hhpp {
 							// propage les cookie
 							response->getHeaders()["Cookie"] = request->getHeaders()["Cookie"];
 
-							std::string dataSend = response->raw();
+							std::string dataSend;
+							try
+							{
+								dataSend = response->raw();
+							}
+							catch (std::exception &e)
+							{
+								delete response;
+								response = new ResponseError(502);
+								response->setServer(server);
+								response->getHeaders()["Cookie"] = request->getHeaders()["Cookie"];
+								dataSend = response->raw();
+							}
+
 							ret = send(i, dataSend.c_str(), dataSend.size(), 0);
 							std::cout << "[+] data send: " << ret << "/" << dataSend.size() << std::endl;
-//							std::cout << "dataSend:" << response. << std::endl;
 							if (ret < 0) {
 								std::cerr << "[-] send() failed" << std::endl;
 							}
