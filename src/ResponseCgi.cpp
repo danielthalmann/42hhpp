@@ -19,6 +19,7 @@ namespace hhpp {
 		std::string header;
 		std::vector<std::string> token;
 		std::vector<std::string> headers;
+		std::vector<std::string> statuses;
 		size_t find;
 		std::string result;
 
@@ -52,6 +53,13 @@ namespace hhpp {
 			{
 				_header[utils::upperKebabCase(headers[0])] = utils::trim(headers[1]);
 			}
+		}
+		std::string strStatus = _header.get("Status");
+		if (strStatus.size() > 0)
+		{
+			statuses = utils::split(strStatus, " ");
+			setStatus(std::atoi(statuses[0].c_str()));
+
 		}
 	}
 }
