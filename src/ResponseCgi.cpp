@@ -20,17 +20,33 @@ namespace hhpp {
 		std::vector<std::string> token;
 		std::vector<std::string> headers;
 		size_t find;
+		std::string result;
 
-		find = _body.find("\r\n\r\n");
+		try {
+			result = _cgi->execute(_script, *_request);
+			std::cout << result;
+		} catch (...)
+		{
+
+		}
+		
+		setStatus(200);
+
+		find = result.find("\r\n\r\n");
 		if (find == std::string::npos)
+		{
+			setBody(result);
 			return;
+		}
 
-		header = _body.substr(0, find);
-		setBody(_body.substr(find));
+		header = result.substr(0, find);
 
-		token = utils::split(header, "\n");
+		setBody(result.substr(find));
 
-		for (size_t i = 0; i < token.size(); ++i) {
+		token = utils::split(header, "\r\n");
+
+		for (size_t i = 0; i < token.size(); ++i) 
+		{
 			headers = utils::split(token[i], ":");
 			if (headers.size() == 2)
 			{
