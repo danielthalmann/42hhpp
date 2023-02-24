@@ -100,4 +100,7 @@ fclean: clean
 	make -C $(JSON_DIR) fclean
 
 re: fclean all
-	
+
+# normalize file
+lint: 
+	clang-format --style=file -i  $(INC)  $(SRC) 

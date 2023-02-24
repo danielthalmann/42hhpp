@@ -1,4 +1,6 @@
 #include "CGI.hpp"
+#include <sys/types.h>
+#include <sys/wait.h>
 
 namespace hhpp {
 	CGI::CGI() {}

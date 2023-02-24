@@ -3,17 +3,16 @@
 
 NAME=json.a
 
-SRC_FOLDER=src/
-BIN_FOLDER=bin/
-OBJ_FOLDER=obj/
-TEST_FOLDER=tests/
+SRC_DIR=src/
+BIN_DIR=bin/
+OBJ_DIR=obj/
+TEST_DIR=tests/
 
 SRCFILES=Json.cpp JsonValue.cpp JsonObject.cpp JsonArray.cpp JsonString.cpp JsonNumber.cpp JsonBoolean.cpp
 
-SRCS=$(addprefix ${SRC_FOLDER}, ${SRCFILES})
+SRCS=$(addprefix ${SRC_DIR}, ${SRCFILES})
 
-#OBJS=${SRCS:cpp=o}
-OBJS=$(patsubst %.cpp, ${BUILD}%.o, ${SRCS})
+OBJS=$(addprefix ${OBJ_DIR}, ${SRCFILES:cpp=o})
 
 #CXX=gcc
 ifeq ($(shell uname), Linux)
@@ -28,27 +27,27 @@ CXXFLAGS=-Wall -Wextra -Werror -std=c++98 -Iinclude
 
 LDFLAGS=-lstdc++ -lm
 
-all: ${BIN_FOLDER}${NAME}
+all: ${BIN_DIR}${NAME}
 
-#$(NAME) : $(OBJS)
-#	$(CXX) $(OBJS) $(LDFLAGS) -o $@
+$(OBJ_DIR)%.o : $(SRC_DIR)%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-#$(BUILD)%.o : %.cpp
-#	$(CXX) $(CXXFLAGS) $< -o $@
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
-${BIN_FOLDER}${NAME}: ${OBJS}
+${BIN_DIR}${NAME}: $(OBJ_DIR) ${OBJS}
 	@ar rsv $@ ${OBJS} 	
 
 clean :
 	rm -f $(OBJS)
 
 fclean : clean
-	rm -f ${BIN_FOLDER}$(NAME)
+	rm -f ${BIN_DIR}$(NAME)
 
 re : fclean all
 
 test : CXXFLAGS+= -g3 -fsanitize=address
 test : all
-	@cd ${TEST_FOLDER} ;	./test.sh
+	@cd ${TEST_DIR} ;	./test.sh
 
 
