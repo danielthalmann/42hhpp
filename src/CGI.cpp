@@ -100,7 +100,8 @@ namespace hhpp {
 			do {
 				bzero(&buffer, sizeof(buffer));
 				ret = read(p_out[0], buffer, sizeof(buffer));
-				result.append(std::string(buffer, sizeof(buffer)));
+				if (ret > 0)
+					result.append(std::string(buffer, ret));
 			} while(ret == sizeof(buffer));
 			close(p_out[0]);
 		}
