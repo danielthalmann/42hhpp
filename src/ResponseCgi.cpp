@@ -28,7 +28,7 @@ namespace hhpp {
 			std::cout << result;
 		} catch (...)
 		{
-
+			throw(std::exception());
 		}
 		
 		setStatus(200);
