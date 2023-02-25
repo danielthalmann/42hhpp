@@ -48,8 +48,8 @@ HEADER=	Binding.hpp\
 		Redirect.hpp\
 		Request.hpp\
 		Response.hpp\
-		ResponseCgi.cpp\
-		ResponseError.cpp\
+		ResponseCgi.hpp\
+		ResponseError.hpp\
 		ResponseFile.hpp\
 		ResponseRedirect.hpp\
 		Server.hpp\
