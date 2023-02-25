@@ -241,10 +241,12 @@ namespace hhpp {
 
 		} else {
 
-			// ficher présent mais pas accessible
-			if (access(localPath.c_str(), R_OK))
-				return new ResponseError(403);
-
+			if (request.getMethod() == "GET")
+			{
+				// ficher présent mais pas accessible
+				if (access(localPath.c_str(), R_OK))
+					return new ResponseError(403);				
+			}
 		}
 
 		// search cgi
@@ -252,6 +254,16 @@ namespace hhpp {
 			return new ResponseCgi(cgi, localPath, &request);
 		}
 
+		if (request.getMethod() == "DELETE")
+		{
+			// ficher présent mais pas accessible
+			if (access(localPath.c_str(), W_OK))
+			{
+				return new ResponseError(403);
+			}
+			
+			return new ResponseDelete(local);
+		}
 
 		if (MimeType* mime = getMimeType(localPath) ) {
 			return new ResponseFile(localPath, mime);

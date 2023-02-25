@@ -12,6 +12,7 @@
 #include "Request.hpp"
 #include "Response.hpp"
 #include "ResponseCgi.hpp"
+#include "ResponseDelete.hpp"
 #include "ResponseError.hpp"
 #include "ResponseFile.hpp"
 #include "ResponseRedirect.hpp"

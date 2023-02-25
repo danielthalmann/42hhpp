@@ -37,8 +37,4 @@ namespace hhpp {
 
 	}
 
-	void ResponseDelete::prepareResponse()
-    {
-
-	}
 }

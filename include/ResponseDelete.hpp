@@ -1,5 +1,5 @@
-#ifndef RESPONSECGI_HPP
-#define RESPONSECGI_HPP
+#ifndef RESPONSEDELETE_HPP
+#define RESPONSEDELETE_HPP
 
 #include <Response.hpp>
 #include <Location.hpp>
@@ -12,9 +12,6 @@ namespace hhpp {
 	public:
 		ResponseDelete(Location *location);
 		~ResponseDelete();
-
-	protected:
-		void prepareResponse();
 
 	private:
 		Location *_location;
