@@ -11,6 +11,7 @@ namespace hhpp {
 		// default value
 		_autoIndex = false;
 		_maxBodySize = 0;
+		_root = new Location();
 	}
 
 	Server::~Server() 
@@ -34,6 +35,8 @@ namespace hhpp {
 		for (std::map<std::string, MimeType*>::iterator it = _mimetypes.begin(); it != _mimetypes.end() ; ++it) {
 			delete (it->second);
 		}
+
+		delete _root;
 	}
 
 	void Server::setSocket(const int socket) {
@@ -48,12 +51,12 @@ namespace hhpp {
 	
 	void Server::setRoot(const std::string& root)
 	{
-		_root = root;
+		_root->setRoot(root);
 	}
 
-	std::string Server::getRoot()
+	std::string Server::getRoot() const
 	{
-		return _root;
+		return _root->getRoot();
 	}
 	
 	void Server::addDomain(const std::string& domain)
@@ -143,17 +146,17 @@ namespace hhpp {
 		return NULL;
 	}
 
-	std::string Server::getLocalPath(const std::string& query) const
+	Location *Server::getLocation(const std::string& query)
 	{
 		// TODO controle des / entre les path
-		for (std::vector<Location*>::const_iterator it = _locations.begin(); it != _locations.end(); it++) {
+		for (std::vector<Location*>::iterator it = _locations.begin(); it != _locations.end(); it++) {
 			if ((*it)->match(query)) {
-				return (*it)->getLocalPath(query);
+				(*it)->setUrl(query);
+				return (*it);
 			}
 		}
-
-		return utils::path(_root, query);
-
+		_root->setUrl(query);
+		return (_root);
 	}
 
 	Response* Server::fileListIndex(const std::string& query) const
@@ -208,16 +211,17 @@ namespace hhpp {
 		}
 
 		// search url in location path
-		localPath = getLocalPath(request.getUrl());
+		Location *local = getLocation(request.getUrl());
 
-		struct stat sb;
+		localPath = local->getLocalPath();
+
 		std::cout << localPath << std::endl;
 
-		if (stat(localPath.c_str(), &sb))
+		if (!local->exists() && request.getMethod() == "GET")
 			return new ResponseError(404);
 
 		// is folder
-		if ((sb.st_mode & S_IFMT) == S_IFDIR) {
+		if (local->isFolder()) {
 
 			bool indexFound = false;
 			for (std::vector<std::string>::const_iterator it = _indexes.begin(); it != _indexes.end(); it++) {
@@ -237,10 +241,12 @@ namespace hhpp {
 
 		} else {
 
-			// ficher présent mais pas accessible
-			if (access(localPath.c_str(), R_OK))
-				return new ResponseError(403);
-
+			if (request.getMethod() == "GET")
+			{
+				// ficher présent mais pas accessible
+				if (access(localPath.c_str(), R_OK))
+					return new ResponseError(403);				
+			}
 		}
 
 		// search cgi
@@ -248,6 +254,23 @@ namespace hhpp {
 			return new ResponseCgi(cgi, localPath, &request);
 		}
 
+		if (request.getMethod() == "DELETE")
+		{
+			// ficher présent mais pas accessible
+			if (access(localPath.c_str(), W_OK))
+			{
+				return new ResponseError(403);
+			}
+			
+			return new ResponseDelete(local);
+		}
+
+		if (request.getMethod() == "POST")
+		{
+			const std::string head = const_cast<Request&>(request).getHeaders().raw();
+			local->put(head + request.getBody());
+			return new Response();
+		}
 
 		if (MimeType* mime = getMimeType(localPath) ) {
 			return new ResponseFile(localPath, mime);

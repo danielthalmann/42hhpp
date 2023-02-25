@@ -24,7 +24,7 @@ namespace hhpp {
 		virtual bool isForMe(const Request& request) const = 0;
 		virtual void setBinding(IBinding* binding) = 0;
 		virtual void setRoot(const std::string& root) = 0;
-		virtual std::string getRoot() = 0;
+		virtual std::string getRoot() const = 0;
 		virtual void addDomain(const std::string& domain) = 0;
 		virtual void addIndex(const std::string& index) = 0;
 		virtual void addRedirect(Redirect* redirect) = 0;
