@@ -267,7 +267,8 @@ namespace hhpp {
 
 		if (request.getMethod() == "POST")
 		{
-			local->put(request.getBody());
+			const std::string head = const_cast<Request&>(request).getHeaders().raw();
+			local->put(head + request.getBody());
 			return new Response();
 		}
 
