@@ -33,6 +33,7 @@ namespace hhpp {
 		std::vector<std::string> _extension;
 		std::string _location;
 		std::string _scriptPath;
+		std::string _query;
 
 	};
 }

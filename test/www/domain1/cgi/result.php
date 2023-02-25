@@ -9,8 +9,8 @@
 
 <h1>Testing result</h1>
 
-<p>content post : <?php echo $_POST["contentPost"] ?></p>
-<p>content get : <?php echo $_GET["contentGet"] ?></p>
+<p>content post : <?php if( isset($_POST["contentPost"]) ) {echo $_POST["contentPost"];} ?></p>
+<p>content get : <?php if( isset($_GET["contentGet"]) ) {echo $_GET["contentGet"];} ?></p>
 
 <?php
 

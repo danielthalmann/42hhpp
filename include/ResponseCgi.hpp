@@ -13,8 +13,6 @@ namespace hhpp {
 		ResponseCgi(CGI *cgi, std::string script, const Request *request);
 		~ResponseCgi();
 
-		virtual std::string raw();
-
 	protected:
 		void prepareResponse();
 

@@ -68,22 +68,12 @@ namespace hhpp {
 	{
 		prepareResponse();
 
-		std::string statusMessage;
-		int status = _status;
-
-		try {
-			statusMessage = _totalStatus.at(status);
-		} catch (std::exception &e) {
-			status = 200;
-			statusMessage = "OK";
-		}
-
 		std::string dataSend;
 		dataSend.append("HTTP/1.1");
 		dataSend.append(" ");
-		dataSend.append(utils::numberToString(status));
+		dataSend.append(utils::numberToString(_status));
 		dataSend.append(" ");
-		dataSend.append(statusMessage);
+		dataSend.append(_statusMessage);
 		dataSend.append("\r\n");
 		dataSend.append(_header.raw());
 		dataSend.append("\r\n");

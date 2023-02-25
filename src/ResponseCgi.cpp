@@ -15,63 +15,51 @@ namespace hhpp {
 
 	}
 
-	std::string ResponseCgi::raw()
-	{
-
-		std::string statusMessage;
-		int status = _status;
-
-		try {
-			statusMessage = _totalStatus.at(status);
-		} catch (std::exception &e) {
-			status = 200;
-			statusMessage = "OK";
-		}
-
-		setBody(_cgi->execute(_script, *_request));
-
-		prepareResponse();
-
-		status = 200;
-		statusMessage = "OK";
-		setStatus(status);
-
-		std::string dataSend;
-
-		dataSend.append("HTTP/1.1");
-		dataSend.append(" ");
-		dataSend.append(utils::numberToString(status));
-		dataSend.append(" ");
-		dataSend.append(statusMessage);
-		dataSend.append("\n");
-		dataSend.append(_header.raw());
-		dataSend.append("\n");
-		dataSend.append(_body);
-
-		return dataSend;
-	}
-
 	void ResponseCgi::prepareResponse() {
 		std::string header;
 		std::vector<std::string> token;
 		std::vector<std::string> headers;
+		std::vector<std::string> statuses;
 		size_t find;
+		std::string result;
 
-		find = _body.find("\r\n\r\n");
+		try {
+			result = _cgi->execute(_script, *_request);
+			std::cout << result;
+		} catch (...)
+		{
+			throw(std::exception());
+		}
+		
+		setStatus(200);
+
+		find = result.find("\r\n\r\n");
 		if (find == std::string::npos)
+		{
+			setBody(result);
 			return;
+		}
 
-		header = _body.substr(0, find);
-		setBody(_body.substr(find));
+		header = result.substr(0, find);
 
-		token = utils::split(header, "\n");
+		setBody(result.substr(find));
 
-		for (size_t i = 0; i < token.size(); ++i) {
+		token = utils::split(header, "\r\n");
+
+		for (size_t i = 0; i < token.size(); ++i) 
+		{
 			headers = utils::split(token[i], ":");
 			if (headers.size() == 2)
 			{
 				_header[utils::upperKebabCase(headers[0])] = utils::trim(headers[1]);
 			}
+		}
+		std::string strStatus = _header.get("Status");
+		if (strStatus.size() > 0)
+		{
+			statuses = utils::split(strStatus, " ");
+			setStatus(std::atoi(statuses[0].c_str()));
+
 		}
 	}
 }
