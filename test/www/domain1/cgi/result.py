@@ -9,9 +9,11 @@ form = cgi.FieldStorage()
 # Get data from fields
 postContent = form.getvalue('contentPost')
 getContent = form.getvalue('contentGet')
+lastvisite = time.time()
 
-print("Set-Cookie:lastvisit=" + str(time.time()))
-print("Set-Cookie:get=%s" % (getContent))
+print("Set-Cookie:lastvisit=%s;\n\r" % (lastvisite))
+print("Set-Cookie:get=%s;\n\r" % (getContent))
+print("Set-Cookie:post=%s;\n\r" % (postContent))
 print("Content-type:text/html\r\n\r\n")
 print("<html>")
 print("<head>")
