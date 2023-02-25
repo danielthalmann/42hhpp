@@ -31,7 +31,7 @@ namespace hhpp {
 		virtual void setSocket(const int socket);
 		virtual void setBinding(IBinding* binding);
 		virtual void setRoot(const std::string& root);
-		virtual std::string getRoot();
+		virtual std::string getRoot() const;
 		virtual void addDomain(const std::string& domain);
 		virtual void addIndex(const std::string& index);
 		virtual void addRedirect(Redirect* redirect);
@@ -53,14 +53,14 @@ namespace hhpp {
 
 		bool isAllowedMethod(const std::string& method) const;
 		Redirect* getUrlRedirect(const std::string& query) const;
-		std::string getLocalPath(const std::string& query) const;
+		Location* getLocation(const std::string& query);
 		Response* fileListIndex(const std::string& query) const;
 		CGI* getCgi(const std::string& query) const;
 		MimeType* getMimeType(const std::string& query) const;
 
 		std::string _host;
 		IBinding* _binding;
-		std::string _root;
+		Location* _root;
 		std::vector<CGI*> _cgi;
 		std::map<std::string, MimeType*> _mimetypes;
 		std::vector<std::string> _domains;
