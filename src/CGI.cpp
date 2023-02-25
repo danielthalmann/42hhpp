@@ -12,7 +12,7 @@ namespace hhpp {
 		path.push_back(const_cast<char*>(_location.c_str()));
 		path.push_back(const_cast<char*>(_scriptPath.c_str()));
 		if (!query.empty())
-			path.push_back(const_cast<char*>(query.c_str()));
+			path.push_back(const_cast<char*>(_query.c_str()));
 		path.push_back(NULL);
 
 		return path;
@@ -40,6 +40,7 @@ namespace hhpp {
 			env["REQUEST_METHOD"] = "POST";
 			env["SCRIPT_FILENAME"] = _scriptPath;
 			env["SCRIPT_NAME"] = nameScript;
+			env["QUERY_STRING"] = _query;
 
 			env["REDIRECT_STATUS"] = "CGI";
 		}
@@ -58,6 +59,7 @@ namespace hhpp {
 		std::string result;
 
 		_scriptPath = scriptPath;
+		_query = request.getQuery();
 
 		pipe(p_out);
 		pipe(p_in);
