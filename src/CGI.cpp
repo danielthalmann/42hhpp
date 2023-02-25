@@ -21,29 +21,28 @@ namespace hhpp {
 	std::map<std::string, std::string> CGI::prepareEnv(Request request) {
 		std::map<std::string, std::string> env;
 
-		if (request.getMethod() == "POST")
-		{
-			size_t pos = _scriptPath.rfind("/");
-			std::string nameScript = _scriptPath.substr(pos + 1, _scriptPath.size());
 
-			env["AUTH_TYPE"] = "null";
-			env["CONTENT_TYPE"] = "application/x-www-form-urlencoded";
-			env["CONTENT_LENGTH"] = utils::numberToString(request.getBodySize());
+		size_t pos = _scriptPath.rfind("/");
+		std::string nameScript = _scriptPath.substr(pos + 1, _scriptPath.size());
 
-			env["GATEWAY_INTERFACE"] = "CGI/1.1";
-			env["PATH_INFO"] = _location;
+		env["AUTH_TYPE"] = "null";
+		env["CONTENT_TYPE"] = "application/x-www-form-urlencoded";
+		env["CONTENT_LENGTH"] = utils::numberToString(request.getBodySize());
 
-			env["SERVER_NAME"] = request.getHost();
-			env["SERVER_PROTOCOL"] = request.getHttpVersion();
-			env["SERVER_PORT"] = utils::numberToString(request.getPort());
+		env["GATEWAY_INTERFACE"] = "CGI/1.1";
+		env["PATH_INFO"] = _location;
 
-			env["REQUEST_METHOD"] = "POST";
-			env["SCRIPT_FILENAME"] = _scriptPath;
-			env["SCRIPT_NAME"] = nameScript;
-			env["QUERY_STRING"] = _query;
+		env["SERVER_NAME"] = request.getHost();
+		env["SERVER_PROTOCOL"] = request.getHttpVersion();
+		env["SERVER_PORT"] = utils::numberToString(request.getPort());
 
-			env["REDIRECT_STATUS"] = "CGI";
-		}
+		env["REQUEST_METHOD"] = request.getMethod();
+		env["SCRIPT_FILENAME"] = _scriptPath;
+		env["SCRIPT_NAME"] = nameScript;
+		env["QUERY_STRING"] = _query;
+
+		env["REDIRECT_STATUS"] = "CGI";
+	
 		if (request.getHeaders()["Cookie"].length() > 0) {
 			env["HTTP_COOKIE"] = request.getHeaders()["Cookie"];
 		}
