@@ -217,7 +217,7 @@ namespace hhpp {
 
 		std::cout << localPath << std::endl;
 
-		if (!local->exists())
+		if (!local->exists() && request.getMethod() == "GET")
 			return new ResponseError(404);
 
 		// is folder
@@ -263,6 +263,12 @@ namespace hhpp {
 			}
 			
 			return new ResponseDelete(local);
+		}
+
+		if (request.getMethod() == "POST")
+		{
+			local->put(request.getBody());
+			return new Response();
 		}
 
 		if (MimeType* mime = getMimeType(localPath) ) {

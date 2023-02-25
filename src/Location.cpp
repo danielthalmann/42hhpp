@@ -1,6 +1,7 @@
 #include "Location.hpp"
 #include "utility.hpp"
 #include <cstdio>
+#include <fstream>
 namespace hhpp {
 
 	Location::Location() :
@@ -75,12 +76,22 @@ namespace hhpp {
 		
 	}
 
-
 	// query : /script/test.cgi
 	// /var/www/cgi/test.cgi
 	std::string Location::getLocalPath() const
 	{
 		return _localPath;
+	}
+
+	void Location::put(std::string content)
+	{
+		std::ofstream ofs(_localPath.c_str());
+
+		if (ofs.is_open())
+		{
+			ofs << content;
+			ofs.close();
+		}
 	}
 
 }
