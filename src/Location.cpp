@@ -83,9 +83,32 @@ namespace hhpp {
 		return _localPath;
 	}
 
-	void Location::put(std::string content)
+	std::string Location::getDirectory() const
 	{
-		std::ofstream ofs(_localPath.c_str());
+		size_t pos = _localPath.rfind("/");
+		if (pos > 0)
+			return _localPath.substr(0, pos);
+		else
+			return _localPath;
+	}
+
+	std::string Location::getFilename() const
+	{
+		size_t pos = _localPath.rfind("/");
+		if (pos > 0)
+			return _localPath.substr(pos + 1);
+		else
+			return _localPath;
+	}
+
+	void Location::put(const std::string &content)
+	{
+		put(content, _localPath);
+	}
+
+	void Location::put(const std::string &content, const std::string &filename)
+	{
+		std::ofstream ofs(filename.c_str());
 
 		if (ofs.is_open())
 		{

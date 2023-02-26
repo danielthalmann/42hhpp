@@ -18,7 +18,10 @@ namespace hhpp {
 		bool exists() const;
 		bool removeFile();
 		std::string getLocalPath() const;
-		void put(std::string content);
+		std::string getDirectory() const;
+		std::string getFilename() const;
+		void put(const std::string &content);
+		void put(const std::string &content, const std::string &filename);
 
 	private:
 		std::string _path;
