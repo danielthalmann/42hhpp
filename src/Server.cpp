@@ -217,7 +217,7 @@ namespace hhpp {
 
 		std::cout << localPath << std::endl;
 
-		if (!local->exists() && request.getMethod() == "GET")
+		if (!local->exists() && request.isMethodType(Request::METHOD_GET))
 			return new ResponseError(404);
 
 		// is folder
@@ -241,7 +241,7 @@ namespace hhpp {
 
 		} else {
 
-			if (request.getMethod() == "GET")
+			if (request.isMethodType(Request::METHOD_GET))
 			{
 				// ficher présent mais pas accessible
 				if (access(localPath.c_str(), R_OK))
@@ -254,7 +254,7 @@ namespace hhpp {
 			return new ResponseCgi(cgi, localPath, &request);
 		}
 
-		if (request.getMethod() == "DELETE")
+		if (request.isMethodType(Request::METHOD_DELETE))
 		{
 			// ficher présent mais pas accessible
 			if (access(localPath.c_str(), W_OK))
@@ -265,11 +265,9 @@ namespace hhpp {
 			return new ResponseDelete(local);
 		}
 
-		if (request.getMethod() == "POST")
+		if (request.isMethodType(Request::METHOD_POST))
 		{
-			const std::string head = const_cast<Request&>(request).getHeaders().raw();
-			local->put(head + request.getBody());
-			return new Response();
+			return new ResponsePost(local, const_cast<Request*>(&request));
 		}
 
 		if (MimeType* mime = getMimeType(localPath) ) {

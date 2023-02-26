@@ -29,6 +29,7 @@ _SRC =	main.cpp\
 		Response.cpp\
 		ResponseCgi.cpp\
 		ResponseDelete.cpp\
+		ResponsePost.cpp\
 		ResponseError.cpp\
 		ResponseFile.cpp\
 		ResponseRedirect.cpp\
@@ -51,6 +52,7 @@ HEADER=	Binding.hpp\
 		Response.hpp\
 		ResponseCgi.hpp\
 		ResponseDelete.hpp\
+		ResponsePost.hpp\
 		ResponseError.hpp\
 		ResponseFile.hpp\
 		ResponseRedirect.hpp\
