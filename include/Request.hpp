@@ -1,15 +1,30 @@
 #ifndef REQUEST_HPP
 #define REQUEST_HPP
 
-#include <string>
 #include "Header.hpp"
+#include <string>
 
-namespace hhpp {
+namespace hhpp
+{
 	class Request
 	{
 	public:
 		Request();
 		~Request();
+
+		typedef enum e_method
+		{
+			METHOD_UNKNOW,
+			METHOD_GET,
+			METHOD_HEAD,
+			METHOD_POST,
+			METHOD_PUT,
+			METHOD_DELETE,
+			METHOD_CONNECT,
+			METHOD_OPTIONS,
+			METHOD_TRACE,
+			METHOD_PATCH
+		} method;
 
 		std::string getMethod() const;
 		std::string getQuery() const;
@@ -19,6 +34,7 @@ namespace hhpp {
 		std::string getBody() const;
 		std::string getHttpVersion() const;
 		int getBodySize() const;
+		std::string getBoundary() const;
 
 		void setMethod(std::string method);
 		void setQuery(std::string query);
@@ -27,10 +43,15 @@ namespace hhpp {
 		void setUrl(std::string url);
 		void setBody(std::string body);
 		void setHttpVersion(std::string httpVersion);
+        bool isMethodType(method m) const;
+		bool isMultipart() const;
 
-		void parseRequest(const std::string& rawRequest);
+		void parseRequest(const std::string &rawRequest);
 		void showRequest();
-		Header& getHeaders();
+		Header &getHeaders();
+
+    private:
+    	void treatContentType();
 
 	private:
 		int _bodySize;
@@ -42,8 +63,10 @@ namespace hhpp {
 		std::string _host;
 		int _port;
 		std::string _body;
-
+		method _methodType;
+        bool _multipart;
+        std::string _boundary;
 	};
-}
+} // namespace hhpp
 
 #endif
