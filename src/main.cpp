@@ -14,11 +14,14 @@
 #include <ResponseRedirect.hpp>
 #include <Server.hpp>
 #include <vector>
+#include <Version.hpp>
 
 #define CONFIG "./config/default.conf.json"
 
 int main(int ac, char **av)
 {
+	std::cout << SERVER_VERSION << std::endl;
+
 	if (ac < 1 || ac > 2)
 	{
 		std::cout << "error arguments" << std::endl;
@@ -35,14 +38,33 @@ int main(int ac, char **av)
 	{
 		std::cout << "load config" << std::endl;
 		srv.loadConfig(pathConfig);
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "config loading error" << std::endl;
+		return (1);
+	}
+
+	try
+	{
 		std::cout << "setup socket" << std::endl;
 		srv.setupSocket();
+	}
+	catch (std::exception &e)
+	{
+		std::cout << "initialize socket error" << std::endl;
+		return (1);
+	}
+
+	try
+	{
 		std::cout << "run srv" << std::endl;
 		srv.run();
 	}
 	catch (std::exception &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cout << "server error : " << e.what() << std::endl;
+		return (1);
 	}
 
 	//	const char* method[] = {"GET", "POST", "DELETE", NULL};

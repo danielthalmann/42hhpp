@@ -1,6 +1,7 @@
 #include "Response.hpp"
 #include "utility.hpp"
 #include <sstream>
+#include <Version.hpp>
 
 namespace hhpp
 {
@@ -12,7 +13,7 @@ namespace hhpp
 		setStatus(200);
 		setBody(getStatusMessage());
 		setContentType("text/plain");
-		getHeaders()["Server"] = "HHPP/0.0.1";
+		getHeaders()["Server"] = SERVER_VERSION;
 		getHeaders()["Connection"] = "close";
 	}
 

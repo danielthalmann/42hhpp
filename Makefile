@@ -55,7 +55,8 @@ HEADER=	Binding.hpp\
 		ResponseFile.hpp\
 		ResponseRedirect.hpp\
 		Server.hpp\
-		utility.hpp
+		utility.hpp\
+		Version.hpp
 
 INC = $(addprefix $(INC_DIR), $(HEADER))
 
