@@ -7,11 +7,13 @@ SRC_DIR=src/
 BIN_DIR=bin/
 OBJ_DIR=obj/
 TEST_DIR=tests/
+INC_DIR=include/
 
 SRCFILES=Json.cpp JsonValue.cpp JsonObject.cpp JsonArray.cpp JsonString.cpp JsonNumber.cpp JsonBoolean.cpp
+INCFILES=Json.hpp JsonValue.hpp JsonObject.hpp JsonArray.hpp JsonString.hpp JsonNumber.hpp JsonBoolean.hpp
 
 SRCS=$(addprefix ${SRC_DIR}, ${SRCFILES})
-
+INCS=$(addprefix ${INC_DIR}, ${INCFILES})
 OBJS=$(addprefix ${OBJ_DIR}, ${SRCFILES:cpp=o})
 
 #CXX=gcc
@@ -21,7 +23,7 @@ else
 	CXX = c++
 endif
 
-CXXFLAGS=-Wall -Wextra -Werror -std=c++98 -Iinclude 
+CXXFLAGS=-Wall -Wextra -Werror -std=c++98 -I$(INC_DIR) 
 
 LDFLAGS=-lstdc++ -lm
 
@@ -48,4 +50,6 @@ test : CXXFLAGS+= -g3 -fsanitize=address
 test : all
 	@cd ${TEST_DIR} ;	./test.sh
 
-
+# normalize file
+lint: 
+	clang-format --style=file -i  $(INCS)  $(SRCS) 
