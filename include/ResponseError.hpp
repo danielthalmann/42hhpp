@@ -4,7 +4,8 @@
 #include <Response.hpp>
 #include <string>
 
-namespace hhpp {
+namespace hhpp
+{
 	class ResponseError : public Response
 	{
 	public:
@@ -15,8 +16,7 @@ namespace hhpp {
 		void prepareResponse();
 
 	private:
-
 	};
-}
+} // namespace hhpp
 
 #endif

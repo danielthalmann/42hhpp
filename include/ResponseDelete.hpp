@@ -1,13 +1,14 @@
 #ifndef RESPONSEDELETE_HPP
 #define RESPONSEDELETE_HPP
 
-#include <Response.hpp>
 #include <Location.hpp>
+#include <Response.hpp>
 #include <string>
 
-namespace hhpp {
+namespace hhpp
+{
 
-	class ResponseDelete: public Response
+	class ResponseDelete : public Response
 	{
 	public:
 		ResponseDelete(Location *location);
@@ -15,8 +16,7 @@ namespace hhpp {
 
 	private:
 		Location *_location;
-
 	};
-}
+} // namespace hhpp
 
 #endif

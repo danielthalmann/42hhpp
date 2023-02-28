@@ -10,30 +10,30 @@
 #include <arpa/inet.h>
 #include <cstring>
 
-#include <fcntl.h>
-#include <sys/socket.h>
-#include <string>
-#include <sstream>
 #include <cerrno>
 #include <cstdio>
+#include <fcntl.h>
+#include <sstream>
+#include <string>
+#include <sys/socket.h>
 
-namespace hhpp {
+namespace hhpp
+{
 	class Binding : public IBinding
 	{
 
 	public:
-
 		Binding();
 		virtual ~Binding();
 
 		virtual void setSocket();
-		virtual void setIP(const std::string& ip);
+		virtual void setIP(const std::string &ip);
 		virtual void setPort(const int port);
-		virtual void addServer(IServer* server);
+		virtual void addServer(IServer *server);
 		virtual int acceptConnection();
-		virtual void closeConnection(int socket); 
+		virtual void closeConnection(int socket);
 		virtual bool hasConnection(const int socket);
-		virtual IServer* getServerFor(const Request& request) const;
+		virtual IServer *getServerFor(const Request &request) const;
 
 		virtual std::string getIP() const;
 		virtual int getPort() const;
@@ -42,9 +42,9 @@ namespace hhpp {
 		virtual void sendData(std::string str);
 		virtual void sendData(Response response);
 		virtual Request readHeader(std::string header);
-		virtual bool isBinding(const std::string& ip, const int port);
+		virtual bool isBinding(const std::string &ip, const int port);
 
-		void checkSocket(int ret, const char* str);
+		void checkSocket(int ret, const char *str);
 
 	private:
 		void createSocket();
@@ -52,13 +52,12 @@ namespace hhpp {
 		struct sockaddr_in bindSocket();
 		void listenSocket();
 
-		std::vector<IServer*> _servers;
+		std::vector<IServer *> _servers;
 		std::vector<int> _connections;
 		int _listen_sd;
 		std::string _ip;
 		int _port;
-
 	};
-}
+} // namespace hhpp
 
 #endif

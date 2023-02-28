@@ -1,23 +1,23 @@
 #ifndef HHPP_HPP
 #define HHPP_HPP
 
-#include <string>
 #include <algorithm>
 #include <fstream>
-#include <unistd.h>
+#include <string>
 #include <sys/stat.h>
+#include <unistd.h>
 
-#include "Server.hpp"
 #include "Binding.hpp"
+#include "MimeType.hpp"
 #include "Request.hpp"
 #include "Response.hpp"
-#include "MimeType.hpp"
+#include "Server.hpp"
 
-namespace hhpp {
+namespace hhpp
+{
 	class HHPP
 	{
 	public:
-
 		HHPP();
 		~HHPP();
 
@@ -26,22 +26,22 @@ namespace hhpp {
 
 		void setupSocket();
 
-		class fileStatus: public std::exception {
+		class fileStatus : public std::exception
+		{
 		public:
-			virtual const char* what() const throw();
+			virtual const char *what() const throw();
 		};
+
 	private:
+		std::vector<IServer *> _servers;
+		std::vector<IBinding *> _bindings;
 
-		std::vector<IServer*> _servers;
-		std::vector<IBinding*> _bindings;
-
-		IBinding* isListen(int socket);
-		IBinding* getBindingFromSocket(int socket);
+		IBinding *isListen(int socket);
+		IBinding *getBindingFromSocket(int socket);
 
 		std::string readFileConfig(std::string pathConfig);
 		void dispatchRequest(Request request);
-
 	};
-}
+} // namespace hhpp
 
 #endif

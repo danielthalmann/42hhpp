@@ -1,13 +1,14 @@
 #ifndef RESPONSECGI_HPP
 #define RESPONSECGI_HPP
 
-#include <Response.hpp>
 #include <CGI.hpp>
+#include <Response.hpp>
 #include <string>
 
-namespace hhpp {
+namespace hhpp
+{
 
-	class ResponseCgi: public Response
+	class ResponseCgi : public Response
 	{
 	public:
 		ResponseCgi(CGI *cgi, std::string script, const Request *request);
@@ -17,12 +18,10 @@ namespace hhpp {
 		void prepareResponse();
 
 	private:
-
 		CGI *_cgi;
 		std::string _script;
 		const Request *_request;
-
 	};
-}
+} // namespace hhpp
 
 #endif

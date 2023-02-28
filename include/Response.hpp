@@ -2,12 +2,13 @@
 #ifndef RESPONSE_HPP
 #define RESPONSE_HPP
 
+#include "Header.hpp"
 #include "IServer.hpp"
 #include <string>
-#include "Header.hpp"
 
 
-namespace hhpp {
+namespace hhpp
+{
 
 	class Response
 	{
@@ -15,10 +16,10 @@ namespace hhpp {
 		Response();
 		virtual ~Response();
 
-		std::string& getVersion();
-		int& getStatus();
-		Header& getHeaders();
-		std::string& getBody();
+		std::string &getVersion();
+		int &getStatus();
+		Header &getHeaders();
+		std::string &getBody();
 
 		void setStatus(int status);
 		void setContentType(std::string contentType);
@@ -29,12 +30,12 @@ namespace hhpp {
 
 		std::string getStatusMessage() const;
 
-		typedef std::map<int, std::string>	mapIntString;
+		typedef std::map<int, std::string> mapIntString;
 		virtual std::string raw();
 
 		std::string get404();
-	protected:
 
+	protected:
 		virtual void prepareResponse();
 
 		IServer *_server;
@@ -47,7 +48,8 @@ namespace hhpp {
 		std::string _contentType;
 		static std::map<int, std::string> _totalStatus;
 
-		static mapIntString init_map() {
+		static mapIntString init_map()
+		{
 			mapIntString tmp;
 			tmp[101] = "Switching Protocols";
 			tmp[102] = "Processing";
@@ -113,8 +115,7 @@ namespace hhpp {
 			tmp[511] = "Network Authentication Required";
 			return tmp;
 		}
-
 	};
-}
+} // namespace hhpp
 
 #endif

@@ -2,11 +2,12 @@
 #include "utility.hpp"
 #include <sstream>
 
-namespace hhpp {
+namespace hhpp
+{
 
 	Response::mapIntString Response::_totalStatus = init_map();
 
-	Response::Response() 
+	Response::Response()
 	{
 		setStatus(200);
 		setBody(getStatusMessage());
@@ -15,52 +16,67 @@ namespace hhpp {
 		getHeaders()["Connection"] = "close";
 	}
 
-	Response::~Response() {}
+	Response::~Response()
+	{
+	}
 
-	std::string& Response::getVersion() {
+	std::string &Response::getVersion()
+	{
 		return (_version);
 	}
 
-	int& Response::getStatus() {
+	int &Response::getStatus()
+	{
 		return (_status);
 	}
 
-	std::string Response::getStatusMessage() const {
+	std::string Response::getStatusMessage() const
+	{
 		return (_statusMessage);
 	}
 
-	Header& Response::getHeaders() {
+	Header &Response::getHeaders()
+	{
 		return (_header);
 	}
 
-	std::string& Response::getBody() {
+	std::string &Response::getBody()
+	{
 		return (_body);
 	}
 
-	void Response::setStatus(int status) {
+	void Response::setStatus(int status)
+	{
 		_status = status;
-		try {
+		try
+		{
 			_statusMessage = _totalStatus.at(_status);
-		} catch (std::exception &e) {
+		}
+		catch (std::exception &e)
+		{
 			_status = 500;
 			_statusMessage = _totalStatus.at(_status);
 		}
 	}
 
-	void Response::setContentType(std::string contentType) {
+	void Response::setContentType(std::string contentType)
+	{
 		_header["Content-Type"] = contentType;
 	}
 
-	void Response::setBody(std::string str) {
+	void Response::setBody(std::string str)
+	{
 		_body = str;
 		_header["Content-Length"] = utils::numberToString(_body.size());
 	}
 
-	void Response::setServer(IServer *server) {
+	void Response::setServer(IServer *server)
+	{
 		_server = server;
 	}
 
-	IServer *Response::getServer() {
+	IServer *Response::getServer()
+	{
 		return _server;
 	}
 
@@ -75,7 +91,8 @@ namespace hhpp {
 		dataSend.append(" ");
 		dataSend.append(_statusMessage);
 		dataSend.append("\r\n");
-		for (size_t i = 0; i < _cookie.size(); ++i) {
+		for (size_t i = 0; i < _cookie.size(); ++i)
+		{
 			dataSend.append("Set-Cookie: " + _cookie[i] + "\r\n");
 		}
 		dataSend.append(_header.raw());
@@ -85,21 +102,25 @@ namespace hhpp {
 		return dataSend;
 	}
 
-	void Response::prepareResponse() {}
+	void Response::prepareResponse()
+	{
+	}
 
-	std::string Response::get404() {
+	std::string Response::get404()
+	{
 		std::string page;
 
 		page.append("<html><head>"
-					"<title>The page you were looking for doesn't exist (404)</title>"
-					"<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
-					"</head><body>"
-					"<h1>Error 404: Not Found</h1>"
-					"<p>The page you were looking for doesn't exist</p>"
-					"<img src=\"https://www.lesdebrouillards.com/wp-content/uploads/2019/10/Pigeon-1.jpg\" alt=\"Pigeon with 404 message\" width=\"500\" height=\"600\">"
-					"</body></html>");
+		            "<title>The page you were looking for doesn't exist (404)</title>"
+		            "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
+		            "</head><body>"
+		            "<h1>Error 404: Not Found</h1>"
+		            "<p>The page you were looking for doesn't exist</p>"
+		            "<img src=\"https://www.lesdebrouillards.com/wp-content/uploads/2019/10/Pigeon-1.jpg\" "
+		            "alt=\"Pigeon with 404 message\" width=\"500\" height=\"600\">"
+		            "</body></html>");
 
 		return (page);
 	}
 
-}
+} // namespace hhpp

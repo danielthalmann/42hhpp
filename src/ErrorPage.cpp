@@ -1,16 +1,18 @@
 #include "ErrorPage.hpp"
 #include <iostream>
-namespace hhpp {
+namespace hhpp
+{
 
-	ErrorPage::ErrorPage() 
-	: _status(0), _location("") 
+	ErrorPage::ErrorPage() : _status(0), _location("")
 	{
-
 	}
 
-	ErrorPage::~ErrorPage() {}
+	ErrorPage::~ErrorPage()
+	{
+	}
 
-	std::string ErrorPage::getPage(std::string root) {
+	std::string ErrorPage::getPage(std::string root)
+	{
 		std::string page;
 
 		try
@@ -30,13 +32,14 @@ namespace hhpp {
 		_status = status;
 	}
 
-	void ErrorPage::setLocation(const std::string& location)
+	void ErrorPage::setLocation(const std::string &location)
 	{
 		_location = location;
 	}
 
-	int ErrorPage::getStatus() {
+	int ErrorPage::getStatus()
+	{
 		return _status;
 	}
 
-}
+} // namespace hhpp

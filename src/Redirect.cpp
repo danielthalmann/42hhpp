@@ -1,21 +1,22 @@
 #include "Redirect.hpp"
 
-namespace hhpp {
+namespace hhpp
+{
 
-	Redirect::Redirect() 
-	: _path(""), _destination(""), _status(301)
+	Redirect::Redirect() : _path(""), _destination(""), _status(301)
 	{
-
 	}
 
-	Redirect::~Redirect() {}
+	Redirect::~Redirect()
+	{
+	}
 
-	void Redirect::setPath(const std::string& path)
+	void Redirect::setPath(const std::string &path)
 	{
 		_path = path;
 	}
 
-	void Redirect::setDestination(const std::string& destination)
+	void Redirect::setDestination(const std::string &destination)
 	{
 		_destination = destination;
 	}
@@ -35,11 +36,11 @@ namespace hhpp {
 		return _status;
 	}
 
-	bool Redirect::match(const std::string& query) const
+	bool Redirect::match(const std::string &query) const
 	{
 		if (_path == query)
 			return true;
 		return false;
 	}
 
-}
+} // namespace hhpp

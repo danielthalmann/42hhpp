@@ -3,34 +3,41 @@
 #include <Json.hpp>
 #include <stdlib.h>
 
-namespace hhpp {
-	HHPP::HHPP() {}
+namespace hhpp
+{
+	HHPP::HHPP()
+	{
+	}
 
-	HHPP::~HHPP() {
-		for (std::vector<IServer*>::iterator it = _servers.begin(); it != _servers.end() ; ++it) {
+	HHPP::~HHPP()
+	{
+		for (std::vector<IServer *>::iterator it = _servers.begin(); it != _servers.end(); ++it)
+		{
 			delete (*it);
 		}
 		_servers.clear();
 
-		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
+		for (std::vector<IBinding *>::iterator it = _bindings.begin(); it != _bindings.end(); ++it)
+		{
 			delete (*it);
 		}
 		_bindings.clear();
 	}
 
-	void HHPP::loadConfig(std::string pathConfig) {
-		
+	void HHPP::loadConfig(std::string pathConfig)
+	{
+
 		std::string jsonString;
 		json::JsonValue *jsonEl, *json;
 
 		jsonString = readFileConfig(pathConfig);
 
 		json = json::Json::parse(jsonString);
-		
+
 		for (size_t i = 0; i < json->at("servers")->length(); i++)
 		{
-			IServer* newServer = new Server();
-			IBinding* newBinding = NULL;
+			IServer *newServer = new Server();
+			IBinding *newBinding = NULL;
 
 			_servers.push_back(newServer);
 
@@ -41,14 +48,17 @@ namespace hhpp {
 			std::string ip = json->at("servers")->at(i)->at("binding")->at("ip")->getString();
 			int port = json->at("servers")->at(i)->at("binding")->at("port")->getInt();
 
-			for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
-				if ((*it)->isBinding(ip, port)) {
+			for (std::vector<IBinding *>::iterator it = _bindings.begin(); it != _bindings.end(); ++it)
+			{
+				if ((*it)->isBinding(ip, port))
+				{
 					newBinding = (*it);
 					break;
 				}
 			}
 
-			if (!newBinding) {
+			if (!newBinding)
+			{
 				newBinding = new Binding();
 				_bindings.push_back(newBinding);
 				newBinding->setIP(ip);
@@ -65,7 +75,8 @@ namespace hhpp {
 			else
 				jsonEl = json->at("domain");
 
-			for (size_t j = 0; j < jsonEl->length(); j++) {
+			for (size_t j = 0; j < jsonEl->length(); j++)
+			{
 				newServer->addDomain(jsonEl->at(j)->getString());
 			}
 
@@ -77,7 +88,8 @@ namespace hhpp {
 			else
 				jsonEl = json->at("index");
 
-			for (size_t j = 0; j < jsonEl->length(); j++) {
+			for (size_t j = 0; j < jsonEl->length(); j++)
+			{
 				newServer->addIndex(jsonEl->at(j)->getString());
 			}
 
@@ -100,12 +112,14 @@ namespace hhpp {
 
 			if (jsonEl)
 			{
-				Redirect* red;
-				for (size_t j = 0; j < jsonEl->length(); j++) {
+				Redirect *red;
+				for (size_t j = 0; j < jsonEl->length(); j++)
+				{
 					red = new Redirect();
 					red->setPath(jsonEl->at(j)->at("path")->getString());
 					red->setDestination(jsonEl->at(j)->at("destination")->getString());
-					if (jsonEl->at(j)->exists("status")) {
+					if (jsonEl->at(j)->exists("status"))
+					{
 						red->setStatus(jsonEl->at(j)->at("status")->getInt());
 					}
 					newServer->addRedirect(red);
@@ -123,10 +137,11 @@ namespace hhpp {
 
 			if (jsonEl)
 			{
-				ErrorPage* ep;
+				ErrorPage *ep;
 				std::vector<std::string> errorCodes = jsonEl->keys();
-	
-				for (size_t j = 0; j < errorCodes.size(); j++) {
+
+				for (size_t j = 0; j < errorCodes.size(); j++)
+				{
 
 					ep = new ErrorPage();
 
@@ -148,8 +163,9 @@ namespace hhpp {
 
 			if (jsonEl)
 			{
-				Location* loc;
-				for (size_t j = 0; j < jsonEl->length(); j++) {
+				Location *loc;
+				for (size_t j = 0; j < jsonEl->length(); j++)
+				{
 					loc = new Location();
 					loc->setPath(jsonEl->at(j)->at("path")->getString());
 					loc->setRoot(jsonEl->at(j)->at("root")->getString());
@@ -169,7 +185,7 @@ namespace hhpp {
 			if (jsonEl)
 			{
 				newServer->setAutoIndex(jsonEl->getBool());
-			}			
+			}
 
 			//
 			// access_log (optional)
@@ -182,7 +198,7 @@ namespace hhpp {
 			if (jsonEl)
 			{
 				newServer->setAccessLog(jsonEl->getString());
-			}	
+			}
 
 			//
 			// client_max_body_size (optional)
@@ -195,7 +211,7 @@ namespace hhpp {
 			if (jsonEl)
 			{
 				newServer->setClientMaxBodySize(jsonEl->getInt());
-			}	
+			}
 
 			//
 			// allowed method
@@ -205,7 +221,8 @@ namespace hhpp {
 			else
 				jsonEl = json->at("allowed_methods");
 
-			for (size_t j = 0; j < jsonEl->length(); j++) {
+			for (size_t j = 0; j < jsonEl->length(); j++)
+			{
 				newServer->addAllowedMethod(jsonEl->at(j)->getString());
 			}
 
@@ -220,12 +237,14 @@ namespace hhpp {
 
 			if (jsonEl)
 			{
-				CGI* cgi;
-				for (size_t j = 0; j < jsonEl->length(); j++) {
+				CGI *cgi;
+				for (size_t j = 0; j < jsonEl->length(); j++)
+				{
 
 					cgi = new CGI();
 					cgi->setLocation(jsonEl->at(j)->at("location")->getString());
-					for (size_t k = 0; k < jsonEl->at(j)->at("extension")->length(); k++) {
+					for (size_t k = 0; k < jsonEl->at(j)->at("extension")->length(); k++)
+					{
 						cgi->addExtension(jsonEl->at(j)->at("extension")->at(k)->getString());
 					}
 					newServer->addCGI(cgi);
@@ -243,8 +262,9 @@ namespace hhpp {
 
 			std::vector<std::string> mimes = jsonEl->keys();
 
-			MimeType* mimeType;
-			for (size_t j = 0; j < mimes.size(); j++) {
+			MimeType *mimeType;
+			for (size_t j = 0; j < mimes.size(); j++)
+			{
 
 				for (size_t k = 0; k < json->at("mime_types")->at(mimes[j])->length(); k++)
 				{
@@ -254,27 +274,28 @@ namespace hhpp {
 
 					newServer->addMimeType(mimeType);
 				}
-				
 			}
-			
-
 		}
-		
+
 
 		delete json;
 	}
 
-	IBinding* HHPP::isListen(int socket) {
-		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
+	IBinding *HHPP::isListen(int socket)
+	{
+		for (std::vector<IBinding *>::iterator it = _bindings.begin(); it != _bindings.end(); ++it)
+		{
 			if (socket == (*it)->getSocket())
 				return (*it);
 		}
 		return NULL;
 	}
 
-	IBinding* HHPP::getBindingFromSocket(int socket) {
+	IBinding *HHPP::getBindingFromSocket(int socket)
+	{
 
-		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
+		for (std::vector<IBinding *>::iterator it = _bindings.begin(); it != _bindings.end(); ++it)
+		{
 			if (socket == (*it)->getSocket())
 				return (*it);
 			if ((*it)->hasConnection(socket))
@@ -283,7 +304,8 @@ namespace hhpp {
 		return NULL;
 	}
 
-	void HHPP::run() {
+	void HHPP::run()
+	{
 		int ret;
 		fd_set current_set, working_set;
 		int max_sd, new_sd;
@@ -296,7 +318,8 @@ namespace hhpp {
 
 		FD_ZERO(&current_set);
 		max_sd = _bindings.front()->getSocket();
-		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
+		for (std::vector<IBinding *>::iterator it = _bindings.begin(); it != _bindings.end(); ++it)
+		{
 			listen_sd = (*it)->getSocket();
 			if (listen_sd > 0)
 				FD_SET(listen_sd, &current_set);
@@ -306,11 +329,11 @@ namespace hhpp {
 
 		do
 		{
-//			copy into working set
+			//			copy into working set
 			memcpy(&working_set, &current_set, sizeof(current_set));
 
-//			select
-//			std::cout << "Waiting on select()..." << std::endl;
+			//			select
+			//			std::cout << "Waiting on select()..." << std::endl;
 			ret = select(max_sd + 1, &working_set, NULL, NULL, NULL);
 			if (ret < 0)
 			{
@@ -324,9 +347,9 @@ namespace hhpp {
 				if (FD_ISSET(i, &working_set))
 				{
 					desc_ready -= 1;
-					if ((currentBinding = isListen(i)) != NULL )
+					if ((currentBinding = isListen(i)) != NULL)
 					{
-//						std::cout << "Listening socket is readable" << std::endl;
+						//						std::cout << "Listening socket is readable" << std::endl;
 						do
 						{
 							new_sd = currentBinding->acceptConnection();
@@ -339,7 +362,8 @@ namespace hhpp {
 								}
 								break;
 							}
-//							std::cout << "New incoming connection - " << new_sd << std::endl;
+							//							std::cout << "New incoming connection - " << new_sd <<
+							//std::endl;
 							FD_SET(new_sd, &current_set);
 							if (new_sd > max_sd)
 								max_sd = new_sd;
@@ -348,7 +372,7 @@ namespace hhpp {
 					}
 					else
 					{
-//						std::cout << "Descriptor " << i << " is readable" << std::endl;
+						//						std::cout << "Descriptor " << i << " is readable" << std::endl;
 						close_conn = 0;
 
 						currentBinding = getBindingFromSocket(i);
@@ -361,14 +385,14 @@ namespace hhpp {
 							{
 								if (errno != EWOULDBLOCK)
 								{
-//									std::cout << "recv() finish" << std::endl;
+									//									std::cout << "recv() finish" << std::endl;
 									close_conn = 1;
 								}
 								break;
 							}
 							if (ret == 0)
 							{
-//								std::cout << "Connection closed" << std::endl;
+								//								std::cout << "Connection closed" << std::endl;
 								close_conn = 1;
 								break;
 							}
@@ -376,18 +400,19 @@ namespace hhpp {
 							std::cout << len << " bytes received" << std::endl;
 
 							// prepare request
-							Request* request = new Request();
+							Request *request = new Request();
 							request->parseRequest(std::string(buffer, ret));
 
-							IServer* server = NULL;
+							IServer *server = NULL;
 							server = currentBinding->getServerFor(*request);
 
 							// take first server if not exists
-							if (!server) {
+							if (!server)
+							{
 								server = _servers[0];
 							}
 
-							Response* response = server->treatRequest(*request);
+							Response *response = server->treatRequest(*request);
 							response->setServer(server);
 
 							// propage les cookie
@@ -409,7 +434,8 @@ namespace hhpp {
 
 							ret = send(i, dataSend.c_str(), dataSend.size(), 0);
 							std::cout << "[+] data send: " << ret << "/" << dataSend.size() << std::endl;
-							if (ret < 0) {
+							if (ret < 0)
+							{
 								std::cerr << "[-] send() failed" << std::endl;
 							}
 
@@ -439,7 +465,8 @@ namespace hhpp {
 		} while (end_server == 0);
 	}
 
-	std::string HHPP::readFileConfig(std::string pathConfig) {
+	std::string HHPP::readFileConfig(std::string pathConfig)
+	{
 		std::string file;
 		char c;
 		struct stat fileInfo;
@@ -460,11 +487,11 @@ namespace hhpp {
 
 			c = ifs.get();
 
-			do {
+			do
+			{
 				file += c;
 				c = ifs.get();
-			}
-			while (!ifs.eof());
+			} while (!ifs.eof());
 
 			ifs.close();
 		}
@@ -475,21 +502,24 @@ namespace hhpp {
 		return (file);
 	}
 
-	void HHPP::setupSocket() {
-		for (std::vector<IBinding*>::iterator it = _bindings.begin(); it != _bindings.end() ; ++it) {
+	void HHPP::setupSocket()
+	{
+		for (std::vector<IBinding *>::iterator it = _bindings.begin(); it != _bindings.end(); ++it)
+		{
 			(*it)->setSocket();
 		}
-//		IBinding *newSocket = _bindings.front();
-//		newSocket->setSocket();
-
+		//		IBinding *newSocket = _bindings.front();
+		//		newSocket->setSocket();
 	}
 
-	void HHPP::dispatchRequest(hhpp::Request request) {
+	void HHPP::dispatchRequest(hhpp::Request request)
+	{
 		(void)request;
 	}
 
-	const char* HHPP::fileStatus::what() const throw() {
+	const char *HHPP::fileStatus::what() const throw()
+	{
 		return ("File Error");
 	}
-	
-}
+
+} // namespace hhpp

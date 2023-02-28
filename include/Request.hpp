@@ -43,15 +43,15 @@ namespace hhpp
 		void setUrl(std::string url);
 		void setBody(std::string body);
 		void setHttpVersion(std::string httpVersion);
-        bool isMethodType(method m) const;
+		bool isMethodType(method m) const;
 		bool isMultipart() const;
 
 		void parseRequest(const std::string &rawRequest);
 		void showRequest();
 		Header &getHeaders();
 
-    private:
-    	void treatContentType();
+	private:
+		void treatContentType();
 
 	private:
 		int _bodySize;
@@ -64,8 +64,8 @@ namespace hhpp
 		int _port;
 		std::string _body;
 		method _methodType;
-        bool _multipart;
-        std::string _boundary;
+		bool _multipart;
+		std::string _boundary;
 	};
 } // namespace hhpp
 

@@ -1,9 +1,9 @@
 #include "ResponseError.hpp"
 #include "utility.hpp"
 
-namespace hhpp {
-	ResponseError::ResponseError(int error)
-	: Response()
+namespace hhpp
+{
+	ResponseError::ResponseError(int error) : Response()
 	{
 		std::string page;
 
@@ -18,23 +18,31 @@ namespace hhpp {
 			std::string errorMsg = "Error " + utils::numberToString(_status) + ": " + _statusMessage;
 
 			page.append("<html><head>"
-						"<title>" + errorMsg + "</title>"
-						"<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
-						"</head><body>"
-						"<h1>" + errorMsg + "</h1>"
-						"<p>Oops! Something went wrong...</p>"
-						"</body></html>");
+			            "<title>" +
+			            errorMsg +
+			            "</title>"
+			            "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
+			            "</head><body>"
+			            "<h1>" +
+			            errorMsg +
+			            "</h1>"
+			            "<p>Oops! Something went wrong...</p>"
+			            "</body></html>");
 		}
 		setBody(page);
 		setContentType("text/html");
 	}
 
-	ResponseError::~ResponseError() {}
+	ResponseError::~ResponseError()
+	{
+	}
 
-	void ResponseError::prepareResponse() {
+	void ResponseError::prepareResponse()
+	{
 		std::string page;
 
-		for (size_t i = 0; i < _server->getErrorPages().size(); ++i) {
+		for (size_t i = 0; i < _server->getErrorPages().size(); ++i)
+		{
 			if (_server->getErrorPages()[i]->getStatus() == _status)
 			{
 				setContentType("text/html");
@@ -48,4 +56,4 @@ namespace hhpp {
 		}
 	}
 
-}
+} // namespace hhpp

@@ -2,27 +2,28 @@
 #include "utility.hpp"
 #include <cstdio>
 #include <fstream>
-namespace hhpp {
+namespace hhpp
+{
 
-	Location::Location() :
-		_path("/"), _root(""), _localPath(""), _url(""), _exists(false), _isFolder(false)
+	Location::Location() : _path("/"), _root(""), _localPath(""), _url(""), _exists(false), _isFolder(false)
 	{
-
 	}
 
-	Location::~Location() {}
+	Location::~Location()
+	{
+	}
 
-	void Location::setPath(const std::string& path) 
+	void Location::setPath(const std::string &path)
 	{
 		_path = path;
 	}
 
-	void Location::setRoot(const std::string& root)
+	void Location::setRoot(const std::string &root)
 	{
 		_root = root;
-	}		
+	}
 
-	void Location::setUrl(const std::string& url)
+	void Location::setUrl(const std::string &url)
 	{
 		_localPath = utils::path(_root, url.substr(_path.size()));
 		_url = url;
@@ -40,7 +41,7 @@ namespace hhpp {
 				_isFolder = true;
 			}
 		}
-	}	
+	}
 
 	std::string Location::getUrl() const
 	{
@@ -62,7 +63,7 @@ namespace hhpp {
 		return _root;
 	}
 
-	bool Location::match(const std::string& query) const
+	bool Location::match(const std::string &query) const
 	{
 		if (_path == query.substr(0, _path.size()))
 			return true;
@@ -71,7 +72,7 @@ namespace hhpp {
 
 	bool Location::removeFile()
 	{
-		if (_exists && ! _isFolder)
+		if (_exists && !_isFolder)
 		{
 			if (!remove(_localPath.c_str()))
 			{
@@ -79,7 +80,6 @@ namespace hhpp {
 			}
 		}
 		return false;
-		
 	}
 
 	// query : /script/test.cgi
@@ -123,4 +123,4 @@ namespace hhpp {
 		}
 	}
 
-}
+} // namespace hhpp

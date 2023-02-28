@@ -4,7 +4,8 @@
 #include <string>
 #include <utility.hpp>
 
-namespace hhpp {
+namespace hhpp
+{
 	class ErrorPage
 	{
 	public:
@@ -14,13 +15,13 @@ namespace hhpp {
 		std::string getPage(std::string root = "");
 
 		void setStatus(const int status);
-		void setLocation(const std::string& location);
+		void setLocation(const std::string &location);
 		int getStatus();
 
 	private:
 		int _status;
 		std::string _location;
 	};
-}
+} // namespace hhpp
 
 #endif

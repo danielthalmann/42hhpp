@@ -3,16 +3,17 @@
 
 #include <string>
 
-namespace hhpp {
+namespace hhpp
+{
 	class Location
 	{
 	public:
 		Location();
 		~Location();
-		void setPath(const std::string& path);
-		void setRoot(const std::string& root);
-		void setUrl(const std::string& url);
-		bool match(const std::string& query) const;
+		void setPath(const std::string &path);
+		void setRoot(const std::string &root);
+		void setUrl(const std::string &url);
+		bool match(const std::string &query) const;
 		std::string getRoot() const;
 		bool isFolder() const;
 		bool exists() const;
@@ -31,9 +32,7 @@ namespace hhpp {
 		std::string _url;
 		bool _exists;
 		bool _isFolder;
-
-
 	};
-}
+} // namespace hhpp
 
 #endif

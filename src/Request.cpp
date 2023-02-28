@@ -10,7 +10,7 @@ namespace hhpp
 		_bodySize = 0;
 		_port = 0;
 		_methodType = METHOD_UNKNOW;
-        _multipart = false;
+		_multipart = false;
 	}
 
 	Request::~Request()
@@ -57,7 +57,7 @@ namespace hhpp
 	bool Request::isMultipart() const
 	{
 		return (_multipart);
-	}	
+	}
 	void Request::setMethod(std::string method)
 	{
 		_method = method;
@@ -167,7 +167,7 @@ namespace hhpp
 					setMethod(utils::trim(token[0]));
 
 					pos = token[1].find("?");
-					if (pos != std::string::npos) 
+					if (pos != std::string::npos)
 					{
 						setUrl(token[1].substr(0, pos));
 						setQuery(token[1].substr(pos + 1));
@@ -219,9 +219,9 @@ namespace hhpp
 
 	void Request::treatContentType()
 	{
-		// 
+		//
 		// detect if the post is multipart and set boundary value
-		// 
+		//
 		// Content-Type: multipart/form-data;boundary="boundary"
 		//
 		std::string contentType = _headers["Content-Type"];
@@ -243,8 +243,8 @@ namespace hhpp
 						if (b[1][0] == '"')
 						{
 							_boundary = b[1].substr(1, b[1].size() - 2);
-						} 
-						else 
+						}
+						else
 						{
 							_boundary = b[1];
 						}

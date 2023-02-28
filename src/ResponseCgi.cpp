@@ -1,9 +1,10 @@
 #include "ResponseCgi.hpp"
 
-namespace hhpp {
+namespace hhpp
+{
 
 	ResponseCgi::ResponseCgi(CGI *cgi, std::string script, const Request *request)
-			: Response(), _cgi(cgi), _script(script), _request(request)
+	    : Response(), _cgi(cgi), _script(script), _request(request)
 	{
 		setStatus(501);
 		setBody(getStatusMessage());
@@ -12,10 +13,10 @@ namespace hhpp {
 
 	ResponseCgi::~ResponseCgi()
 	{
-
 	}
 
-	void ResponseCgi::prepareResponse() {
+	void ResponseCgi::prepareResponse()
+	{
 		std::string header;
 		std::vector<std::string> token;
 		std::vector<std::string> headers;
@@ -23,14 +24,16 @@ namespace hhpp {
 		size_t find;
 		std::string result;
 
-		try {
+		try
+		{
 			result = _cgi->execute(_script, *_request);
 			std::cout << result;
-		} catch (...)
+		}
+		catch (...)
 		{
 			throw(std::exception());
 		}
-		
+
 		setStatus(200);
 
 		find = result.find("\r\n\r\n");
@@ -46,7 +49,7 @@ namespace hhpp {
 
 		token = utils::split(header, "\r\n");
 
-		for (size_t i = 0; i < token.size(); ++i) 
+		for (size_t i = 0; i < token.size(); ++i)
 		{
 			find = token[i].find(":");
 			if (find == std::string::npos)
@@ -63,7 +66,6 @@ namespace hhpp {
 		{
 			statuses = utils::split(strStatus, " ");
 			setStatus(std::atoi(statuses[0].c_str()));
-
 		}
 	}
-}
+} // namespace hhpp

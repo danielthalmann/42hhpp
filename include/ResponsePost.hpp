@@ -2,8 +2,8 @@
 #define RESPONSEPOST_HPP
 
 #include <Location.hpp>
-#include <Response.hpp>
 #include <Request.hpp>
+#include <Response.hpp>
 #include <string>
 
 namespace hhpp

@@ -2,10 +2,11 @@
 #define HEADER_HPP
 
 #include "iostream"
-#include <string>
 #include <map>
+#include <string>
 
-namespace hhpp {
+namespace hhpp
+{
 	class Header
 	{
 	public:
@@ -18,8 +19,8 @@ namespace hhpp {
 		void append(std::string key, std::string value);
 		void showParams();
 		std::string raw() const;
-		
-		std::string& operator[](const std::string& key);
+
+		std::string &operator[](const std::string &key);
 
 
 		typedef std::map<std::string, std::string> mapStringString;
@@ -29,8 +30,7 @@ namespace hhpp {
 
 	private:
 		mapStringString _params;
-
 	};
-}
+} // namespace hhpp
 
 #endif

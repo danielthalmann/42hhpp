@@ -4,7 +4,8 @@
 #include <Response.hpp>
 #include <string>
 
-namespace hhpp {
+namespace hhpp
+{
 	class ResponseRedirect : public Response
 	{
 	public:
@@ -14,8 +15,7 @@ namespace hhpp {
 		void redirect(std::string redirect);
 
 	private:
-
 	};
-}
+} // namespace hhpp
 
 #endif

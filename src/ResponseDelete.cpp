@@ -1,40 +1,44 @@
 #include "ResponseDelete.hpp"
 
 
-namespace hhpp {
+namespace hhpp
+{
 
-	ResponseDelete::ResponseDelete(Location *location)
-			: Response(), _location(location)
+	ResponseDelete::ResponseDelete(Location *location) : Response(), _location(location)
 	{
-        if (!_location->exists())
-        {
-            setStatus(404);
-            setBody(getStatusMessage());
-            setContentType("text/html");
-        } else {
+		if (!_location->exists())
+		{
+			setStatus(404);
+			setBody(getStatusMessage());
+			setContentType("text/html");
+		}
+		else
+		{
 
-            if (_location->isFolder())
-            {
-                setStatus(406);
-                setBody(getStatusMessage());
-                setContentType("text/html");
-               
-            } else {
-                if (_location->removeFile())
-                {
-                    setStatus(204);
-                } else {
-                    setStatus(500);
-                    setBody(getStatusMessage());
-                    setContentType("text/html");
-                }
-            }
-        }
+			if (_location->isFolder())
+			{
+				setStatus(406);
+				setBody(getStatusMessage());
+				setContentType("text/html");
+			}
+			else
+			{
+				if (_location->removeFile())
+				{
+					setStatus(204);
+				}
+				else
+				{
+					setStatus(500);
+					setBody(getStatusMessage());
+					setContentType("text/html");
+				}
+			}
+		}
 	}
 
 	ResponseDelete::~ResponseDelete()
 	{
-
 	}
 
-}
+} // namespace hhpp

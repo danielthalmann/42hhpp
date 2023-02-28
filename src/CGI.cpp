@@ -2,23 +2,30 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-namespace hhpp {
-	CGI::CGI() {}
-	CGI::~CGI() {}
+namespace hhpp
+{
+	CGI::CGI()
+	{
+	}
+	CGI::~CGI()
+	{
+	}
 
-	std::vector<char*> CGI::preparePath(const std::string &query) {
-		std::vector<char*> path;
+	std::vector<char *> CGI::preparePath(const std::string &query)
+	{
+		std::vector<char *> path;
 
-		path.push_back(const_cast<char*>(_location.c_str()));
-		path.push_back(const_cast<char*>(_scriptPath.c_str()));
+		path.push_back(const_cast<char *>(_location.c_str()));
+		path.push_back(const_cast<char *>(_scriptPath.c_str()));
 		if (!query.empty())
-			path.push_back(const_cast<char*>(_query.c_str()));
+			path.push_back(const_cast<char *>(_query.c_str()));
 		path.push_back(NULL);
 
 		return path;
 	}
 
-	std::map<std::string, std::string> CGI::prepareEnv(Request request) {
+	std::map<std::string, std::string> CGI::prepareEnv(Request request)
+	{
 		std::map<std::string, std::string> env;
 
 
@@ -42,15 +49,17 @@ namespace hhpp {
 		env["QUERY_STRING"] = _query;
 
 		env["REDIRECT_STATUS"] = "CGI";
-	
-		if (request.getHeaders()["Cookie"].length() > 0) {
+
+		if (request.getHeaders()["Cookie"].length() > 0)
+		{
 			env["HTTP_COOKIE"] = request.getHeaders()["Cookie"];
 		}
 
 		return env;
 	}
 
-	std::string CGI::execute(std::string scriptPath, Request request) {
+	std::string CGI::execute(std::string scriptPath, Request request)
+	{
 		int p_out[2];
 		int p_in[2];
 		int ret;
@@ -71,12 +80,13 @@ namespace hhpp {
 		fcntl(p_in[0], F_SETFL, O_NONBLOCK);
 		fcntl(p_in[1], F_SETFL, O_NONBLOCK);
 
-		std::vector<char*> path = preparePath(request.getQuery());
+		std::vector<char *> path = preparePath(request.getQuery());
 		std::map<std::string, std::string> env = prepareEnv(request);
 
 		int pid = fork();
 
-		if (pid == 0) {
+		if (pid == 0)
+		{
 			close(p_out[0]);
 			dup2(p_out[1], STDOUT_FILENO);
 			close(p_out[1]);
@@ -103,31 +113,33 @@ namespace hhpp {
 
 			std::cout << "cgi:" << ret << std::endl;
 
-			do {
+			do
+			{
 				bzero(&buffer, sizeof(buffer));
 				ret = read(p_out[0], buffer, sizeof(buffer));
 				if (ret > 0)
 					result.append(std::string(buffer, ret));
-			} while(ret == sizeof(buffer));
+			} while (ret == sizeof(buffer));
 			close(p_out[0]);
 		}
 
 		return (result);
 	}
 
-	void CGI::addExtension(const std::string& extension)
+	void CGI::addExtension(const std::string &extension)
 	{
 		_extension.push_back(extension);
 	}
 
-	void CGI::setLocation(const std::string& location)
+	void CGI::setLocation(const std::string &location)
 	{
 		_location = location;
 	}
 
-	bool CGI::match(const std::string& query) const
+	bool CGI::match(const std::string &query) const
 	{
-		for (std::vector<std::string>::const_iterator it = _extension.begin(); it != _extension.end(); it++) {
+		for (std::vector<std::string>::const_iterator it = _extension.begin(); it != _extension.end(); it++)
+		{
 			std::string extension = query.substr(query.size() - (*it).size());
 			if (extension == (*it))
 				return true;
@@ -135,4 +147,4 @@ namespace hhpp {
 		return false;
 	}
 
-}
+} // namespace hhpp

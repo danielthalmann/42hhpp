@@ -1,12 +1,12 @@
 #include "ResponseFile.hpp"
-#include <utility.hpp>
+#include <Base64.hpp>
 #include <fstream>
 #include <sstream>
-#include <Base64.hpp>
+#include <utility.hpp>
 
-namespace hhpp {
-	ResponseFile::ResponseFile(std::string filename, MimeType* mimetype)
-	: Response()
+namespace hhpp
+{
+	ResponseFile::ResponseFile(std::string filename, MimeType *mimetype) : Response()
 	{
 		std::fstream fs;
 		std::stringstream buffer;
@@ -14,14 +14,18 @@ namespace hhpp {
 
 		fs.open(filename.c_str(), std::ios::in);
 
-		if (!fs){
+		if (!fs)
+		{
 			setStatus(500);
 			setBody(getStatusMessage());
 			setContentType("text/plain");
-		} else {
-			
+		}
+		else
+		{
+
 			buffer << fs.rdbuf();
-			if (mimetype->isBinary()) {
+			if (mimetype->isBinary())
+			{
 				getHeaders()["Content-Transfer-Encoding"] = "base64";
 				getHeaders()["Content-Encoding"] = "base64";
 				setBody(Base64::Encode(buffer.str()));
@@ -31,12 +35,10 @@ namespace hhpp {
 		}
 		buffer << fs.rdbuf();
 		fs.close();
-		
 	}
 
-	ResponseFile::~ResponseFile() 
+	ResponseFile::~ResponseFile()
 	{
-
 	}
 
-}
+} // namespace hhpp
