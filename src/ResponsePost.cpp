@@ -101,15 +101,36 @@ namespace hhpp
 			// std::cout << _location->getDirectory() << "\n";
 			// std::cout << _location->getFilename() << "\n";
 
-			location->put(composedBody);
+			try
+			{
+				location->put(composedBody);
+			}
+			catch (std::exception &e)
+			{
+				setStatus(500);
+				setBody(getStatusMessage());
+				return;
+			}
 
 			// const std::string head = request->getHeaders().raw();
 			// location->put(head + request->getBody());
 		}
 		else
 		{
-			location->put(request->getBody());
+			try
+			{
+				location->put(request->getBody());
+			}
+			catch (std::exception &e)
+			{
+				setStatus(500);
+				setBody(getStatusMessage());
+				return;
+			}
 		}
+		setStatus(201);
+		setBody(getStatusMessage());
+
 	}
 
 	ResponsePost::~ResponsePost()
