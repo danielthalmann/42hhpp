@@ -353,7 +353,7 @@ namespace hhpp {
 
 						currentBinding = getBindingFromSocket(i);
 
-						while (1)
+						while (end_server == 0)
 						{
 							bzero(buffer, sizeof(buffer));
 							ret = recv(i, buffer, sizeof(buffer), 0);
@@ -412,12 +412,13 @@ namespace hhpp {
 							if (ret < 0) {
 								std::cerr << "[-] send() failed" << std::endl;
 							}
-							close_conn = 1;
-							break;
 
 							// free memory
 							delete response;
 							delete request;
+
+							close_conn = 1;
+							break;
 
 /*
 
