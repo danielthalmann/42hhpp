@@ -141,12 +141,19 @@ namespace hhpp
 	{
 		std::vector<std::string> token;
 		std::vector<std::string> header;
-		std::vector<std::string> headerRaw;
 		std::vector<std::string> query;
+		std::string headerRaw;
 		std::string body;
 
-		headerRaw = utils::split(rawRequest, "\r\n\r\n");
-		header = utils::split(headerRaw[0], "\r\n");
+		size_t pos;
+
+		pos = rawRequest.find("\r\n\r\n");
+		if (pos != std::string::npos)
+		{
+			headerRaw = rawRequest.substr(0, pos);
+			setBody(rawRequest.substr(pos + 4));
+		}
+		header = utils::split(headerRaw, "\r\n");
 
 		_bodySize = 0;
 
@@ -176,18 +183,6 @@ namespace hhpp
 				token = utils::split(header[i], ": ");
 				_headers.append(utils::trim(token[0]), utils::trim(token[1]));
 			}
-		}
-
-		if (headerRaw.size() > 1)
-		{
-			std::string body;
-			for (size_t i = 1; i < headerRaw.size(); i++)
-			{
-				body.append(headerRaw[i]);
-				if (i + 1 < headerRaw.size())
-					body.append("\r\n\r\n");
-			}
-			setBody(body);
 		}
 
 		if (isMethodType(METHOD_POST))
