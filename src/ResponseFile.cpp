@@ -2,7 +2,7 @@
 #include <utility.hpp>
 #include <fstream>
 #include <sstream>
-#include <base64.hpp>
+#include <Base64.hpp>
 
 namespace hhpp {
 	ResponseFile::ResponseFile(std::string filename, MimeType* mimetype)

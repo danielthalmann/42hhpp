@@ -412,51 +412,19 @@ namespace hhpp {
 							if (ret < 0) {
 								std::cerr << "[-] send() failed" << std::endl;
 							}
-							close_conn = 1;
-							break;
 
 							// free memory
 							delete response;
 							delete request;
 
-/*
-
-//							send data to client
-							std::string dataSend;
-							dataSend = "HTTP/1.1 200 OK\n";
-							dataSend.append("Content-Type: text/plain\n");
-							dataSend.append("Content-Length: 7\n");
-							dataSend.append("\n");
-							dataSend.append("Hello !");
-
-							// gestion errors
-							for (size_t k = 0; k < _servers[j]->getErrorPages().size(); ++k) {
-								if (_servers[j]->getErrorPages()[k]->getStatus() == status)
-								{
-									serverResponse.setBody(_servers[j]->getErrorPages()[k]->getPage(), "text/html");
-									isfound = 1;
-									break;
-								}
-							}
-
-
-							ret = send(i, dataSend.c_str(), dataSend.size(), 0);
-							std::cout << "data send: " << ret <<"/"<<dataSend.size()<< std::endl;
-							if (ret < 0)
-							{
-								std::cerr << "[-] send() failed" << std::endl;
-								close_conn = 1;
-								break;
-							}
-*/
-
+							close_conn = 1;
+							break;
 						}
 
 						if (close_conn)
 						{
-//							std::cout << "close fd: " << i << std::endl;
+							std::cout << "close fd: " << i << std::endl;
 							currentBinding->closeConnection(i);
-							// close(i);
 							FD_CLR(i, &current_set);
 							if (i == max_sd)
 							{

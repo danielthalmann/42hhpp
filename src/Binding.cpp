@@ -57,7 +57,7 @@ namespace hhpp {
 
 	void Binding::listenSocket() {
 		int ret;
-		ret = listen(_listen_sd, 15);
+		ret = listen(_listen_sd, 32);
 		checkSocket(ret, "[-] listen failed");
 	}
 
