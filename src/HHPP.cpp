@@ -436,14 +436,16 @@ namespace hhpp
 							if (ret < 0)
 							{
 								std::cerr << "[-] send() failed" << std::endl;
+								close_conn = 1;
+								break;
 							}
 
 							// free memory
 							delete response;
 							delete request;
 
-							close_conn = 1;
-							break;
+							if (close_conn)
+								break;
 						}
 
 						if (close_conn)
