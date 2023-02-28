@@ -75,6 +75,9 @@ namespace hhpp {
 		dataSend.append(" ");
 		dataSend.append(_statusMessage);
 		dataSend.append("\r\n");
+		for (size_t i = 0; i < _cookie.size(); ++i) {
+			dataSend.append("Set-Cookie: " + _cookie[i] + "\r\n");
+		}
 		dataSend.append(_header.raw());
 		dataSend.append("\r\n");
 		dataSend.append(_body);

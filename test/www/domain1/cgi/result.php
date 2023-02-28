@@ -1,3 +1,10 @@
+<?php
+    date_default_timezone_set("Europe/Zurich");
+    setcookie("contentGet", $_GET["contentGet"]);
+    setcookie("contentPost", $_POST["contentPost"]);
+    setcookie("lastvisit", date(DATE_RFC2822));
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +18,7 @@
 
 <p>content post : <?php if( isset($_POST["contentPost"]) ) {echo $_POST["contentPost"];} ?></p>
 <p>content get : <?php if( isset($_GET["contentGet"]) ) {echo $_GET["contentGet"];} ?></p>
+<p>content lastvisit : <?php echo $_COOKIE["lastvisit"]; ?></p>
 
 <?php
 

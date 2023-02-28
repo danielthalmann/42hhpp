@@ -42,6 +42,7 @@ namespace hhpp {
 		int _status;
 		std::string _statusMessage;
 		Header _header;
+		std::vector<std::string> _cookie;
 		std::string _body;
 		std::string _contentType;
 		static std::map<int, std::string> _totalStatus;

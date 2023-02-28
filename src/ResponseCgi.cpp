@@ -48,11 +48,15 @@ namespace hhpp {
 
 		for (size_t i = 0; i < token.size(); ++i) 
 		{
-			headers = utils::split(token[i], ":");
-			if (headers.size() == 2)
-			{
-				_header[utils::upperKebabCase(headers[0])] = utils::trim(headers[1]);
-			}
+			find = token[i].find(":");
+			if (find == std::string::npos)
+				break;
+			std::string key = utils::upperKebabCase(token[i].substr(0, find));
+			std::string value = token[i].substr(find + 1);
+			if (key == "Set-Cookie")
+				_cookie.push_back(value);
+			else
+				_header[key] = value;
 		}
 		std::string strStatus = _header.get("Status");
 		if (strStatus.size() > 0)
