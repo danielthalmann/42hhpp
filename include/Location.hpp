@@ -20,6 +20,7 @@ namespace hhpp {
 		std::string getLocalPath() const;
 		std::string getDirectory() const;
 		std::string getFilename() const;
+		std::string getUrl() const;
 		void put(const std::string &content);
 		void put(const std::string &content, const std::string &filename);
 
@@ -27,6 +28,7 @@ namespace hhpp {
 		std::string _path;
 		std::string _root;
 		std::string _localPath;
+		std::string _url;
 		bool _exists;
 		bool _isFolder;
 

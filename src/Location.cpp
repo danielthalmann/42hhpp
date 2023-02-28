@@ -5,7 +5,7 @@
 namespace hhpp {
 
 	Location::Location() :
-		_path("/"), _root(""), _localPath(""), _exists(false), _isFolder(false)
+		_path("/"), _root(""), _localPath(""), _url(""), _exists(false), _isFolder(false)
 	{
 
 	}
@@ -25,6 +25,7 @@ namespace hhpp {
 	void Location::setUrl(const std::string& url)
 	{
 		_localPath = utils::path(_root, url.substr(_path.size()));
+		_url = url;
 		_exists = false;
 		_isFolder = false;
 
@@ -40,6 +41,11 @@ namespace hhpp {
 			}
 		}
 	}	
+
+	std::string Location::getUrl() const
+	{
+		return _url;
+	}
 
 	bool Location::isFolder() const
 	{
