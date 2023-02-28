@@ -163,6 +163,7 @@ namespace hhpp {
 	Response* Server::fileListIndex(const Location* local) const
 	{
 		std::string html;
+		std::string root = local->getUrl();
 
 		html = "<html><head><title>Index of ";
 		html += local->getUrl();
@@ -177,10 +178,13 @@ namespace hhpp {
 			// print all the files and directories within directory 
 			while ((ent = readdir (dir)) != NULL) {
 				
-				if ( local->getUrl() == "/" && (std::string(ent->d_name) == ".." || std::string(ent->d_name) == "."))
+				if (root == "/" && (std::string(ent->d_name) == ".." || std::string(ent->d_name) == "."))
 					continue;
 				
 				html += "<li><a href=\"";
+				html += root;
+				if((*root.rbegin()) != '/')
+					html += "/";
 				html += ent->d_name;
 				html += "\">"; 
 				html += ent->d_name;
