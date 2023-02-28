@@ -26,11 +26,9 @@ namespace json
 		JsonNumber &operator=(const float &i);
 
 	private:
-
 		float _value;
-
 	};
-	
-}
+
+} // namespace json
 
 #endif

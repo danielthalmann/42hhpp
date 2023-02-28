@@ -1,11 +1,11 @@
 #ifndef JSON_HPP
 #define JSON_HPP
 
-#include <JsonObject.hpp>
 #include <JsonArray.hpp>
-#include <JsonNumber.hpp>
-#include <JsonString.hpp>
 #include <JsonBoolean.hpp>
+#include <JsonNumber.hpp>
+#include <JsonObject.hpp>
+#include <JsonString.hpp>
 
 #include <string>
 
@@ -14,11 +14,11 @@ namespace json
 
 	class Json
 	{
-		
+
 	private:
 		Json(const std::string &s);
 
-		
+
 	public:
 		virtual ~Json();
 
@@ -47,13 +47,12 @@ namespace json
 		bool isEndOfAccolade();
 
 		void invalidCharacter();
-		
+
 	private:
 		std::string _s;
 		size_t _pos;
-
 	};
 
-}
+} // namespace json
 
 #endif

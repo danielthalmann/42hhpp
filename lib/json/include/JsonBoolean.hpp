@@ -6,15 +6,15 @@
 
 namespace json
 {
-		
+
 	class JsonBoolean : public JsonValue
 	{
 
 	public:
 		JsonBoolean();
-		JsonBoolean(const JsonBoolean& other);
+		JsonBoolean(const JsonBoolean &other);
 		virtual ~JsonBoolean();
-		JsonBoolean &operator=(const JsonBoolean& other);
+		JsonBoolean &operator=(const JsonBoolean &other);
 
 		virtual bool getBool();
 		virtual void set(const bool s);
@@ -22,12 +22,9 @@ namespace json
 		JsonBoolean &operator=(const bool &b);
 
 	private:
-
 		bool _value;
-
-
 	};
 
-}
+} // namespace json
 
 #endif

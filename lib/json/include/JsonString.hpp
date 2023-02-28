@@ -6,15 +6,15 @@
 
 namespace json
 {
-		
+
 	class JsonString : public JsonValue
 	{
 
 	public:
 		JsonString();
-		JsonString(const JsonString& other);
+		JsonString(const JsonString &other);
 		virtual ~JsonString();
-		JsonString &operator=(const JsonString& other);
+		JsonString &operator=(const JsonString &other);
 
 		virtual std::string getString();
 		virtual void set(const std::string &s);
@@ -22,11 +22,9 @@ namespace json
 		JsonString &operator=(const std::string &s);
 
 	private:
-
 		std::string _value;
-
 	};
 
-}
+} // namespace json
 
 #endif
