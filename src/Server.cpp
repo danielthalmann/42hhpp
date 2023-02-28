@@ -258,6 +258,10 @@ namespace hhpp
 		if (!isAllowedMethod(request.getMethod()))
 			return new ResponseError(405);
 
+		// check allowed version
+		if (request.getHttpVersion() != "HTTP/1.1")
+			return new ResponseError(505);
+
 		// check size
 		if (_maxBodySize > 0)
 		{
