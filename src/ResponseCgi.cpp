@@ -24,15 +24,7 @@ namespace hhpp
 		size_t find;
 		std::string result;
 
-		try
-		{
-			result = _cgi->execute(_script, *_request);
-//			std::cout << result;
-		}
-		catch (...)
-		{
-			throw(std::exception());
-		}
+		result = _cgi->execute(_script, *_request);
 
 		setStatus(200);
 
