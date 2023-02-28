@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "utility.hpp"
+#include <dirent.h>
 
 namespace hhpp {
 
@@ -159,10 +160,46 @@ namespace hhpp {
 		return (_root);
 	}
 
-	Response* Server::fileListIndex(const std::string& query) const
+	Response* Server::fileListIndex(const Location* local) const
 	{
+		std::string html;
+		std::string root = local->getUrl();
+
+		html = "<html><head><title>Index of ";
+		html += local->getUrl();
+		
+		html += "</title></head><body><h2>Index of ";
+		html += local->getUrl();
+		html += "</h2><hr><ui>";
+		
+		DIR *dir;
+		struct dirent *ent;
+		if ((dir = opendir (local->getLocalPath().c_str())) != NULL) {
+			// print all the files and directories within directory 
+			while ((ent = readdir (dir)) != NULL) {
+				
+				if (root == "/" && (std::string(ent->d_name) == ".." || std::string(ent->d_name) == "."))
+					continue;
+				
+				html += "<li><a href=\"";
+				html += root;
+				if((*root.rbegin()) != '/')
+					html += "/";
+				html += ent->d_name;
+				html += "\">"; 
+				html += ent->d_name;
+				html += "</a></li>"; 
+			}
+			closedir (dir);
+		} else {
+			return new ResponseError(403);
+		}
+
+		html += "<ui></body></html>";
+
 		Response* r = new Response();
-		r->setBody(query);
+		r->setBody(html);
+		r->setContentType("text/html");
 		return r;
 	}
 
@@ -236,7 +273,7 @@ namespace hhpp {
 				if (!_autoIndex) {
 					return new ResponseError(403);
 				}
-				return fileListIndex(localPath);
+				return fileListIndex(local);
 			}
 
 		} else {
