@@ -121,6 +121,10 @@ namespace hhpp
 			ofs << content;
 			ofs.close();
 		}
+		else
+		{
+			throw std::domain_error("cannot save the file");
+		}
 	}
 
 } // namespace hhpp
