@@ -10,6 +10,7 @@ namespace hhpp
 	public:
 		Location();
 		~Location();
+		void setAllowUpdate(const bool update);
 		void setPath(const std::string &path);
 		void setRoot(const std::string &root);
 		void setUrl(const std::string &url);
@@ -18,6 +19,7 @@ namespace hhpp
 		bool isFolder() const;
 		bool exists() const;
 		bool removeFile();
+		bool allowUpdate() const;
 		std::string getLocalPath() const;
 		std::string getDirectory() const;
 		std::string getFilename() const;
@@ -32,6 +34,7 @@ namespace hhpp
 		std::string _url;
 		bool _exists;
 		bool _isFolder;
+		bool _allowUpdate;
 	};
 } // namespace hhpp
 

@@ -330,6 +330,9 @@ namespace hhpp
 
 		if (request.isMethodType(Request::METHOD_DELETE))
 		{
+			if (!local->allowUpdate())
+				return new ResponseError(405);
+
 			// ficher présent mais pas accessible
 			if (access(localPath.c_str(), W_OK))
 			{
@@ -341,6 +344,9 @@ namespace hhpp
 
 		if (request.isMethodType(Request::METHOD_POST))
 		{
+			if (!local->allowUpdate())
+				return new ResponseError(405);
+
 			return new ResponsePost(local, const_cast<Request *>(&request));
 		}
 

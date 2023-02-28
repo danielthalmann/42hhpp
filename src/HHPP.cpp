@@ -171,6 +171,8 @@ namespace hhpp
 					loc = new Location();
 					loc->setPath(jsonEl->at(j)->at("path")->getString());
 					loc->setRoot(jsonEl->at(j)->at("root")->getString());
+					if (jsonEl->at(j)->exists("allow_update"))
+						loc->setAllowUpdate(jsonEl->at(j)->at("allow_update")->getBool());
 					newServer->addLocation(loc);
 				}
 			}

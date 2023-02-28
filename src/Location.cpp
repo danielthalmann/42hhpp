@@ -5,12 +5,17 @@
 namespace hhpp
 {
 
-	Location::Location() : _path("/"), _root(""), _localPath(""), _url(""), _exists(false), _isFolder(false)
+	Location::Location() : _path("/"), _root(""), _localPath(""), _url(""), _exists(false), _isFolder(false), _allowUpdate(false)
 	{
 	}
 
 	Location::~Location()
 	{
+	}
+
+	void Location::setAllowUpdate(const bool update)
+	{
+		_allowUpdate = update;
 	}
 
 	void Location::setPath(const std::string &path)
@@ -80,6 +85,11 @@ namespace hhpp
 			}
 		}
 		return false;
+	}
+
+	bool Location::allowUpdate() const
+	{
+		return _allowUpdate;
 	}
 
 	// query : /script/test.cgi

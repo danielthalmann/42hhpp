@@ -33,6 +33,11 @@
         {
           "path" : "/script",
           "root" : "test/www/domain1/cgi"
+        },
+        {
+          "path" : "/contents",
+          "root" : "test/www/domain1/contents",
+          "allow_update" : true
         }
       ],
       "cgi" : [
