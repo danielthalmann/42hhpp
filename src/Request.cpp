@@ -141,7 +141,6 @@ namespace hhpp
 	{
 		std::vector<std::string> token;
 		std::vector<std::string> header;
-		std::vector<std::string> query;
 		std::string headerRaw;
 		std::string body;
 
@@ -166,11 +165,12 @@ namespace hhpp
 				if (token.size() == 3)
 				{
 					setMethod(utils::trim(token[0]));
-					query = utils::split(token[1], "?");
-					if (query.size() == 2)
+
+					pos = token[1].find("?");
+					if (pos != std::string::npos) 
 					{
-						setUrl(query[0]);
-						setQuery(query[1]);
+						setUrl(token[1].substr(0, pos));
+						setQuery(token[1].substr(pos + 1));
 					}
 					else
 						setUrl(utils::trim(token[1]));
