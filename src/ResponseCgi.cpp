@@ -27,7 +27,7 @@ namespace hhpp
 		try
 		{
 			result = _cgi->execute(_script, *_request);
-			std::cout << result;
+//			std::cout << result;
 		}
 		catch (...)
 		{

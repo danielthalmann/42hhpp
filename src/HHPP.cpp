@@ -63,6 +63,8 @@ namespace hhpp
 				_bindings.push_back(newBinding);
 				newBinding->setIP(ip);
 				newBinding->setPort(port);
+				if (newBinding->getPort() < 1024 || newBinding->getPort() > 65535)
+					throw Binding::socketStatus();
 			}
 
 			newServer->setBinding(newBinding);
@@ -329,11 +331,11 @@ namespace hhpp
 
 		do
 		{
-			//			copy into working set
+			//copy into working set
 			memcpy(&working_set, &current_set, sizeof(current_set));
 
-			//			select
-			//			std::cout << "Waiting on select()..." << std::endl;
+			//select
+			//std::cout << "Waiting on select()..." << std::endl;
 			ret = select(max_sd + 1, &working_set, NULL, NULL, NULL);
 			if (ret < 0)
 			{
@@ -349,7 +351,7 @@ namespace hhpp
 					desc_ready -= 1;
 					if ((currentBinding = isListen(i)) != NULL)
 					{
-						//						std::cout << "Listening socket is readable" << std::endl;
+						//std::cout << "Listening socket is readable" << std::endl;
 						do
 						{
 							new_sd = currentBinding->acceptConnection();
@@ -362,8 +364,7 @@ namespace hhpp
 								}
 								break;
 							}
-							//							std::cout << "New incoming connection - " << new_sd <<
-							//std::endl;
+							//std::cout << "New incoming connection - " << new_sd << std::endl;
 							FD_SET(new_sd, &current_set);
 							if (new_sd > max_sd)
 								max_sd = new_sd;
@@ -372,7 +373,7 @@ namespace hhpp
 					}
 					else
 					{
-						//						std::cout << "Descriptor " << i << " is readable" << std::endl;
+						//std::cout << "Descriptor " << i << " is readable" << std::endl;
 						close_conn = 0;
 
 						currentBinding = getBindingFromSocket(i);
@@ -385,14 +386,14 @@ namespace hhpp
 							{
 								if (errno != EWOULDBLOCK)
 								{
-									//									std::cout << "recv() finish" << std::endl;
+									//std::cout << "recv() finish" << std::endl;
 									close_conn = 1;
 								}
 								break;
 							}
 							if (ret == 0)
 							{
-								//								std::cout << "Connection closed" << std::endl;
+								//std::cout << "Connection closed" << std::endl;
 								close_conn = 1;
 								break;
 							}

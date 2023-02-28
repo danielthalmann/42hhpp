@@ -111,8 +111,6 @@ namespace hhpp
 			if (ret != 0)
 				throw(std::exception());
 
-			std::cout << "cgi:" << ret << std::endl;
-
 			do
 			{
 				bzero(&buffer, sizeof(buffer));
