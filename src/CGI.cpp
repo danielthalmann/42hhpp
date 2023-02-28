@@ -57,6 +57,9 @@ namespace hhpp {
 		char buffer[4096];
 		std::string result;
 
+		if (access(_location.c_str(), X_OK))
+			throw(std::exception());
+
 		_scriptPath = scriptPath;
 		_query = request.getQuery();
 
@@ -97,6 +100,8 @@ namespace hhpp {
 				throw(std::exception());
 			if (ret != 0)
 				throw(std::exception());
+
+			std::cout << "cgi:" << ret << std::endl;
 
 			do {
 				bzero(&buffer, sizeof(buffer));
