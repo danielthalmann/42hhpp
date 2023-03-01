@@ -26,7 +26,7 @@ namespace hhpp {
             std::string encode(4 * ((len + 2) / 3), '\0');
             size_t i = 0, y = 0;
 
-            std::cout << "len :" << len << std::endl;
+//            std::cout << "len :" << len << std::endl;
 
             for (i = 0; i < len - 2; i += 3) {
                 if (y >= encode.capacity()){

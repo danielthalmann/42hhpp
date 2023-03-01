@@ -9,7 +9,7 @@
 
 <h1>php info</h1>
 
-<p><?php echo phpinfo() ?></p>
+<p><?php phpinfo() ?></p>
 
 </body>
 
