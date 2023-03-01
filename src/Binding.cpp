@@ -182,7 +182,8 @@ namespace hhpp
 
 	bool Binding::isRequestLoaded(int socket)
 	{
-		if (_connections[socket]->state == STATE_LOADED)
+		int state = _connections[socket]->state;
+		if (state == STATE_LOADED || state == STATE_ERROR)
 			return true;
 		return false;
 	}
@@ -195,33 +196,93 @@ namespace hhpp
 	void Binding::readRequest(int socket)
 	{
 		int ret;
-		int len;
-		char buffer[4096];		
-		t_connection *conn = _connections[socket];
+		char buffer[4096];
+		size_t pos, pos_end;
 
-		bzero(buffer, sizeof(buffer));
-		ret = recv(conn->socket, buffer, sizeof(buffer), 0);
-		if (ret < 0) {
-			conn->state = STATE_ERROR;
-		} else if (ret == 0) {
-			conn->state = STATE_LOADED;
-		} else {
-			conn->len += ret;
+		t_connection *conn = _connections[socket];
+		
+		if (conn->state == STATE_CREATED || conn->state == STATE_READ)
+		{
+			// std::cout << conn->socket << " read\n";
+
+			bzero(buffer, sizeof(buffer));
+			ret = recv(conn->socket, buffer, sizeof(buffer), 0);
+			if (ret < 0) {
+				conn->state = STATE_ERROR;
+			} else if (ret == 0) {
+				conn->state = STATE_LOADED;
+			} else {
+				conn->buff.append(buffer, ret);
+				conn->len += ret;
+			}
 		}
 
 		if (conn->state == STATE_CREATED)
 		{
-			conn->buff.append(buffer, ret);
+			// std::cout << conn->socket << " STATE_CREATED\n";
 			// vérifie la taille du body
+			pos = conn->buff.find("\r\n\r\n");
+			if (pos != std::string::npos)
+			{
 
+				// std::cout << conn->socket << " POS: " << pos << "\n";
+
+				conn->state = STATE_READ;
+				conn->header_len = pos + 4;
+
+				//std::cout << conn->socket << " CONTENT ALL: " << conn->buff << "\n";
+
+				// search body len (char 16)
+				pos = conn->buff.find("Content-Length: ");
+				if (pos == std::string::npos) 
+					pos = conn->buff.find("content-length: ");
+				
+				if (pos != std::string::npos) {
+
+					pos += 16;
+					pos_end = conn->buff.find("\r\n", pos);
+
+					// std::cout << conn->socket << " POS: " << pos << "\n";
+
+					if (pos_end != std::string::npos)
+					{
+
+						// std::cout << conn->socket << " POS END: " << pos_end << "\n";
+
+						std::string contentLength = conn->buff.substr(pos, pos_end - pos);
+						conn->body_len = std::atoi(contentLength.c_str());
+
+					} else {
+						conn->state = STATE_ERROR;
+					}	
+
+				} else {
+					conn->state = STATE_READ;
+				}					
+			
+			} else {
+				conn->state = STATE_ERROR;
+			}
 		}
 
+		if (conn->state == STATE_READ)
+		{
+			// std::cout << conn->socket << " len : " << conn->len << " headerlen : " << conn->header_len << " headerlen : " << conn->body_len << " STATE_CREATED\n";
+
+			if (conn->len - conn->header_len == conn->body_len)
+			{
+				conn->state = STATE_LOADED;
+			}
+
+		}
 
 	}
 
 	void Binding::closeConnection(int socket)
 	{
-		_connections.erase(std::find(_connections.begin(), _connections.end(), socket));
+		t_connection *conn = _connections[socket];
+		delete conn;
+		_connections.erase(socket);
 		close(socket);
 	}
 

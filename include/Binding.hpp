@@ -33,6 +33,8 @@ namespace hhpp
 		typedef struct s_connection {
 			int socket;
 			int len;
+			int header_len;
+			int body_len;
 			std::string buff;
 			t_state state;
 		} t_connection;

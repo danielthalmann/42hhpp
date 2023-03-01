@@ -376,30 +376,21 @@ namespace hhpp
 
 						currentBinding = getBindingFromSocket(i);
 
+						// lit les données
+						currentBinding->readRequest(i);
+
 						if (currentBinding->isRequestLoaded(i))
 						{
 
-						} else 
-						{
-							currentBinding->readRequest(i);
-						}
-
-						while (1)
-						{
-
-							len = ret;
-							std::cout << len << " bytes received" << std::endl;
-
 							// prepare request
 							Request *request = new Request();
-							request->parseRequest(std::string(buffer, ret));
+							request->parseRequest(currentBinding->getRequestBuffer(i));
 
 							IServer *server = NULL;
 							server = currentBinding->getServerFor(*request);
 
 							// take first server if not exists
-							if (!server)
-							{
+							if (!server) {
 								server = _servers[0];
 							}
 
@@ -427,26 +418,23 @@ namespace hhpp
 								close_conn = 1;
 								break;
 							}
-
 							// free memory
 							delete response;
 							delete request;
 
-							if (close_conn)
-								break;
-						}
-
-						if (close_conn)
-						{
 							std::cout << "close fd: " << i << std::endl;
+							
 							currentBinding->closeConnection(i);
+
 							FD_CLR(i, &current_set);
 							if (i == max_sd)
 							{
 								while (FD_ISSET(max_sd, &current_set) == 0)
 									max_sd -= 1;
 							}
+
 						}
+
 					}
 				}
 			}
