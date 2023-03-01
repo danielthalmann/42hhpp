@@ -416,11 +416,12 @@ namespace hhpp
 							{
 								std::cerr << "[-] send() failed" << std::endl;
 								close_conn = 1;
-								break;
 							}
 							// free memory
 							delete response;
 							delete request;
+							if (close_conn)
+								break;
 
 							std::cout << "close fd: " << i << std::endl;
 							
