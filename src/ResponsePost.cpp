@@ -73,8 +73,8 @@ namespace hhpp
 															    header[i].substr(pos, header[i].size() - pos - 1);
 
 															// std::cout << filename << "\n";
-															location->put(
-															    body, utils::path(_location->getDirectory(), filename));
+															if (!filename.empty())
+																location->put(body, utils::path(_location->getDirectory(), filename));
 														}
 													}
 												}
