@@ -426,7 +426,7 @@ namespace hhpp
 							delete response;
 							delete request;
 
-							std::cout << "close fd: " << i << std::endl;
+							std::cout << i << " init close fd: " << i << std::endl;
 							
 							currentBinding->closeConnection(i);
 
