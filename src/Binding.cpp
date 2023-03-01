@@ -159,6 +159,8 @@ namespace hhpp
 			t_connection* conn = new t_connection;
 			conn->state = STATE_CREATED;
 			conn->socket = new_sd;
+			conn->header_len = 0;
+			conn->body_len = 0;
 			conn->len = 0;
 			_connections[new_sd] = conn;
 		}
