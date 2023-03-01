@@ -1,6 +1,7 @@
 #include "utility.hpp"
 #include <algorithm>
 #include <iostream>
+#include <cctype>
 
 #define PATH_SEPARATOR '/'
 namespace utils
@@ -171,5 +172,11 @@ namespace utils
 
 		return str;
 	}
+
+    std::string toUpper(std::string s)
+    {
+        std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+        return s;
+    }
 
 } // namespace utils

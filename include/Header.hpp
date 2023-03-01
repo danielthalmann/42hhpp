@@ -10,6 +10,10 @@ namespace hhpp
 	class Header
 	{
 	public:
+
+		typedef std::map<std::string, std::string> mapStringString;
+		typedef std::map<std::string, std::string>::iterator mapStringStringIt;
+
 		Header();
 		~Header();
 
@@ -19,12 +23,10 @@ namespace hhpp
 		void append(std::string key, std::string value);
 		void showParams();
 		std::string raw() const;
+		mapStringString &map();
 
 		std::string &operator[](const std::string &key);
 
-
-		typedef std::map<std::string, std::string> mapStringString;
-		typedef std::map<std::string, std::string>::iterator mapStringStringIt;
 
 		mapStringString getParams();
 

@@ -47,7 +47,9 @@ namespace hhpp
 			if (find == std::string::npos)
 				break;
 			std::string key = utils::upperKebabCase(token[i].substr(0, find));
+			key = utils::trim(key);
 			std::string value = token[i].substr(find + 1);
+			value = utils::trim(value);
 			if (key == "Set-Cookie")
 				_cookie.push_back(value);
 			else

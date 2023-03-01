@@ -33,6 +33,8 @@ namespace utils
 	std::string readFile(std::string path);
 
 	std::string upperKebabCase(std::string str);
+	std::string toUpper(std::string s);
+
 } // namespace utils
 
 #endif

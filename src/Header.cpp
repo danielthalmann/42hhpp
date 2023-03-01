@@ -45,6 +45,11 @@ namespace hhpp
 		}
 	}
 
+	Header::mapStringString &Header::map()
+	{
+		return _params;
+	}
+
 	std::string Header::raw() const
 	{
 		std::stringstream oss;

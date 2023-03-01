@@ -1,6 +1,7 @@
 #include "CGI.hpp"
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <Header.hpp>
 
 namespace hhpp
 {
@@ -33,11 +34,13 @@ namespace hhpp
 		std::string nameScript = _scriptPath.substr(pos + 1, _scriptPath.size());
 
 		env["AUTH_TYPE"] = "null";
-		env["CONTENT_TYPE"] = "application/x-www-form-urlencoded";
+		env["CONTENT_TYPE"] = request.getHeaders()["Content-Type"];
 		env["CONTENT_LENGTH"] = utils::numberToString(request.getBodySize());
 
 		env["GATEWAY_INTERFACE"] = "CGI/1.1";
 		env["PATH_INFO"] = _location;
+		env["PATH_TRANSLATED"] = _location;
+		env["REQUEST_URI"] = _location;
 
 		env["SERVER_NAME"] = request.getHost();
 		env["SERVER_PROTOCOL"] = request.getHttpVersion();
@@ -54,6 +57,20 @@ namespace hhpp
 		{
 			env["HTTP_COOKIE"] = request.getHeaders()["Cookie"];
 		}
+		
+		Header &h = request.getHeaders();
+		std::map<std::string, std::string> &map = h.map();
+
+		for (std::map<std::string, std::string>::iterator it = map.begin(); it != map.end(); it++)
+		{
+			if (!it->second.empty())
+			{
+				std::string header = "HTTP_" + utils::toUpper(it->first);
+				std::replace(header.begin(), header.end(), '-', '_');
+				env[header] = it->second;
+			}
+		}
+
 
 		return env;
 	}
@@ -104,13 +121,15 @@ namespace hhpp
 			close(p_out[1]);
 
 			write(p_in[1], request.getBody().c_str(), request.getBody().size());
+			// std::cout << request.getBody() << "\n";
 			close(p_in[1]);
 
 			if (waitpid(pid, &ret, 0) == -1)
 				throw(std::exception());
-			if (ret != 0)
-				throw(std::exception());
-
+			if (ret != 0) {
+				result.append("Status: 502 Error in CGI application\r\n");
+			}
+			
 			do
 			{
 				bzero(&buffer, sizeof(buffer));
