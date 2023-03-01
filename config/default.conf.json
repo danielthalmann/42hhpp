@@ -89,9 +89,7 @@
 
   "index" : ["index.html", "index.php"],
 
-  "access_log" : "/tmp/access_log.log",
-
-  "client_max_body_size" : 8192,
+  "client_max_body_size" : 0,
 
   "allowed_methods" : ["GET", "POST", "DELETE"],
 
