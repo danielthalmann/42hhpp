@@ -10,7 +10,6 @@ namespace hhpp
 	class IServer;
 
 	class Response;
-
 	class IBinding
 	{
 
@@ -24,6 +23,9 @@ namespace hhpp
 		virtual void addServer(IServer *server) = 0;
 		virtual int acceptConnection() = 0;
 		virtual void closeConnection(int socket) = 0;
+		virtual bool isRequestLoaded(int socket) = 0;
+		virtual std::string &getRequestBuffer(int socket) = 0;
+		virtual void readRequest(int socket) = 0;
 		virtual bool hasConnection(const int socket) = 0;
 		virtual IServer *getServerFor(const Request &request) const = 0;
 

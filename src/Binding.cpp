@@ -155,19 +155,68 @@ namespace hhpp
 	{
 		int new_sd;
 		new_sd = accept(_listen_sd, NULL, NULL);
-		if (new_sd > 0)
-			_connections.push_back(new_sd);
+		if (new_sd > 0){
+			t_connection* conn = new t_connection;
+			conn->state = STATE_CREATED;
+			conn->socket = new_sd;
+			conn->len = 0;
+			_connections[new_sd] = conn;
+		}
 		return new_sd;
 	}
 
 	bool Binding::hasConnection(const int socket)
 	{
-		for (std::vector<int>::iterator it = _connections.begin(); it != _connections.end(); it++)
+		try
 		{
-			if ((*it) == socket)
-				return true;
+			_connections.at(socket);
 		}
+		catch (std::exception &e)
+		{
+			(void)e;
+			return false;
+		}
+
+		return true;
+	}
+
+	bool Binding::isRequestLoaded(int socket)
+	{
+		if (_connections[socket]->state == STATE_LOADED)
+			return true;
 		return false;
+	}
+
+	std::string &Binding::getRequestBuffer(int socket) 
+	{
+		return _connections[socket]->buff;
+	}
+
+	void Binding::readRequest(int socket)
+	{
+		int ret;
+		int len;
+		char buffer[4096];		
+		t_connection *conn = _connections[socket];
+
+		bzero(buffer, sizeof(buffer));
+		ret = recv(conn->socket, buffer, sizeof(buffer), 0);
+		if (ret < 0) {
+			conn->state = STATE_ERROR;
+		} else if (ret == 0) {
+			conn->state = STATE_LOADED;
+		} else {
+			conn->len += ret;
+		}
+
+		if (conn->state == STATE_CREATED)
+		{
+			conn->buff.append(buffer, ret);
+			// vérifie la taille du body
+
+		}
+
+
 	}
 
 	void Binding::closeConnection(int socket)
