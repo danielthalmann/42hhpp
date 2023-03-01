@@ -155,13 +155,14 @@ namespace hhpp
 	{
 		int new_sd;
 		new_sd = accept(_listen_sd, NULL, NULL);
+
 		if (new_sd > 0){
 			t_connection* conn = new t_connection;
 			conn->state = STATE_CREATED;
 			conn->socket = new_sd;
 			conn->len = 0;
 			_connections[new_sd] = conn;
-		}
+		} 
 		return new_sd;
 	}
 
@@ -183,6 +184,9 @@ namespace hhpp
 	bool Binding::isRequestLoaded(int socket)
 	{
 		int state = _connections[socket]->state;
+		if (state == STATE_ERROR)
+				std::cout << _connections[socket]->socket << " STATE_ERROR\n";
+
 		if (state == STATE_LOADED || state == STATE_ERROR)
 			return true;
 		return false;
@@ -203,7 +207,7 @@ namespace hhpp
 		
 		if (conn->state == STATE_CREATED || conn->state == STATE_READ)
 		{
-			// std::cout << conn->socket << " read\n";
+			std::cout << conn->socket << " READ\n";
 
 			bzero(buffer, sizeof(buffer));
 			ret = recv(conn->socket, buffer, sizeof(buffer), 0);
@@ -219,7 +223,7 @@ namespace hhpp
 
 		if (conn->state == STATE_CREATED)
 		{
-			// std::cout << conn->socket << " STATE_CREATED\n";
+			std::cout << conn->socket << " STATE_CREATED\n";
 			// vérifie la taille du body
 			pos = conn->buff.find("\r\n\r\n");
 			if (pos != std::string::npos)
@@ -267,7 +271,7 @@ namespace hhpp
 
 		if (conn->state == STATE_READ)
 		{
-			// std::cout << conn->socket << " len : " << conn->len << " headerlen : " << conn->header_len << " headerlen : " << conn->body_len << " STATE_CREATED\n";
+			std::cout << conn->socket << " len : " << conn->len << " headerlen : " << conn->header_len << " headerlen : " << conn->body_len << " STATE_CREATED\n";
 
 			if (conn->len - conn->header_len == conn->body_len)
 			{
@@ -283,6 +287,9 @@ namespace hhpp
 		t_connection *conn = _connections[socket];
 		delete conn;
 		_connections.erase(socket);
+	
+		std::cout << socket << " CLOSE \n";
+
 		close(socket);
 	}
 

@@ -349,23 +349,28 @@ namespace hhpp
 					desc_ready -= 1;
 					if ((currentBinding = isListen(i)) != NULL)
 					{
-						// std::cout << "Listening socket is readable" << std::endl;
+						std::cout << "Listening socket is readable" << std::endl;
 						do
 						{
 							new_sd = currentBinding->acceptConnection();
 							if (new_sd < 0)
 							{
+								std::cerr << i << " accept() failed" << std::endl;
+
 								if (errno != EWOULDBLOCK)
 								{
-									std::cerr << "[-] accept() failed" << std::endl;
 									end_server = 1;
 								}
 								break;
+		
+							} else
+							{
+								std::cout << new_sd << " New incoming connection " << std::endl;
+								FD_SET(new_sd, &current_set);
+								if (new_sd > max_sd)
+									max_sd = new_sd;
+
 							}
-							// std::cout << "New incoming connection - " << new_sd << std::endl;
-							FD_SET(new_sd, &current_set);
-							if (new_sd > max_sd)
-								max_sd = new_sd;
 
 						} while (new_sd != -1);
 					}
@@ -381,6 +386,7 @@ namespace hhpp
 
 						if (currentBinding->isRequestLoaded(i))
 						{
+							std::cout << i << " LOADED" << std::endl;
 
 							// prepare request
 							Request *request = new Request();
@@ -415,8 +421,6 @@ namespace hhpp
 							if (ret < 0)
 							{
 								std::cerr << "[-] send() failed" << std::endl;
-								close_conn = 1;
-								break;
 							}
 							// free memory
 							delete response;
