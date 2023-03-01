@@ -6,6 +6,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <vector>
+#include <map>
 
 #include <arpa/inet.h>
 #include <cstring>
@@ -21,6 +22,22 @@ namespace hhpp
 {
 	class Binding : public IBinding
 	{
+	public:
+
+		typedef enum e_state {
+			STATE_CREATED,
+			STATE_READ,
+			STATE_LOADED,
+			STATE_ERROR
+		} t_state;
+		typedef struct s_connection {
+			int socket;
+			int len;
+			int header_len;
+			int body_len;
+			std::string buff;
+			t_state state;
+		} t_connection;
 
 	public:
 		Binding();
@@ -33,6 +50,10 @@ namespace hhpp
 		virtual int acceptConnection();
 		virtual void closeConnection(int socket);
 		virtual bool hasConnection(const int socket);
+		virtual bool isRequestLoaded(int socket);
+		virtual std::string &getRequestBuffer(int socket);
+		virtual void readRequest(int socket);
+
 		virtual IServer *getServerFor(const Request &request) const;
 
 		virtual std::string getIP() const;
@@ -53,7 +74,7 @@ namespace hhpp
 		void listenSocket();
 
 		std::vector<IServer *> _servers;
-		std::vector<int> _connections;
+		std::map<int, t_connection *> _connections;
 		int _listen_sd;
 		std::string _ip;
 		int _port;

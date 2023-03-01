@@ -300,8 +300,6 @@ namespace hhpp
 
 		for (std::vector<IBinding *>::iterator it = _bindings.begin(); it != _bindings.end(); ++it)
 		{
-			if (socket == (*it)->getSocket())
-				return (*it);
 			if ((*it)->hasConnection(socket))
 				return (*it);
 		}
@@ -316,8 +314,6 @@ namespace hhpp
 		int listen_sd;
 		int desc_ready, end_server = 0;
 		int close_conn;
-		int len;
-		char buffer[4096];
 		IBinding *currentBinding;
 
 		FD_ZERO(&current_set);
@@ -380,38 +376,21 @@ namespace hhpp
 
 						currentBinding = getBindingFromSocket(i);
 
-						while (1)
+						// lit les données
+						currentBinding->readRequest(i);
+
+						if (currentBinding->isRequestLoaded(i))
 						{
-							bzero(buffer, sizeof(buffer));
-							ret = recv(i, buffer, sizeof(buffer), 0);
-							if (ret < 0)
-							{
-								if (errno != EWOULDBLOCK)
-								{
-									// std::cout << "recv() finish" << std::endl;
-									close_conn = 1;
-								}
-								break;
-							}
-							if (ret == 0)
-							{
-								// std::cout << "Connection closed" << std::endl;
-								close_conn = 1;
-								break;
-							}
-							len = ret;
-							std::cout << len << " bytes received" << std::endl;
 
 							// prepare request
 							Request *request = new Request();
-							request->parseRequest(std::string(buffer, ret));
+							request->parseRequest(currentBinding->getRequestBuffer(i));
 
 							IServer *server = NULL;
 							server = currentBinding->getServerFor(*request);
 
 							// take first server if not exists
-							if (!server)
-							{
+							if (!server) {
 								server = _servers[0];
 							}
 
@@ -439,26 +418,23 @@ namespace hhpp
 								close_conn = 1;
 								break;
 							}
-
 							// free memory
 							delete response;
 							delete request;
 
-							if (close_conn)
-								break;
-						}
-
-						if (close_conn)
-						{
 							std::cout << "close fd: " << i << std::endl;
+							
 							currentBinding->closeConnection(i);
+
 							FD_CLR(i, &current_set);
 							if (i == max_sd)
 							{
 								while (FD_ISSET(max_sd, &current_set) == 0)
 									max_sd -= 1;
 							}
+
 						}
+
 					}
 				}
 			}

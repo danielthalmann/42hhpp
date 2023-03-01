@@ -181,7 +181,7 @@ namespace hhpp
 			else
 			{
 				token = utils::split(header[i], ": ");
-				_headers.append(utils::trim(token[0]), utils::trim(token[1]));
+				_headers.append(utils::upperKebabCase(utils::trim(token[0])), utils::trim(token[1]));
 			}
 		}
 
