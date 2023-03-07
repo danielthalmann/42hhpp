@@ -2,7 +2,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <Header.hpp>
-
+#include <algorithm>
 namespace hhpp
 {
 	CGI::CGI()
